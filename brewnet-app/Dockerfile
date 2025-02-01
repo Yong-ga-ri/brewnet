@@ -12,4 +12,6 @@ FROM openjdk:17-alpine
 COPY --from=build /app/build/libs/*.jar app.jar
 
 COPY src/main/resources/application.yml application.yml
+COPY src/main/resources/application-secret.yml application-secret.yml
+COPY src/main/resources/application-prod.yml application-prod.yml
 ENTRYPOINT ["java", "-jar", "app.jar"]
