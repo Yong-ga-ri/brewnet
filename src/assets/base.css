@@ -1,0 +1,16 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  color-scheme: light only;
+  /* --blue: rgb(blue, blue, blue) */
+}
+
+/* semantic color variables for this project */
+:root {
+  /* --default-background-color: var(--blue) */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    
+  }
+}

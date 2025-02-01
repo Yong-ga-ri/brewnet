@@ -1,0 +1,40 @@
+/*
+ * DataTable
+ */
+.p-datatable-header-cell {
+    &.p-datatable-column-sorted {
+        color: inherit;
+
+        .p-datatable-sort-icon {
+            color: inherit;
+        }
+    }
+}
+
+/*
+ * Tabs
+ */
+.p-tabs {
+    .p-tablist-tab-list {
+        border-bottom: 2px solid var(--p-surface-200);
+        gap: 5px;
+        padding-left: 10px;
+    }
+
+    .p-tab {
+        border: 1px solid var(--p-surface-200);
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background-color: var(--p-surface-50);
+        transition: all 0.1s;
+        border-bottom: 2px solid var(--p-surface-200);
+        top: 2px;
+    }
+
+    .p-tab.p-tab-active {
+        background-color: white;
+        color: var(--p-primary-700);
+        border-bottom-color: white;
+        box-shadow: var(--p-primary-100) 0px 2px 8px 0px;
+    }
+}
