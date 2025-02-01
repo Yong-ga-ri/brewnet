@@ -12,8 +12,10 @@ export function useDraftNavigation() {
       router.push({ name: 'hq:order:detail', params: { orderCode: data.code } });
     } else if (data.kind === DRAFT_KIND.EXCHANGE) {
       // 교환 상세로 이동
+      router.push({ name: 'hq:order:exchange:detail', params: { exchangeCode: data.code } });
     } else if (data.kind === DRAFT_KIND.RETURN) {
       // 반품 상세로 이동
+      router.push({ name: 'hq:order:return:detail', params: { returnCode: data.code } });
     } else if (data.kind === DRAFT_KIND.PURCHASE) {
       // 발주 상세로 이동
       router.push({ name: 'hq:purchase:detail', params: { purchaseCode: data.code } });

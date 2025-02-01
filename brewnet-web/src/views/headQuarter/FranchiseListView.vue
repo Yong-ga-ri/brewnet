@@ -37,6 +37,7 @@ import SearchArea from '@/components/common/SearchArea.vue';
 import { useAppConfirmModal } from '@/hooks/useAppConfirmModal';
 import HQFranchiseApi from '@/utils/api/HQFranchiseApi';
 import ResponsibleFranchiseApi from '@/utils/api/ResponsibleFranchiseApi';
+import { ROLE } from '@/utils/constant';
 import ExcelManager from '@/utils/ExcelManager';
 import { makeAutocompleteSuggestion } from '@/utils/helper';
 
@@ -131,8 +132,8 @@ const columns = [
     header: '',
     template: {
       button: [
-        { getLabel: () => '정보수정', clickHandler: clickEdit },
-        { getLabel: () => '삭제', clickHandler: clickRemove },
+        { getLabel: () => '정보수정', clickHandler: clickEdit, buttonRole: ROLE.RESPONSIBLE_ADMIN },
+        { getLabel: () => '삭제', clickHandler: clickRemove, buttonRole: ROLE.RESPONSIBLE_ADMIN },
       ],
     },
   },

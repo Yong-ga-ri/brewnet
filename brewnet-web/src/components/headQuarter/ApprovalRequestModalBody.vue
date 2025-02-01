@@ -1,7 +1,12 @@
 <template>
   <AppModalBody action-button-label="결재요청" @click-action-button="clickRequest">
     <div class="approval-line mb-4">
-      <AppInputText model-value="주문 결재라인" label="결재라인" disabled label-position="left" />
+      <AppInputText
+        :model-value="`${formatKoDraftKind(currentDraftKind)} 결재라인`"
+        label="결재라인"
+        disabled
+        label-position="left"
+      />
       <AppAutoComplete
         v-model="selectedApprovalUser"
         :suggestions="approvalUserSuggestions"
@@ -20,6 +25,7 @@ import { useToast } from 'primevue';
 import { computed, inject, onMounted, ref } from 'vue';
 
 import HQDocumentApi from '@/utils/api/HQDocumentApi';
+import { formatKoDraftKind } from '@/utils/format';
 import { makeAutocompleteSuggestion } from '@/utils/helper';
 
 import AppModalBody from '../common/AppModalBody.vue';

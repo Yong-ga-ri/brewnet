@@ -50,6 +50,7 @@ export default class FCOrderApi extends BaseApiService {
     endDate = dayjs().format('YYYY-MM-DD'),
     criteria,
     keyword,
+    filter,
   }) {
     const searchParams = new URLSearchParams();
     searchParams.append('page', page);
@@ -61,6 +62,11 @@ export default class FCOrderApi extends BaseApiService {
       searchParams.append('criteria', criteria);
       searchParams.append('searchWord', keyword);
     }
+
+    if (filter) {
+      searchParams.append('filter', filter);
+    }
+
     return this.get(`/search?${searchParams.toString()}`);
   }
 

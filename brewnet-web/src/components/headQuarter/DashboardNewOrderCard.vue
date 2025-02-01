@@ -18,7 +18,7 @@
           <tr>
             <th>주문코드</th>
             <th>지점명</th>
-            <th>품목</th>
+            <th>상품</th>
             <th>총 금액</th>
             <th>주문일자</th>
             <th></th>
@@ -32,7 +32,7 @@
             <tr v-for="newOrder in paginatedNewOrderList" :key="newOrder.orderCode">
               <td>{{ newOrder.orderCode }}</td>
               <td>{{ newOrder.franchiseName }}</td>
-              <td>{{ newOrder.itemName }}</td>
+              <td class="ellipsis">{{ newOrder.itemName }}</td>
               <td>{{ (newOrder.totalPrice * 1.1).toLocaleString() }}</td>
               <td>{{ newOrder.createdAt }}</td>
               <td>

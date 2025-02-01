@@ -22,7 +22,6 @@ export default class ExcelManager {
       }, {}),
     );
 
-    console.log(this.#rows);
     this.#orderedFields = orderedFields;
   }
 

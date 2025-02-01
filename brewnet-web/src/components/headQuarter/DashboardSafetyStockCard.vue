@@ -33,12 +33,12 @@
           <template v-else>
             <tr v-for="warningSafetyStock in paginatedWarningSafetyStockList" :key="warningSafetyStock.itemCode">
               <td>{{ warningSafetyStock.itemCode }}</td>
-              <td>{{ warningSafetyStock.itemName }}</td>
-              <td>{{ warningSafetyStock.availableStock }}</td>
-              <td>{{ warningSafetyStock.safeStock }}</td>
-              <td>{{ warningSafetyStock.availableMinusSafeStock }}</td>
-              <td>{{ warningSafetyStock.unApprovedOrderCount }}</td>
-              <td>{{ warningSafetyStock.minPurchaseCount }}</td>
+              <td class="ellipsis">{{ warningSafetyStock.itemName }}</td>
+              <td>{{ warningSafetyStock.availableStock.toLocaleString() }}</td>
+              <td>{{ warningSafetyStock.safeStock.toLocaleString() }}</td>
+              <td>{{ warningSafetyStock.availableMinusSafeStock.toLocaleString() }}</td>
+              <td>{{ warningSafetyStock.unApprovedOrderCount.toLocaleString() }}</td>
+              <td>{{ warningSafetyStock.minPurchaseCount.toLocaleString() }}</td>
               <td>
                 <Button
                   label="발주요청"

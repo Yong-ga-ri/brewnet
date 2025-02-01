@@ -59,6 +59,11 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 32px;
+
+      p {
+        white-space: pre-wrap;
+        text-align: center;
+      }
     }
 
     .btn-group {

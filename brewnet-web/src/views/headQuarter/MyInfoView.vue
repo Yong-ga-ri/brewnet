@@ -5,7 +5,7 @@
       <AppLabelText label="성명" :text="memberDetail.name" />
       <AppLabelText label="이메일" :text="memberDetail.email" />
       <AppLabelText label="휴대폰번호" :text="memberDetail.contact" />
-      <AppLabelText label="직급" :text="formatKoEmployeePosition(memberDetail.positionName)" />
+      <AppLabelText label="직위" :text="formatKoEmployeePosition(memberDetail.positionName)" />
       <AppLabelText label="시스템 권한" :text="formatKoMemberRole(memberDetail.role)" />
 
       <template v-if="memberDetail.signatureUrl">

@@ -31,7 +31,7 @@
     >
       <template #header>
         <div class="table-header">
-          <p>총 {{ totalElements || 0 }}건</p>
+          <p class="total-elements">총 {{ totalElements || 0 }}건</p>
 
           <div class="right">
             <AppSelect
@@ -84,6 +84,11 @@
               'text-align': col.alignment || 'center',
             },
           },
+          columnTitle: {
+            style: {
+              'font-size': '0.9rem',
+            },
+          },
         }"
         class="app-table-column"
       >
@@ -107,7 +112,13 @@
               :severity="button.getSeverity ? button.getSeverity(data) : undefined"
               :variant="button.getVariant ? button.getVariant(data) : 'text'"
               :disabled="button.getDisabled ? button.getDisabled(data) : undefined"
-              :class="{ hidden: button.getHidden ? button.getHidden(data) : false }"
+              :class="{
+                hidden: button.getHidden
+                  ? button.getHidden(data) // 1. getHidden 메소드 체크
+                  : button.buttonRole
+                    ? isButtonForbidden(button.buttonRole) // 2. buttonRole 체크
+                    : false,
+              }"
               :icon="button.getIcon ? button.getIcon(data) : undefined"
               @click="button.clickHandler ? button.clickHandler(data) : undefined"
             />
@@ -125,26 +136,43 @@
           <div v-else class="empty-image">없음</div>
         </template>
 
-        <!-- 
-        
-        다른 템플릿을 넣고 싶으면 여기 사이에 넣어주세요
-        
-        -->
-
-        <!-- template은 따로 없지만 render가 있는 경우 -->
-        <template v-else-if="col.render" #body="{ data }">
-          {{ col.render(data) }}
+        <!-- 그 외 경우 -->
+        <template v-else #body="{ data }">
+          <div
+            class="simple-text"
+            :class="{ danger: col.getHighlightColor && col.getHighlightColor(data) === 'danger' }"
+          >
+            <!-- render 함수가 있다면 실행 -->
+            {{ col.render ? col.render(data) : data[col.field] }}
+          </div>
         </template>
       </Column>
     </DataTable>
 
     <!-- 페이지네이션 -->
-    <Paginator :rows="rowsPerPage" :total-records="totalElements" @page="emit('changePage', $event)"></Paginator>
+    <Paginator
+      :rows="rowsPerPage"
+      :total-records="totalElements"
+      :pt="{
+        page: {
+          style: {
+            borderRadius: '50%',
+            minWidth: 0,
+            width: '2rem',
+            height: '2rem',
+          },
+        },
+      }"
+      @page="emit('changePage', $event)"
+    ></Paginator>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
+import { useUserStore } from '@/stores/user';
+import { ORDERED_HQ_ROLES, ROLE } from '@/utils/constant';
 
 import AppSelect from './form/AppSelect.vue';
 
@@ -184,13 +212,15 @@ const { paginatedData, columns, rowsPerPage, totalElements, addButton, showExcel
    *         getDisabled: (data: T) => boolean // 버튼 disabled 여부
    *         getHidden: (data: T) => boolean   // 버튼 숨기는지?
    *         getIcon: (data: T) => string      // 프라임뷰 아이콘
+   *         buttonRole: ROLE                  // 버튼을 누를 수 있는 최소 멤버 권한
    *       }
    *     ]},
    *     image: {
    *       getSrc: (data: T) => string         // 이미지 src
    *     }
    *   }
-   *   alignment: string              // 정렬 ('left', 'center', 'right')
+   *   alignment: string                       // 정렬 ('left', 'center', 'right')
+   *   getHighlightColor: (data: T) => string  // 강조할 색상 (가능한 return 값: 'danger')
    * }]
    */
 
@@ -223,6 +253,8 @@ const { paginatedData, columns, rowsPerPage, totalElements, addButton, showExcel
 const emit = defineEmits(['changePage', 'reload', 'exportExcel', 'changeSort']);
 const sorting = defineModel('sorting', { type: String, required: false });
 
+const userStore = useUserStore();
+
 const dt = ref();
 const exportCSV = () => {
   dt.value.exportCSV();
@@ -234,6 +266,20 @@ const onClickExportToExcel = () => {
 
 const onSort = event => {
   emit('changeSort', event.sortField, event.sortOrder);
+};
+
+const isButtonForbidden = buttonRole => {
+  const currentMemberRole = userStore.memberRole;
+
+  // 배송기사나 가맹점은 권한 계급 없음
+  if (currentMemberRole === ROLE.DELIVERY || currentMemberRole === ROLE.FRANCHISE) return false;
+
+  const memberRoleOrder = ORDERED_HQ_ROLES.indexOf(currentMemberRole);
+  const buttonRoleOrder = ORDERED_HQ_ROLES.indexOf(buttonRole);
+
+  if (memberRoleOrder === -1) return true; // 알수없는 권한..
+
+  return memberRoleOrder < buttonRoleOrder; // 권한이 더 낮으면 Forbidden
 };
 </script>
 
@@ -249,11 +295,19 @@ const onSort = event => {
       align-items: center;
       gap: 10px;
     }
+
+    .total-elements {
+      font-size: 0.85rem;
+    }
   }
 
   .app-table-column {
     & .hidden {
       display: none;
+    }
+
+    & .danger {
+      color: #f03e3e;
     }
   }
 
@@ -272,6 +326,14 @@ const onSort = event => {
   .empty-image {
     font-size: 14px;
     color: var(--p-surface-400);
+  }
+
+  .simple-text {
+    font-size: 0.9rem;
+  }
+
+  .p-tag {
+    font-size: 0.8rem;
   }
 }
 </style>

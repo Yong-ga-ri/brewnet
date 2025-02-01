@@ -69,6 +69,10 @@ const getItems = () => {
     .then(data => {
       paginatedItems.value = data.content;
       totalElements.value = data.totalElements;
+    })
+    .catch(err => {
+      paginatedItems.value = [];
+      totalElements.value = 0;
     });
 };
 
@@ -87,7 +91,7 @@ const onChangeActiveStatus = async targetItem => {
     // 활성 -> 비활성
 
     await hqItemApi.deactivateItem(targetItem.itemCode);
-    successMsg = '품목이 비활성화 되었습니다.';
+    successMsg = '상품이 비활성화 되었습니다.';
   } else {
     // 비활성 -> 활성
 
@@ -103,7 +107,7 @@ const onChangeActiveStatus = async targetItem => {
       correspondentCode: targetItem.correspondentCode,
       active: true,
     });
-    successMsg = '품목이 활성화 되었습니다.';
+    successMsg = '상품이 활성화 되었습니다.';
   }
 
   if (!successMsg) return;
@@ -115,7 +119,7 @@ const onChangeActiveStatus = async targetItem => {
 const clickChangeStatus = targetItem => {
   showConfirm({
     header: '활성 상태 변경',
-    message: `품목코드 ${targetItem.itemUniqueCode} [${targetItem.name}]의 상태를 ${targetItem.active ? '비활성화' : '활성화'}합니다.`,
+    message: `상품코드 ${targetItem.itemUniqueCode} [${targetItem.name}]의 상태를 ${targetItem.active ? '비활성화' : '활성화'}합니다.`,
     acceptLabel: targetItem.active ? '비활성 상태로 변경' : '활성 상태로 변경',
     onAccept: () => onChangeActiveStatus(targetItem),
     danger: targetItem.active,
@@ -124,8 +128,8 @@ const clickChangeStatus = targetItem => {
 
 const columns = [
   { field: 'categoryName', header: '카테고리' },
-  { field: 'itemUniqueCode', header: '품목코드' },
-  { field: 'name', header: '품목명' },
+  { field: 'itemUniqueCode', header: '상품코드' },
+  { field: 'name', header: '상품명' },
   { field: 'sellingPrice', header: '판매단가', render: data => data.sellingPrice.toLocaleString(), alignment: 'right' },
   {
     field: 'purchasePrice',

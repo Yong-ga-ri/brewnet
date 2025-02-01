@@ -1,7 +1,6 @@
 <template>
   <div class="company-seal-upload-container">
-    <Button size="small" label="파일 선택" variant="outlined" severity="secondary" @click="clickChoose" />
-    <input ref="inputRef" type="file" accept="image/*" style="display: none" @change="changeFile" />
+    <AppChooseFile @change-file="onChangeFile" />
 
     <div v-if="previewUrl" class="uploaded-area">
       <img v-if="previewUrl" :src="previewUrl" alt="업로드 된 이미지" />
@@ -12,38 +11,19 @@
 
 <script setup>
 import { useToast } from 'primevue';
-import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import AppChooseFile from '@/components/common/form/AppChooseFile.vue';
 import { useAppConfirmModal } from '@/hooks/useAppConfirmModal';
+import { useFile } from '@/hooks/useFile';
 import MasterCompanyApi from '@/utils/api/MasterCompanyApi';
 
 const router = useRouter();
 const toast = useToast();
 const { showConfirm } = useAppConfirmModal();
-
-const previewUrl = ref(null);
-const imageFile = ref(null);
-const inputRef = ref(null);
+const { previewUrl, file: imageFile, onChangeFile } = useFile();
 
 const masterCompanyApi = new MasterCompanyApi();
-
-const clickChoose = () => {
-  inputRef.value?.click();
-};
-
-const changeFile = event => {
-  const { files } = event.target;
-  if (files.length > 0) {
-    const file = files[0];
-
-    URL.revokeObjectURL(previewUrl); // 기존 파일 지우고
-
-    // 새로운 파일로 교체
-    imageFile.value = file;
-    previewUrl.value = URL.createObjectURL(file);
-  }
-};
 
 const saveImage = () => {
   masterCompanyApi.editCompanySeal(imageFile.value).then(() => {
@@ -61,11 +41,6 @@ const clickSave = () => {
     onAccept: saveImage,
   });
 };
-
-onUnmounted(() => {
-  // 남아있는 리소스 정리
-  URL.revokeObjectURL(previewUrl);
-});
 </script>
 
 <style scoped>

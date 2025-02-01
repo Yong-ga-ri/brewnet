@@ -8,6 +8,15 @@
       <h3 class="page-title">{{ currentPageTitle }}</h3>
       <div class="content">
         <RouterView />
+
+        <Button
+          v-if="$route.meta?.backTo !== undefined"
+          label="돌아가기"
+          severity="secondary"
+          size="small"
+          class="back-to-list-button"
+          @click="$router.back()"
+        />
       </div>
 
       <LoadingSpinner />
@@ -64,6 +73,10 @@ const home = ref({
     .content {
       margin-top: 24px;
       padding: 0 14px;
+    }
+
+    .back-to-list-button {
+      margin-top: 32px;
     }
   }
 }

@@ -26,7 +26,7 @@ export default class HQCorrespondentApi extends BaseApiService {
     return this.get(`?${searchParams.toString()}`);
   }
 
-  // 특정 거래처가 취급하는 품목 조회
+  // 특정 거래처가 취급하는 상품 조회
   getCorrespondentItems({ page = 1, pageSize = 15, correspondentCode, itemUniqueCode, itemName }) {
     const searchParams = new URLSearchParams();
     searchParams.append('pageNumber', page);

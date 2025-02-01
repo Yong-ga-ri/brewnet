@@ -1,6 +1,6 @@
 <template>
   <AppModalBody action-button-label="저장" :disabled-action-button="!position" @click-action-button="save">
-    <AppSelect v-model="position" label="직급" :options="positionOptions" :initial-value="initialPosition" />
+    <AppSelect v-model="position" label="직위" :options="positionOptions" :initial-value="initialPosition" />
   </AppModalBody>
 </template>
 

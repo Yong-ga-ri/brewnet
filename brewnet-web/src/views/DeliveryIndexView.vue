@@ -2,10 +2,23 @@
   <div class="delivery-main-container">
     <header>
       <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
-      <h3>{{ $route.meta?.pageTitle || '' }}</h3>
+      <h3>브루넷배송</h3>
       <div>
-        <Button label="로그아웃" variant="text" size="small" @click="clickLogout" />
-        <Button label="강제 로그아웃(임시)" variant="text" size="small" @click="clickForceLogout" />
+        <Button
+          type="button"
+          icon="pi pi-chevron-down"
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+          aria-label="User Menu"
+          :label="`배송기사 님`"
+          severity="secondary"
+          size="small"
+          icon-pos="right"
+          rounded
+          @click="toggleMenu"
+        />
+
+        <Menu id="overlay_menu" ref="userMenu" :model="userMenus" :popup="true" />
       </div>
     </header>
     <main>
@@ -46,6 +59,7 @@ const navItems = ref([
   { routerName: 'd:exchange-return', title: '교환/반품' },
   { routerName: 'd:detail', title: '배송 현황' },
 ]);
+const userMenu = ref();
 
 const clickLogout = () => {
   authApi.logout().then(() => {
@@ -58,27 +72,44 @@ const clickForceLogout = () => {
   userStore.clearUserData();
   router.replace({ name: 'auth:login' });
 };
+
+const userMenus = ref([
+  // {
+  //   label: '로그아웃',
+  //   icon: 'pi pi-sign-out',
+  //   command: clickLogout,
+  // },
+  {
+    label: '로그아웃',
+    icon: 'pi pi-sign-out',
+    command: clickForceLogout,
+  },
+]);
+
+const toggleMenu = event => {
+  userMenu.value.toggle(event);
+};
 </script>
 
 <style scoped>
 .delivery-main-container {
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: 100vw;
   height: 100dvh;
-  margin: 0 auto;
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
 
   header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 110px 1fr 110px;
     align-items: center;
-    justify-content: space-between;
+    justify-items: center;
     padding: 10px 16px;
     border-bottom: 2px solid var(--p-surface-100);
 
     .logo {
       width: 50px;
       height: 50px;
+      justify-self: start;
     }
   }
 

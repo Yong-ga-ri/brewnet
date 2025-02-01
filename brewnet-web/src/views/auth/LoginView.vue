@@ -4,16 +4,23 @@
     <IconField>
       <InputIcon class="pi pi-user" />
       <InputText v-model="id" placeholder="아이디 입력" fluid class="input" />
+      <InputIcon class="pi pi-user" style="visibility: hidden" />
     </IconField>
 
     <!-- 패스워드 -->
-    <IconField>
-      <InputIcon class="pi pi-lock" />
-      <InputText v-model="password" placeholder="비밀번호 입력" fluid class="input" type="password" />
-    </IconField>
+    <AppInputPassword
+      v-model="password"
+      placeholder="비밀번호 입력"
+      full-width
+      :small-size="false"
+      text-align="center"
+    />
 
     <div class="middle">
-      <AppCheck v-model="saveAuth" label="로그인 정보 저장" />
+      <div class="save-auth-area">
+        <Checkbox v-model="saveAuth" size="small" binary input-id="save-id" />
+        <AppLabel label-for="save-id" label="로그인 정보 저장" />
+      </div>
       <Button label="비밀번호 찾기" variant="text" size="small" as="router-link" :to="{ name: 'auth:find-password' }" />
     </div>
 
@@ -26,16 +33,14 @@ import { jwtDecode } from 'jwt-decode';
 import { useToast } from 'primevue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { usePreset } from '@primevue/themes';
 
-import AppCheck from '@/components/common/form/AppCheck.vue';
+import AppLabel from '@/components/common/AppLabel.vue';
+import AppInputPassword from '@/components/common/form/AppInputPassword.vue';
 import { useUserStore } from '@/stores/user';
 import AuthApi from '@/utils/api/AuthApi';
 import MemberApi from '@/utils/api/MemberApi';
 import { ROLE } from '@/utils/constant';
 import LocalStorageUtil from '@/utils/localStorage';
-import AppPresetFC from '@/assets/AppPresetFC';
-import AppPreset from '@/assets/AppPreset';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -121,6 +126,7 @@ onMounted(() => {
   const foundLoginId = localStorageUtil.getLoginId();
   if (foundLoginId) {
     id.value = foundLoginId;
+    saveAuth.value = true;
   }
 });
 </script>
@@ -141,6 +147,12 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .save-auth-area {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 }
 </style>

@@ -1,14 +1,5 @@
 <template>
   <div v-if="noticeDetail" class="notice-detail-container">
-    <Button
-      size="small"
-      label="목록으로"
-      variant="outlined"
-      severity="secondary"
-      class="mb-4"
-      @click="$router.back()"
-    />
-
     <div class="top">
       <div class="left">
         <h2 class="title mb-4">{{ noticeDetail.title }}</h2>
@@ -32,7 +23,6 @@
       <AppImageList :images="noticeDetail.imageList" vertical />
     </div>
   </div>
-  <EmptyContent v-else text="공지사항 글을 찾을 수 없습니다." fallback-label="돌아가기" @fallback="goBack" />
 </template>
 
 <script setup>
@@ -41,7 +31,6 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import AppImageList from '@/components/common/AppImageList.vue';
-import EmptyContent from '@/components/common/EmptyContent.vue';
 import { useAppConfirmModal } from '@/hooks/useAppConfirmModal';
 import HQNoticeApi from '@/utils/api/HQNoticeApi';
 import MasterNoticeApi from '@/utils/api/MasterNoticeApi';
@@ -96,10 +85,6 @@ const items = ref([
   },
 ]);
 
-const goBack = () => {
-  router.back();
-};
-
 onMounted(() => {
   getNotice();
 });
@@ -125,10 +110,16 @@ onMounted(() => {
     padding: 20px;
   }
 
+  .top {
+    margin-bottom: 16px;
+  }
+
   .bottom {
     display: flex;
     align-items: flex-start;
     gap: 16px;
+    border-radius: 5px;
+    border: 1px solid var(--p-surface-300);
 
     .content {
       flex-grow: 1;

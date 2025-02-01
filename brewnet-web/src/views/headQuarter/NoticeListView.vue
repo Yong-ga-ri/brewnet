@@ -28,7 +28,7 @@ import SearchArea from '@/components/common/SearchArea.vue';
 import { useAppConfirmModal } from '@/hooks/useAppConfirmModal';
 import HQNoticeApi from '@/utils/api/HQNoticeApi';
 import MasterNoticeApi from '@/utils/api/MasterNoticeApi';
-import { SORTING_OPTION } from '@/utils/constant';
+import { ROLE, SORTING_OPTION } from '@/utils/constant';
 
 const router = useRouter();
 const { showConfirm } = useAppConfirmModal();
@@ -111,10 +111,12 @@ const columns = [
         {
           getLabel: () => '수정',
           clickHandler: clickEdit,
+          buttonRole: ROLE.MASTER,
         },
         {
           getLabel: () => '삭제',
           clickHandler: clickDelete,
+          buttonRole: ROLE.MASTER,
         },
       ],
     },

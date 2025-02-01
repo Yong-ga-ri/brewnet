@@ -10,30 +10,36 @@
         />
         <div class="top-buttons">
           <Button
-            label="결재요청하기"
+            v-if="isShowRequestApproval"
+            label="결재요청"
             variant="outlined"
             size="small"
-            :disabled="!isRequested"
             @click="clickRequestApproval"
+          />
+          <Button
+            v-if="isShowRequestApproval"
+            label="주문요청 반려"
+            variant="outlined"
+            severity="danger"
+            size="small"
+            @click="clickRejectDraft"
           />
           <Button label="주문요청서 출력" variant="outlined" size="small" @click="clickPrintOrder" />
           <Button
             label="거래명세서 출력"
             variant="outlined"
             size="small"
-            :disabled="!isCompleted"
+            :disabled="!enableInvoice"
             @click="clickPrintInvoice"
           />
-          <Button label="목록으로" size="small" severity="secondary" variant="outlined" @click="clickGoToList" />
 
           <!-- 기안 담당자인 경우에만 결재요청취소 버튼 표시 -->
           <Button
-            v-if="orderDetail.managerName === userStore.username"
+            v-if="isShowRequestApprovalCancel"
             label="결재요청취소"
             severity="danger"
             size="small"
             variant="outlined"
-            :disabled="disabledCancelButton"
             @click="clickCancel"
           />
         </div>
@@ -60,7 +66,7 @@
 
       <DynamicDialog />
 
-      <PrintOrderPdfPreviewModal v-model:show="showPrintPdf" :order-detail="orderDetail" />
+      <PrintOrderPdfPreviewModal v-model:show="showPrintPdf" :order-detail="orderDetail" :print-type="printType" />
     </template>
   </div>
 </template>
@@ -78,13 +84,14 @@ import { useAppConfirmModal } from '@/hooks/useAppConfirmModal';
 import { useModal } from '@/hooks/useModal';
 import { useUserStore } from '@/stores/user';
 import HQOrderApi from '@/utils/api/HQOrderApi';
-import { DRAFT_KIND, ORDER_STATUS } from '@/utils/constant';
+import { DRAFT_KIND, ORDER_STATUS, ORDER_STEP_LIST, PRINT_TYPE } from '@/utils/constant';
 import { formatKoOrderStatus } from '@/utils/format';
 import { getOrderStatusSeverity } from '@/utils/helper';
 
 const ApprovalRequestModalBody = defineAsyncComponent(
   () => import('@/components/headQuarter/ApprovalRequestModalBody.vue'),
 );
+const DraftRejectModalBody = defineAsyncComponent(() => import('@/components/headQuarter/DraftRejectModalBody.vue'));
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -95,24 +102,47 @@ const { openModal } = useModal();
 
 const orderDetail = ref(null);
 const orderApprovalLines = ref([]);
-const disabledCancelButton = computed(() => {
-  // PENDING 상태일 때만 결재취소(기안자가) 가능하므로
-  // PENDING 상태가 아니면 결재취소 버튼 disabled
-  return orderDetail.value.orderStatus !== ORDER_STATUS.PENDING;
-});
-
-const isRequested = computed(() => {
-  return orderDetail.value.orderStatus === ORDER_STATUS.REQUESTED;
+const isShowRequestApprovalCancel = computed(() => {
+  // 기안자이고
+  // PENDING 상태이고
+  // 결재라인이 1개 이상일 때
+  return (
+    orderDetail.value.managerName === userStore.username &&
+    orderDetail.value.orderStatus === ORDER_STATUS.PENDING &&
+    orderApprovalLines.value.length > 0
+  );
 });
 
 const isCompleted = computed(() => {
   return orderDetail.value.orderStatus === ORDER_STATUS.SHIPPED;
 });
 
+const isShowRequestApproval = computed(() => {
+  // 신규요청 상태이거나
+  // 결재라인이 아무것도 없을 때 (결재취소 상태일 때)
+  return (
+    orderDetail.value.orderStatus === ORDER_STATUS.REQUESTED ||
+    (orderDetail.value.orderStatus === ORDER_STATUS.PENDING && orderApprovalLines.value.length === 0)
+  );
+});
+const isBeforeApproved = computed(() => {
+  const approveStepIndex = ORDER_STEP_LIST.indexOf(ORDER_STATUS.APPROVED);
+  const currentStepIndex = ORDER_STEP_LIST.indexOf(orderDetail.value.orderStatus);
+
+  if (currentStepIndex === -1) return null; // 정상 step 목록에 없으면 false
+
+  return currentStepIndex < approveStepIndex;
+});
+const enableInvoice = computed(() => {
+  if (isBeforeApproved.value === null) return false;
+  return !isBeforeApproved.value;
+});
+
 const hqOrderApi = new HQOrderApi();
 const { orderCode } = route.params;
 
 const showPrintPdf = ref(false);
+const printType = ref(PRINT_TYPE.HQ.ORDER_DRAFT);
 
 const getOrderDetailPageData = () => {
   hqOrderApi.getOrderDetail(orderCode).then(data => {
@@ -157,17 +187,13 @@ const clickRequestApproval = () => {
 };
 
 const clickPrintOrder = () => {
-  // TODO:: 주문요청서 출력
+  printType.value = PRINT_TYPE.HQ.ORDER_DRAFT;
   showPrintPdf.value = true;
 };
 
 const clickPrintInvoice = () => {
-  // TODO:: 거래명세서 출력
+  printType.value = PRINT_TYPE.HQ.ORDER_INVOICE;
   showPrintPdf.value = true;
-};
-
-const clickGoToList = () => {
-  router.replace({ name: 'hq:order:list' });
 };
 
 const cancelOrder = () => {
@@ -191,6 +217,38 @@ const clickCancel = () => {
 
 const onCompleteApproval = () => {
   getOrderDetailPageData();
+};
+
+// 기안자가 주문요청 반려
+const handleRejectDraft = comment => {
+  hqOrderApi.rejectDraft({ orderCode, comment }).then(() => {
+    toast.add({
+      severity: 'success',
+      summary: '처리 성공',
+      detail: '주문요청을 반려했습니다.',
+      life: 3000,
+    });
+
+    // page reload
+    getOrderDetailPageData();
+  });
+};
+const clickRejectDraft = () => {
+  openModal({
+    component: DraftRejectModalBody,
+    header: '주문요청 반려',
+    data: {
+      draftKind: DRAFT_KIND.ORDER,
+    },
+    onClose: opt => {
+      const callbackParams = opt.data;
+      if (!callbackParams) return;
+
+      const { comment } = callbackParams;
+
+      handleRejectDraft(comment);
+    },
+  });
 };
 
 onMounted(() => {

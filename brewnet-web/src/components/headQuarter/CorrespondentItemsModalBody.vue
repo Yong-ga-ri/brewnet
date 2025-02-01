@@ -67,11 +67,11 @@ const columns = [
   },
   {
     field: 'itemUniqueCode',
-    header: '품목코드',
+    header: '상품코드',
   },
   {
     field: 'itemName',
-    header: '품목명',
+    header: '상품명',
   },
   {
     field: 'sellingPrice',
@@ -154,7 +154,7 @@ const onExportExcel = () => {
 
       const excelManager = new ExcelManager(tableRows, orderedFields);
       excelManager.setHeaderNames(headerNames);
-      excelManager.export(`거래처품목리스트${dayjs().format('YYMMDD')}`);
+      excelManager.export(`거래처상품리스트${dayjs().format('YYMMDD')}`);
     });
 };
 

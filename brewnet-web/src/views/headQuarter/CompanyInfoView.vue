@@ -1,13 +1,15 @@
 <template>
   <div class="company-info-container">
     <div class="button-area">
-      <template v-if="!editMode">
-        <Button v-if="companyCode" size="small" label="수정" @click="clickEdit" />
-        <Button v-else size="small" label="등록" @click="clickEdit" />
-      </template>
-      <template v-else>
-        <Button size="small" label="취소" variant="outlined" severity="secondary" @click="clickCancel" />
-        <Button size="small" label="저장" @click="clickSave" />
+      <template v-if="isHQAuthenticated(userStore.memberRole, ROLE.MASTER)">
+        <template v-if="!editMode">
+          <Button v-if="companyCode" size="small" label="수정" @click="clickEdit" />
+          <Button v-else size="small" label="등록" @click="clickEdit" />
+        </template>
+        <template v-else>
+          <Button size="small" label="취소" variant="outlined" severity="secondary" @click="clickCancel" />
+          <Button size="small" label="저장" @click="clickSave" />
+        </template>
       </template>
     </div>
 
@@ -68,11 +70,15 @@ import { onMounted, ref, watch } from 'vue';
 
 import AppTableStyled from '@/components/common/AppTableStyled.vue';
 import AppInputText from '@/components/common/form/AppInputText.vue';
+import { useUserStore } from '@/stores/user';
 import CompanyApi from '@/utils/api/CompanyApi';
 import MasterCompanyApi from '@/utils/api/MasterCompanyApi';
+import { ROLE } from '@/utils/constant';
 import { formatBusinessNumber, formatCorporateNumber } from '@/utils/format';
+import { isHQAuthenticated } from '@/utils/helper';
 
 const toast = useToast();
+const userStore = useUserStore();
 
 const companyCode = ref(null);
 const companyInfo = ref({
