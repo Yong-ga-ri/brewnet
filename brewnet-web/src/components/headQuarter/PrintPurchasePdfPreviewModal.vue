@@ -21,8 +21,8 @@
               <td>{{ purchaseDetail.memberName }}</td>
             </tr>
             <tr>
-              <th>품목코드</th>
-              <th colspan="3">품목명</th>
+              <th>상품코드</th>
+              <th colspan="3">상품명</th>
               <th>수량</th>
               <th>단가</th>
               <th>공급가액</th>

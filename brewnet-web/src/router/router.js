@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { useUserStore } from '@/stores/user';
+import { ROLE } from '@/utils/constant';
 
 /**
  * meta: {
@@ -81,6 +82,7 @@ const routes = [
             component: () => import('@/views/headQuarter/PurchaseDetailView.vue'),
             meta: {
               breadcrumb: '발주 상세',
+              backTo: true,
             },
           },
           {
@@ -123,6 +125,7 @@ const routes = [
             component: () => import('@/views/headQuarter/OrderDetailView.vue'),
             meta: {
               breadcrumb: '주문요청 상세',
+              backTo: true,
             },
           },
           {
@@ -139,6 +142,24 @@ const routes = [
             component: () => import('@/views/headQuarter/ExchangeDetailView.vue'),
             meta: {
               breadcrumb: '교환요청 상세',
+              backTo: true,
+            },
+          },
+          {
+            path: 'exchange/other-list',
+            name: 'hq:order:exchange:other-list',
+            component: () => import('@/views/headQuarter/ExchangeOtherListView.vue'),
+            meta: {
+              breadcrumb: '교환 처리내역 조회',
+            },
+          },
+          {
+            path: 'exchange/:exchangeStockHistoryCode/other-detail',
+            name: 'hq:order:exchange:other-detail',
+            component: () => import('@/views/headQuarter/ExchangeOtherDetailView.vue'),
+            meta: {
+              breadcrumb: '교환처리 상세',
+              backTo: true,
             },
           },
           {
@@ -155,6 +176,41 @@ const routes = [
             component: () => import('@/views/headQuarter/ReturnDetailView.vue'),
             meta: {
               breadcrumb: '반품요청 상세',
+              backTo: true,
+            },
+          },
+          {
+            path: 'return/stock/list',
+            name: 'hq:order:return:other-dept-stock',
+            component: () => import('@/views/headQuarter/ReturnOtherStockDeptView.vue'),
+            meta: {
+              breadcrumb: '반품 처리내역 조회',
+            },
+          },
+          {
+            path: 'return/refund/list',
+            name: 'hq:order:return:other-dept-refund',
+            component: () => import('@/views/headQuarter/ReturnOtherAccountDeptView.vue'),
+            meta: {
+              breadcrumb: '환불 처리내역 조회',
+            },
+          },
+          {
+            path: 'return/stock/:detailCode/detail',
+            name: 'hq:order:return:stock-detail',
+            component: () => import('@/views/headQuarter/ReturnStockDetailView.vue'),
+            meta: {
+              breadcrumb: '반품 재고처리 상세',
+              backTo: true,
+            },
+          },
+          {
+            path: 'return/refund/:detailCode/detail',
+            name: 'hq:order:return:refund-detail',
+            component: () => import('@/views/headQuarter/ReturnRefundDetailView.vue'),
+            meta: {
+              breadcrumb: '반품 환불처리 상세',
+              backTo: true,
             },
           },
         ],
@@ -181,6 +237,7 @@ const routes = [
             component: () => import('@/views/headQuarter/FranchiseFormView.vue'),
             meta: {
               breadcrumb: '가맹점 등록',
+              auth: ROLE.RESPONSIBLE_ADMIN,
             },
           },
           {
@@ -189,6 +246,8 @@ const routes = [
             component: () => import('@/views/headQuarter/FranchiseFormView.vue'),
             meta: {
               breadcrumb: '가맹점 수정',
+              backTo: true,
+              auth: ROLE.RESPONSIBLE_ADMIN,
             },
           },
           {
@@ -213,6 +272,7 @@ const routes = [
             component: () => import('@/views/headQuarter/FranchiseAccountFormView.vue'),
             meta: {
               breadcrumb: '가맹점 계정 수정',
+              backTo: true,
             },
           },
           {
@@ -237,6 +297,7 @@ const routes = [
             component: () => import('@/views/headQuarter/CorrespondentFormView.vue'),
             meta: {
               breadcrumb: '거래처 수정',
+              backTo: true,
             },
           },
         ],
@@ -246,7 +307,7 @@ const routes = [
         name: 'hq:stock',
         component: () => import('@/components/headQuarter/HeadQuarterPageBody.vue'),
         meta: {
-          breadcrumb: '창고/품목',
+          breadcrumb: '창고/상품',
         },
         children: [
           {
@@ -271,6 +332,7 @@ const routes = [
             component: () => import('@/views/headQuarter/StorageDetailView.vue'),
             meta: {
               breadcrumb: '창고 상세보기',
+              backTo: true,
             },
           },
           {
@@ -287,6 +349,7 @@ const routes = [
             component: () => import('@/views/headQuarter/StorageFormView.vue'),
             meta: {
               breadcrumb: '창고 수정',
+              backTo: true,
             },
           },
           {
@@ -294,7 +357,7 @@ const routes = [
             name: 'hq:stock:item-category',
             component: () => import('@/views/headQuarter/ItemCategoryView.vue'),
             meta: {
-              breadcrumb: '품목 카테고리 관리',
+              breadcrumb: '상품 카테고리 관리',
             },
           },
           {
@@ -302,7 +365,7 @@ const routes = [
             name: 'hq:stock:item:list',
             component: () => import('@/views/headQuarter/ItemListView.vue'),
             meta: {
-              breadcrumb: '품목 조회',
+              breadcrumb: '상품 조회',
             },
           },
           {
@@ -310,7 +373,7 @@ const routes = [
             name: 'hq:stock:item:create',
             component: () => import('@/views/headQuarter/ItemFormView.vue'),
             meta: {
-              breadcrumb: '품목 등록',
+              breadcrumb: '상품 등록',
             },
           },
           {
@@ -318,7 +381,16 @@ const routes = [
             name: 'hq:stock:item:edit',
             component: () => import('@/views/headQuarter/ItemFormView.vue'),
             meta: {
-              breadcrumb: '품목 수정',
+              breadcrumb: '상품 수정',
+              backTo: true,
+            },
+          },
+          {
+            path: 'item/must-buy/list',
+            name: 'hq:stock:item-must-buy:list',
+            component: () => import('@/views/headQuarter/ItemMustBuyListView.vue'),
+            meta: {
+              breadcrumb: '필수구매상품 관리',
             },
           },
         ],
@@ -350,6 +422,7 @@ const routes = [
             component: () => import('@/views/headQuarter/NoticeDetailView.vue'),
             meta: {
               breadcrumb: '공지사항 상세',
+              backTo: true,
             },
           },
           {
@@ -358,6 +431,7 @@ const routes = [
             component: () => import('@/views/headQuarter/NoticeFormView.vue'),
             meta: {
               breadcrumb: '공지사항 등록',
+              auth: ROLE.MASTER,
             },
           },
           {
@@ -366,6 +440,8 @@ const routes = [
             component: () => import('@/views/headQuarter/NoticeFormView.vue'),
             meta: {
               breadcrumb: '공지사항 수정',
+              backTo: true,
+              auth: ROLE.MASTER,
             },
           },
         ],
@@ -400,6 +476,7 @@ const routes = [
             component: () => import('@/views/headQuarter/EmployeeFormView.vue'),
             meta: {
               breadcrumb: '임직원 수정',
+              backTo: true,
             },
           },
           {
@@ -424,6 +501,7 @@ const routes = [
             component: () => import('@/views/headQuarter/CompanySealUploadView.vue'),
             meta: {
               breadcrumb: '법인인감 등록',
+              auth: ROLE.MASTER,
             },
           },
           {
@@ -518,6 +596,7 @@ const routes = [
             component: () => import('@/views/franchise/OrderDetailView.vue'),
             meta: {
               breadcrumb: '주문 상세',
+              backTo: true,
             },
           },
           {
@@ -537,6 +616,15 @@ const routes = [
             },
           },
           {
+            path: 'exchange/:exchangeCode/detail',
+            name: 'fc:home:exchange:detail',
+            component: () => import('@/views/franchise/ExchangeDetailView.vue'),
+            meta: {
+              breadcrumb: '교환 상세',
+              backTo: true,
+            },
+          },
+          {
             path: 'exchange/form',
             name: 'fc:home:exchange:form',
             component: () => import('@/views/franchise/ExchangeFormView.vue'),
@@ -550,6 +638,15 @@ const routes = [
             component: () => import('@/views/franchise/ReturnListView.vue'),
             meta: {
               breadcrumb: '반품 내역 조회',
+            },
+          },
+          {
+            path: 'return/:returnCode/detail',
+            name: 'fc:home:return:detail',
+            component: () => import('@/views/franchise/ReturnDetailView.vue'),
+            meta: {
+              breadcrumb: '반품 상세',
+              backTo: true,
             },
           },
           {
@@ -675,6 +772,12 @@ router.beforeEach((to, from) => {
   }
   if (userStore.userType === 'd' && !to.name.startsWith('d:')) {
     return { name: 'd:home' };
+  }
+
+  if (to.name === 'auth:index') {
+    return {
+      name: 'auth:login',
+    };
   }
 
   // 대메뉴 눌렀을 때 default 서브메뉴 선택 - 본사

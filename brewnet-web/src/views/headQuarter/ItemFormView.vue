@@ -11,8 +11,8 @@
       />
     </div>
 
-    <AppInputText v-model="itemName" label="품목명" label-position="left" />
-    <AppInputText v-model="itemUniqueCode" label="품목코드" label-position="left" />
+    <AppInputText v-model="itemName" label="상품명" label-position="left" />
+    <AppInputText v-model="itemUniqueCode" label="상품코드" label-position="left" />
     <AppInputNumber
       v-model="sellingPrice"
       label="판매단가"
@@ -37,7 +37,7 @@
       @complete-input="searchCorrespondent"
     />
     <AppInputNumber v-model="safetyStock" :default-value="safetyStock" label="안전재고값" label-position="left" />
-    <AppChooseFile label="품목이미지" label-position="left" @change-file="onChangeFile" />
+    <AppChooseFile label="상품이미지" label-position="left" @change-file="onChangeFile" />
     <RemovableImage v-if="previewUrl" :image-url="previewUrl" @remove-image="onRemove" />
     <RemovableImage v-else-if="originalImageUrl" :image-url="originalImageUrl" @remove-image="onRemoveOriginalImage" />
 
@@ -109,8 +109,8 @@ const searchCorrespondent = event => {
 const checkForm = () => {
   try {
     if (!selectedSubCategory.value) throw new Error('하위 카테고리를 선택해주세요.');
-    if (!itemName.value) throw new Error('품목명을 입력해주세요.');
-    if (!itemUniqueCode.value) throw new Error('품목코드를 입력해주세요.');
+    if (!itemName.value) throw new Error('상품명을 입력해주세요.');
+    if (!itemUniqueCode.value) throw new Error('상품코드를 입력해주세요.');
     if (!sellingPrice.value) throw new Error('판매단가를 입력해주세요.');
     if (!purchasePrice.value) throw new Error('구매단가를 입력해주세요.');
     if (!selectedCorrespondent.value) throw new Error('취급거래처를 입력해주세요.');

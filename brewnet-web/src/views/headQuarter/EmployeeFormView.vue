@@ -6,8 +6,8 @@
 
     <!-- 비밀번호 -->
     <div v-if="!editMode">
-      <AppInputPassword v-model="password" label="비밀번호" class="mb-2" />
-      <AppInputPassword v-model="confirmPassword" />
+      <AppInputPassword v-model="password" label="비밀번호" class="mb-2" full-width />
+      <AppInputPassword v-model="confirmPassword" full-width />
     </div>
 
     <!-- 성명 -->
@@ -19,8 +19,8 @@
     <!-- 휴대폰번호 -->
     <AppInputText v-model="phone" label="휴대폰번호" placeholder="-제외 숫자만 입력" />
 
-    <!-- 직급 -->
-    <AppSelect v-model="position" label="직급" :options="positionOptions" :initial-value="initialPosition" />
+    <!-- 직위 -->
+    <AppSelect v-model="position" label="직위" :options="positionOptions" :initial-value="initialPosition" />
 
     <Button type="submit" variant="outlined" label="저장" />
   </form>
@@ -88,7 +88,7 @@ const checkForm = () => {
 
     if (!phone.value) throw new Error('휴대폰번호를 입력해주세요.');
 
-    if (!position.value) throw new Error('직급을 선택해주세요');
+    if (!position.value) throw new Error('직위를 선택해주세요');
 
     return true;
   } catch (e) {

@@ -1,20 +1,25 @@
 import { onUnmounted, ref } from 'vue';
 
+import FileUtil from '@/utils/FileUtil';
+
 export function useFile() {
   const previewUrl = ref(null);
   const file = ref(null);
 
-  const onChangeFile = event => {
+  const fileUtil = new FileUtil();
+
+  const onChangeFile = async event => {
     const { files } = event.target;
     if (files.length > 0) {
-      const newFile = files[0];
+      // 파일 리사이징
+      const compressedFile = await fileUtil.compressFile(files[0]);
 
       // 기존 파일 지우고
       URL.revokeObjectURL(previewUrl);
 
       // 새로운 파일로 교체
-      previewUrl.value = URL.createObjectURL(newFile);
-      file.value = newFile;
+      previewUrl.value = URL.createObjectURL(compressedFile);
+      file.value = compressedFile;
     }
   };
 

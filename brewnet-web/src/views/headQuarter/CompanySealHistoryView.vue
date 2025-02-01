@@ -39,10 +39,6 @@ const sorting = ref(null);
 
 const companyApi = new CompanyApi();
 
-const onClickUploadSignature = data => {
-  console.log(data.memberSignature);
-};
-
 const getCompanySealHistory = () => {
   companyApi
     .getCompanySealHistory({
@@ -67,13 +63,9 @@ const columns = [
     field: '',
     header: '서명',
     template: {
-      button: [
-        {
-          getLabel: data => (data.memberSignature ? '보기' : '서명 없음'),
-          clickHandler: onClickUploadSignature,
-          getDisabled: data => !data.memberSignature,
-        },
-      ],
+      image: {
+        getSrc: data => data.memberSignature || '',
+      },
     },
   },
 ];

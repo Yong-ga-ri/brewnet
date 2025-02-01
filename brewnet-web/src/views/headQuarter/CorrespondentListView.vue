@@ -78,7 +78,7 @@ const clickEdit = data => {
 const viewItems = data => {
   openModal({
     component: CorrespondentItemsModalBody,
-    header: `[${data.correspondentName}] 품목 조회`,
+    header: `[${data.correspondentName}] 상품 조회`,
     data: {
       correspondentCode: data.correspondentCode,
     },
@@ -139,7 +139,7 @@ const columns = [
           clickHandler: clickEdit,
         },
         {
-          getLabel: () => '품목조회',
+          getLabel: () => '상품조회',
           clickHandler: viewItems,
         },
         {

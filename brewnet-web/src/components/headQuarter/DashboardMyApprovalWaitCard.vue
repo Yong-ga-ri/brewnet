@@ -88,12 +88,5 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
   }
-
-  .ellipsis {
-    max-width: 100px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
 }
 </style>

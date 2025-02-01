@@ -2,6 +2,8 @@
   <MainContainer>
     <HeadQuarterTopBar />
     <RouterView />
+
+    <Toast group="notification" position="bottom-right" />
   </MainContainer>
 </template>
 

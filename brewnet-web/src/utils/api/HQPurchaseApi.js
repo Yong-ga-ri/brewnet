@@ -21,6 +21,7 @@ export default class HQPurchaseApi extends BaseApiService {
     memberName = '',
     correspondentName = '',
     storageName = '',
+    approved,
   }) {
     const searchParams = new URLSearchParams();
     searchParams.append('pageNumber', page);
@@ -44,6 +45,10 @@ export default class HQPurchaseApi extends BaseApiService {
       searchParams.append('storageName', storageName);
     }
 
+    if (approved) {
+      searchParams.append('approved', approved);
+    }
+
     return this.get(`?${searchParams.toString()}`);
   }
 
@@ -57,7 +62,7 @@ export default class HQPurchaseApi extends BaseApiService {
     return this.get(`/${purchaseCode}/approval-line`);
   }
 
-  // 전체 입고품목 목록 조회(발주 품목)
+  // 전체 입고상품 목록 조회(발주 상품)
   getInStockItems({
     page = 1,
     pageSize = 15,
@@ -140,6 +145,16 @@ export default class HQPurchaseApi extends BaseApiService {
     return this.put(`/reject/${purchaseCode}`, {
       comment,
     });
+  }
+
+  // 내부용 발주서 출력
+  printInHouseDocument(purchaseCode) {
+    return this.put(`/print-in-house/${purchaseCode}`);
+  }
+
+  // 외부용 발주서 출력
+  printExportDocument(purchaseCode) {
+    return this.put(`/print-export/${purchaseCode}`);
   }
 
   //

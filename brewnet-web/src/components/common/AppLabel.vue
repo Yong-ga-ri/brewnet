@@ -1,9 +1,9 @@
 <template>
-  <label class="app-label" :for="labelFor">{{ label }}</label>
+  <label class="app-label" :for="labelFor" :class="{ mb5px: useMarginBottom }">{{ label }}</label>
 </template>
 
 <script setup>
-const { labelFor, label } = defineProps({
+const { labelFor, label, useMarginBottom } = defineProps({
   label: {
     type: String,
     required: true,
@@ -14,12 +14,23 @@ const { labelFor, label } = defineProps({
     required: false,
     default: undefined,
   },
+
+  useMarginBottom: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 </script>
 
 <style scoped>
 label.app-label {
-  font-size: 14px;
+  font-size: 0.9rem;
   color: var(--p-surface-600);
+  display: inline-block;
+
+  &.mb5px {
+    margin-bottom: 5px;
+  }
 }
 </style>

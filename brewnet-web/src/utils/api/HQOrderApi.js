@@ -56,6 +56,7 @@ export default class HQOrderApi extends BaseApiService {
     endDate = dayjs().format('YYYY-MM-DD'),
     criteria,
     keyword,
+    filter,
   }) {
     const searchParams = new URLSearchParams();
     searchParams.append('page', page);
@@ -66,6 +67,10 @@ export default class HQOrderApi extends BaseApiService {
     if (criteria && keyword) {
       searchParams.append('criteria', criteria);
       searchParams.append('searchWord', keyword);
+    }
+
+    if (filter) {
+      searchParams.append('filter', filter);
     }
 
     return this.get(`/search?${searchParams.toString()}`);
@@ -110,6 +115,11 @@ export default class HQOrderApi extends BaseApiService {
       superManagerMemberCode,
       comment,
     });
+  }
+
+  // 기안자가 주문반려
+  rejectDraft({ orderCode, comment }) {
+    return this.post(`/reject/${orderCode}`, { reason: comment });
   }
 
   //

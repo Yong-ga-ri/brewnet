@@ -2,16 +2,9 @@
   <div class="storage-detail-container">
     <template v-if="storageDetail">
       <div class="top-buttons">
-        <Button
-          label="목록으로"
-          icon="pi pi-arrow-left"
-          variant="text"
-          severity="secondary"
-          size="small"
-          @click="clickBack"
-        />
-
         <Button label="재고 확인" icon="pi pi-external-link" size="small" @click="goToStockList" />
+        <Button size="small" variant="outlined" severity="secondary" label="수정" @click="clickEdit" />
+        <Button size="small" variant="outlined" severity="danger" label="삭제" @click="clickRemove" />
       </div>
 
       <AppTableStyled full-width>
@@ -34,11 +27,6 @@
           <td colspan="5">{{ storageDetail.address }}</td>
         </tr>
       </AppTableStyled>
-
-      <div class="bottom-buttons">
-        <Button size="small" variant="outlined" severity="secondary" label="수정" @click="clickEdit" />
-        <Button size="small" variant="outlined" severity="danger" label="삭제" @click="clickRemove" />
-      </div>
     </template>
   </div>
 </template>
@@ -66,10 +54,6 @@ const getStorage = () => {
   hqStorageApi.getStorage(storageCode).then(data => {
     storageDetail.value = data;
   });
-};
-
-const clickBack = () => {
-  router.back();
 };
 
 const goToStockList = () => {
@@ -112,16 +96,9 @@ onMounted(() => {
   .top-buttons {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .bottom-buttons {
-    display: flex;
     justify-content: flex-end;
-    align-items: center;
+    margin-bottom: 20px;
     gap: 10px;
-    margin-top: 20px;
   }
 }
 </style>

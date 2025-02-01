@@ -12,8 +12,8 @@ export default class HQItemApi extends BaseApiService {
   // 상품 목록 조회 (본사용)
   getItems({ page = 0, pageSize = 15, itemUniqueCode, itemName }) {
     const searchParams = new URLSearchParams();
-    searchParams.append('pageNumber', page);
-    searchParams.append('pageSize', pageSize);
+    searchParams.append('page', page);
+    searchParams.append('size', pageSize);
 
     if (itemUniqueCode) {
       searchParams.append('itemCode', itemUniqueCode);
@@ -30,7 +30,7 @@ export default class HQItemApi extends BaseApiService {
   // POST
   //
 
-  // 품목 생성
+  // 상품 생성
   createItem({
     categoryCode,
     name,
@@ -64,7 +64,7 @@ export default class HQItemApi extends BaseApiService {
   // PUT
   //
 
-  // 품목 정보 수정
+  // 상품 정보 수정
   editItem({
     itemCode,
     categoryCode,
@@ -105,7 +105,7 @@ export default class HQItemApi extends BaseApiService {
   // DELETE
   //
 
-  // 품목 비활성화
+  // 상품 비활성화
   deactivateItem(itemCode) {
     return this.delete('', { itemCode });
   }

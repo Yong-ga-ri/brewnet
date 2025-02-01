@@ -14,6 +14,7 @@ export const useUserStore = defineStore(
     const loginId = ref('');
     const username = ref('');
     const franchiseName = ref('');
+    const memberRole = ref('');
 
     const saveTempAccessToken = token => {
       tempAccessToken.value = token;
@@ -39,6 +40,7 @@ export const useUserStore = defineStore(
       loginId.value = memberDTO.id;
       username.value = memberDTO.name;
       memberCode.value = memberDTO.memberCode;
+      memberRole.value = memberDTO.role;
 
       if (memberDTO.franchiseName) {
         franchiseName.value = memberDTO.franchiseName;
@@ -67,6 +69,7 @@ export const useUserStore = defineStore(
       loginId,
       username,
       franchiseName,
+      memberRole,
 
       saveTempAccessToken,
       saveTempRefreshToken,

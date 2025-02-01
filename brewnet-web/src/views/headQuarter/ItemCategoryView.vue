@@ -94,7 +94,7 @@ const removeCategory = targetCategoryCode => {
 };
 const onRemove = (targetCategoryCode, targetCategoryName) => {
   showConfirm({
-    header: '품목 카테고리 삭제',
+    header: '상품 카테고리 삭제',
     message: `[${targetCategoryName}] 카테고리를 삭제하시겠습니까?`,
     danger: true,
     acceptLabel: '네, 삭제합니다.',
@@ -110,7 +110,7 @@ const removeSuperCategory = targetCategoryCode => {
 };
 const onRemoveSuper = (targetCategoryCode, targetCategoryName) => {
   showConfirm({
-    header: '품목 카테고리 삭제',
+    header: '상품 카테고리 삭제',
     message: `[${targetCategoryName}] 카테고리를 삭제하시겠습니까?`,
     danger: true,
     acceptLabel: '네, 삭제합니다.',
@@ -121,7 +121,7 @@ const onRemoveSuper = (targetCategoryCode, targetCategoryName) => {
 const clickAddCategory = () => {
   openModal({
     component: AddItemCategoryModal,
-    header: '품목 카테고리 생성',
+    header: '상품 카테고리 생성',
     data: {
       superCategoryOptions,
     },

@@ -28,7 +28,7 @@ const { approvalLines, draftManagerName } = defineProps({
   /**
    * approvalLines: [{
    *   approverCode: number,     // 결재자의 멤버코드
-   *   positionName: string,     // 결재자의 직급 (enum)
+   *   positionName: string,     // 결재자의 직위 (enum)
    *   approverName: string,     // 결재자명
    *   approved: string,         // 결재자의 approved 상태
    *   comment: string,          // 결재자의 comment

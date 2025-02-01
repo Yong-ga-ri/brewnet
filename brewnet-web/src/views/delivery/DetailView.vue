@@ -39,7 +39,7 @@
     <AppTableStyled>
       <thead>
         <tr>
-          <th width="100">품목명</th>
+          <th width="100">상품명</th>
           <th width="100">수량</th>
         </tr>
       </thead>
@@ -221,8 +221,8 @@ onMounted(() => {
 
   .step-list {
     list-style-type: none;
-    padding: 0;
-    width: 500px;
+    padding: 0 20px;
+    width: 100vw;
     align-self: center;
     margin-bottom: 32px;
 

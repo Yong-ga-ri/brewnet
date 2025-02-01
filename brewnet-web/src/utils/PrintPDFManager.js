@@ -3,7 +3,7 @@ import { jsPDF } from 'jspdf';
 
 export default class PrintPDFManager {
   exportPDF(targetId, filename) {
-    html2canvas(document.querySelector(targetId)).then(canvas => {
+    html2canvas(document.querySelector(targetId), { allowTaint: false, useCORS: true }).then(canvas => {
       // 캔버스를 이미지로 변환 (A4에 맞게)
       let imgData = canvas.toDataURL('image/jpeg');
       let imgWidth = 210; // 이미지 가로 길이(mm)

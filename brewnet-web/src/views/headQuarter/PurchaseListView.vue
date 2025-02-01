@@ -6,12 +6,15 @@
         v-model:end="criteria.endDate"
         label="작성일자"
         class="criteria created-at"
+        label-position="left"
       />
       <AppInputText v-model="criteria.purchaseCodeKeyword" label="발주코드" />
       <AppInputText v-model="criteria.purchaseMemberKeyword" label="기안자명" />
       <AppInputText v-model="criteria.supplierKeyword" label="거래처명" />
       <AppInputText v-model="criteria.storageKeyword" label="창고명" />
     </SearchArea>
+
+    <AppTabs v-model="activeTab" :tab-items="tabItems" />
 
     <AppTable
       :columns="columns"
@@ -27,17 +30,18 @@
 <script setup>
 import dayjs from 'dayjs';
 import { useToast } from 'primevue';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import AppTable from '@/components/common/AppTable.vue';
+import AppTabs from '@/components/common/AppTabs.vue';
 import AppDateRangePicker from '@/components/common/form/AppDateRangePicker.vue';
 import AppInputText from '@/components/common/form/AppInputText.vue';
 import SearchArea from '@/components/common/SearchArea.vue';
 import HQPurchaseApi from '@/utils/api/HQPurchaseApi';
 import { APPROVAL_STATUS } from '@/utils/constant';
 import { formatKoApprovalStatus } from '@/utils/format';
-import { getApprovalStatusSeverity } from '@/utils/helper';
+import { getApprovalStatusSeverity, makeTabs } from '@/utils/helper';
 import LocalStorageUtil from '@/utils/localStorage';
 
 const toast = useToast();
@@ -57,6 +61,26 @@ const paginatedPurchases = ref([]);
 const totalElements = ref(0);
 const page = ref(1);
 const pageSize = ref(15);
+
+const TAB_ITEM = {
+  ALL: 'ALL',
+  UNCONFIRMED: 'UNCONFIRMED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+};
+function formatKoTabItem(tabValue) {
+  if (tabValue === TAB_ITEM.ALL) return '전체 발주';
+  if (tabValue === TAB_ITEM.UNCONFIRMED) return '미결재 발주';
+  if (tabValue === TAB_ITEM.APPROVED) return '결재승인 발주';
+  if (tabValue === TAB_ITEM.REJECTED) return '결재반려 발주';
+  return 'Tab';
+}
+const activeTab = ref(TAB_ITEM.ALL);
+const tabItems = computed(() => {
+  return [TAB_ITEM.ALL, TAB_ITEM.UNCONFIRMED, TAB_ITEM.APPROVED, TAB_ITEM.REJECTED].map(e =>
+    makeTabs(formatKoTabItem(e), e),
+  );
+});
 
 const localStorageUtil = new LocalStorageUtil();
 const hqPurchaseApi = new HQPurchaseApi();
@@ -150,6 +174,7 @@ const getPurchases = () => {
       memberName: criteria.value.purchaseMemberKeyword,
       correspondentName: criteria.value.supplierKeyword,
       storageName: criteria.value.storageKeyword,
+      approved: activeTab.value === TAB_ITEM.ALL ? undefined : activeTab.value,
     })
     .then(data => {
       totalElements.value = data.totalCount;
@@ -176,6 +201,11 @@ const onReset = () => {
 };
 
 onMounted(() => {
+  getPurchases();
+});
+
+// 탭이 변경되면 API 호출
+watch(activeTab, newActiveTab => {
   getPurchases();
 });
 </script>

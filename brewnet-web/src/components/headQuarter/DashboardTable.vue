@@ -28,5 +28,12 @@
     font-size: 13px;
     padding: 3px 5px;
   }
+
+  :slotted(.ellipsis) {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
 </style>

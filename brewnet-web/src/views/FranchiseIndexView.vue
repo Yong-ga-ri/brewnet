@@ -2,6 +2,8 @@
   <MainContainer>
     <FranchiseTopBar />
     <RouterView />
+
+    <Toast group="notification" position="bottom-right" />
   </MainContainer>
 </template>
 

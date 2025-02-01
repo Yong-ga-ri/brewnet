@@ -36,7 +36,7 @@ const loadingStore = useLoadingStore();
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  z-index: 10;
+  z-index: 2000;
 
   width: 80px;
   height: 80px;

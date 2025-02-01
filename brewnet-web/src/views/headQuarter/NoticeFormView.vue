@@ -3,31 +3,7 @@
     <AppInputText v-model="title" label="제목" />
     <Textarea v-model="content" rows="17" fluid placeholder="내용을 입력해주세요" size="small" />
 
-    <div class="upload-image-area">
-      <button type="button" class="upload-button" @click="clickChoose">
-        <i class="pi pi-images"></i>
-        <p>사진 선택</p>
-      </button>
-      <input ref="inputRef" type="file" accept="image/*" multiple style="display: none" @change="changeFile" />
-
-      <ul v-if="noticeImagesFiles.length > 0" class="upload-image-list">
-        <li
-          v-for="(uploadImage, i) in noticeImagesFiles"
-          :key="uploadImage.preview"
-          :style="{ backgroundImage: `url(${uploadImage.preview})` }"
-          class="upload-image-item"
-        >
-          <Button
-            icon="pi pi-times"
-            size="small"
-            rounded
-            severity="secondary"
-            class="remove-button"
-            @click="clickRemoveImage(i)"
-          />
-        </li>
-      </ul>
-    </div>
+    <AppChooseFileList :upload-images="noticeImagesFiles" @change-files="onChangeFiles" @remove-image="onRemove" />
 
     <Button type="submit" label="저장" />
   </form>
@@ -35,10 +11,12 @@
 
 <script setup>
 import { useToast } from 'primevue';
-import { onUnmounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import AppChooseFileList from '@/components/common/form/AppChooseFileList.vue';
 import AppInputText from '@/components/common/form/AppInputText.vue';
+import { useFiles } from '@/hooks/useFiles';
 import HQNoticeApi from '@/utils/api/HQNoticeApi';
 import MasterNoticeApi from '@/utils/api/MasterNoticeApi';
 
@@ -46,11 +24,10 @@ const toast = useToast();
 const router = useRouter();
 const route = useRoute();
 const { noticeCode } = route.params;
+const { uploadFiles: noticeImagesFiles, onRemove, onChangeFiles } = useFiles();
 
 const title = ref('');
 const content = ref('');
-const inputRef = ref();
-const noticeImagesFiles = ref([]);
 const editMode = ref(false);
 
 const masterNoticeApi = new MasterNoticeApi();
@@ -98,24 +75,7 @@ const onSubmit = async () => {
     router.replace({ name: 'hq:board:notice:list' });
   } catch (e) {
     // 오류 발생
-    console.log(e);
   }
-};
-
-const clickChoose = () => {
-  inputRef.value?.click();
-};
-
-const changeFile = event => {
-  const { files } = event.target;
-  if (files.length > 0) {
-    const newImageFiles = Array.from(files).map(e => ({ file: e, preview: URL.createObjectURL(e) }));
-    noticeImagesFiles.value = noticeImagesFiles.value.concat(newImageFiles);
-  }
-};
-
-const clickRemoveImage = targetIndex => {
-  noticeImagesFiles.value = noticeImagesFiles.value.filter((e, i) => i !== targetIndex);
 };
 
 watch(
@@ -141,13 +101,6 @@ watch(
   },
   { immediate: true },
 );
-
-onUnmounted(() => {
-  // 남아있는 리소스 정리
-  noticeImagesFiles.value.forEach(e => {
-    URL.revokeObjectURL(e);
-  });
-});
 </script>
 
 <style scoped>

@@ -58,5 +58,9 @@ const onChangeEnd = newValue => {
   display: flex;
   align-items: center;
   gap: 10px;
+
+  .p-datepicker {
+    width: 135px;
+  }
 }
 </style>

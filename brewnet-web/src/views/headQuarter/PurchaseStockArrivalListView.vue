@@ -27,6 +27,7 @@
       :paginated-data="paginatedItems"
       :total-elements="totalElements"
       @reload="onReload"
+      @change-page="onChangePage"
     />
   </div>
 </template>
@@ -105,13 +106,13 @@ const columns = [
   },
   {
     field: 'itemUniqueCode',
-    header: '품목코드',
+    header: '상품코드',
   },
   {
     field: 'itemName',
-    header: '품목명',
+    header: '상품명',
   },
-  { field: 'quantity', header: '입고수량' },
+  { field: 'quantity', header: '입고수량', render: data => data.quantity.toLocaleString() },
   { field: 'storageName', header: '입고창고' },
   { field: 'correspondentName', header: '거래처' },
   { field: 'createdAt', header: '발주일자' },
@@ -172,6 +173,11 @@ const onReset = () => {
 };
 
 const onReload = () => {
+  getInStockItems();
+};
+
+const onChangePage = event => {
+  page.value = event.page + 1;
   getInStockItems();
 };
 

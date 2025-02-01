@@ -4,9 +4,9 @@
       <tr v-for="approvalLine in approvalLines" :key="approvalLine.kind">
         <th>{{ formatKoDraftKind(approvalLine.kind) }} 결재라인</th>
         <td>
-          <p>결재자(직급): {{ formatKoEmployeePosition(approvalLine.positionName) }}</p>
+          <p>결재자(직위): {{ formatKoEmployeePosition(approvalLine.positionName) }}</p>
         </td>
-        <td>
+        <td v-if="isHQAuthenticated(userStore.memberRole, ROLE.MASTER)">
           <Button label="수정" size="small" @click="clickEdit(approvalLine)" />
         </td>
       </tr>
@@ -21,14 +21,18 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 import AppTableStyled from '@/components/common/AppTableStyled.vue';
 import { useModal } from '@/hooks/useModal';
+import { useUserStore } from '@/stores/user';
 import HQDocumentApi from '@/utils/api/HQDocumentApi';
+import { ROLE } from '@/utils/constant';
 import { formatKoDraftKind, formatKoEmployeePosition } from '@/utils/format';
+import { isHQAuthenticated } from '@/utils/helper';
 
 const EditApprovalLineModalBody = defineAsyncComponent(
-    () => import('@/components/headQuarter/EditApprovalLineModalBody.vue'),
+  () => import('@/components/headQuarter/EditApprovalLineModalBody.vue'),
 );
 
 const { openModal } = useModal();
+const userStore = useUserStore();
 
 const approvalLines = ref([]);
 

@@ -1,8 +1,8 @@
 <template>
   <div>
     <SearchArea grid @form-reset="onReset" @search="onSearch">
-      <AppInputText v-model="criteria.itemUniqueCode" label="품목코드 검색" />
-      <AppInputText v-model="criteria.itemName" label="품목명 검색" />
+      <AppInputText v-model="criteria.itemUniqueCode" label="상품코드 검색" />
+      <AppInputText v-model="criteria.itemName" label="상품명 검색" />
     </SearchArea>
 
     <AppTable
@@ -49,8 +49,8 @@ const criteria = ref(getInitialCriteria());
 const hqCorrespondentApi = new HQCorrespondentApi();
 
 const columns = [
-  { field: 'itemUniqueCode', header: '품목코드' },
-  { field: 'itemName', header: '품목명' },
+  { field: 'itemUniqueCode', header: '상품코드' },
+  { field: 'itemName', header: '상품명' },
   { field: 'purchasePrice', header: '구매단가', render: data => data.purchasePrice.toLocaleString() },
   {
     field: '',
@@ -60,7 +60,7 @@ const columns = [
         {
           getLabel: data => {
             const found = selectedItems.find(e => e.itemCode === data.itemCode);
-            if (found) return '선택취소';
+            if (found) return '취소';
             return '선택';
           },
           clickHandler: data => {
