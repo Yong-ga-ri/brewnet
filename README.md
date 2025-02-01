@@ -4,7 +4,7 @@
 <br>
 
 ## 팀원
-|노다민|양현진|용길한|장호정|정준서|
+|Colleage A|Colleage B|용길한|Colleage C|Colleage D|
 |:--:|:--:|:--:|:--:|:--:|
 |<img width="70" alt="스크린샷 2024-12-15 오후 9 32 55" src="https://github.com/user-attachments/assets/53412e41-381c-46ea-a180-89db7058cdd3" />|<img width="70" src="https://github.com/user-attachments/assets/d6aa968e-27a0-4a73-b4cb-00755c6d677d" />|<img width="70" alt="스크린샷 2024-12-15 오후 9 33 02" src="https://github.com/user-attachments/assets/97d0b5cc-e825-46a2-9930-2853a6fe826d" />|<img width="70" alt="스크린샷 2024-12-15 오후 9 33 10" src="https://github.com/user-attachments/assets/68bbd1a4-4447-4ab8-a1e0-6121d6aa556c" />|<img width="70" alt="스크린샷 2024-12-15 오후 9 33 22" src="https://github.com/user-attachments/assets/720a1289-9998-47fd-9ea3-aed9f52f45c1" />|
 |교환 기능 개발<br>반품 기능 개발|프론트엔드 개발|시스템 권한 분리<br>주문 기능 개발<br>프로젝트 배포|발주 기능 개발<br>재고, 거래처 기능 개발|회원, 가맹점 기능 개발<br>통계, 상품, 배송 개발|
