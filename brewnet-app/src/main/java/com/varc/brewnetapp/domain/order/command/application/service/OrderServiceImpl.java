@@ -401,6 +401,8 @@ public class OrderServiceImpl implements OrderService {
                         orderItem.getQuantity()
                 )
         );
+
+        sseService.sendToFranchise(memberCode, "OrderApprovedEvent", memberCode + "번 주문 요청이 승인되었습니다.");
         return true;
     }
 

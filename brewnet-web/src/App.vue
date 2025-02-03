@@ -101,6 +101,7 @@ function subscribeSSE(token) {
     eventSource.addEventListener('ExchangeRejectionEvent', handleSSE); // 교환 거절됨 (가맹점 모든 회원에게 알림)
     eventSource.addEventListener('ExchangeApprovedEvent', handleSSE); // 교환 최종완료 (가맹점 모든 회원에게 알림)
 
+    eventSource.addEventListener('OrderApprovedEvent', handleSSE); // 주문승인 (가맹점 모든 회원에게 알림)
     eventSource.addEventListener('OrderRejectionEvent', handleSSE); // 주문반려 (가맹점 모든 회원에게 알림)
     eventSource.addEventListener('Order Delivery Completed', handleSSE); // 주문 배송 완료
   }
