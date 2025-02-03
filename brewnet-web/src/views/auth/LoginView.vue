@@ -25,6 +25,12 @@
     </div>
 
     <Button label="로그인" type="submit" />
+
+    <!-- 테스트를 위한 버튼 추가 -->
+    <Button label="본사 관리자로 둘러보기" @click="loginAs('hqgeneral')" />
+    <Button label="본사 책임관리자로 둘러보기" @click="loginAs('hqresponsible')" />
+    <Button label="가맹점으로 둘러보기" @click="loginAs('franchise')" />
+    <Button label="배송기사로 둘러보기" @click="loginAs('delivery')" />
   </form>
 </template>
 
@@ -119,6 +125,25 @@ const login = async () => {
     // 실패한 경우 데이터 clear
     userStore.clearUserData();
   }
+};
+
+// 로그인 버튼 클릭 시, 각 사용자 아이디 및 비밀번호 설정
+const loginAs = userId => {
+  if (userId === 'hqgeneral') {
+    id.value = 'generaltest';
+    password.value = 'pw';
+  } else if (userId === 'hqresponsible') {
+    id.value = 'responsibletest';
+    password.value = 'pw';
+  } else if (userId === 'franchise') {
+    id.value = 'franchisetest';
+    password.value = 'pw';
+  } else if (userId === 'delivery') {
+    id.value = 'deliverytest';
+    password.value = 'pw';
+  }
+
+  login();  // 로그인 함수 호출
 };
 
 onMounted(() => {
