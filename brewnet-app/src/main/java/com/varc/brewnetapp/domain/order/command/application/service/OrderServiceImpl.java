@@ -88,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
             OrderRequestDTO orderRequestDTO, String loginId
     ) {
         int requestFranchiseCode = memberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
+        int orderRequestedMember = memberService.getMemberByLoginId(loginId).getMemberCode();
         List<OrderItemDTO> requestedOrderItemDTOList = orderRequestDTO.getOrderList();
         int orderedCode = orderRepository.save(
                 Order.builder()
@@ -102,22 +103,21 @@ public class OrderServiceImpl implements OrderService {
 
         // 주문별 품목 추가
         addItemsPerOrder(orderedCode, requestedOrderItemDTOList);
-
+        Order createdOrder = Order.builder()
+                .orderCode(orderedCode)
+                .createdAt(LocalDateTime.now())
+                .active(true)
+                .drafterApproved(DrafterApproved.NONE)
+                .approvalStatus(OrderApprovalStatus.UNCONFIRMED)
+                .sumPrice(getOrderTotalSum(requestedOrderItemDTOList))
+                .franchiseCode(requestFranchiseCode)
+                .build();
         // 주문 총 합계 update
-        orderRepository.save(
-                Order.builder()
-                        .orderCode(orderedCode)
-                        .createdAt(LocalDateTime.now())
-                        .active(true)
-                        .drafterApproved(DrafterApproved.NONE)
-                        .approvalStatus(OrderApprovalStatus.UNCONFIRMED)
-                        .sumPrice(getOrderTotalSum(requestedOrderItemDTOList))
-                        .franchiseCode(requestFranchiseCode)
-                        .build()
-        );
+        orderRepository.save(createdOrder);
 
         // 주문 내역 수정
         recordOrderStatusHistory(orderedCode, OrderHistoryStatus.REQUESTED);
+        sseService.sendToHq(orderRequestedMember, "OrderRequestEvent", createdOrder.getOrderCode() + " 번 주문이 요청이 도착했습니다.");
 
         return new OrderRequestResponseDTO(orderedCode);
     }

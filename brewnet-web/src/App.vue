@@ -90,6 +90,7 @@ function subscribeSSE(token) {
     eventSource.addEventListener('ReturnApprovalReqEvent', handleSSE); // 반품 결재요청 (결재자에게 알림)
     eventSource.addEventListener('ExchangeApprovalReqEvent', handleSSE); // 교환 결재요청 (결재자에게 알림)
     eventSource.addEventListener('OrderApprovalReqEvent', handleSSE); // 주문결재요청 (본사 결재자에게 알림)
+    eventSource.addEventListener('OrderRequestEvent', handleSSE); // 주문요청 (본사 직원들에게 알림)
   }
 
   // 프랜차이즈 구독
