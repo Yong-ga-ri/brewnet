@@ -178,7 +178,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
                     stockRepository.save(stock);
                 }
-
+                sseService.sendToFranchiseBelongTo(member.getMemberCode(), order.getFranchiseCode(), "OrderDeliveryDeparted", order.getOrderCode() + "번 주문 배송을 시작합니다.");
             }
             else 
                 throw new InvalidDataException("잘못된 상태값을 입력하셨습니다");

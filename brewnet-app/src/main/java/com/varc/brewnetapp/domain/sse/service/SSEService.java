@@ -143,6 +143,42 @@ public class SSEService {
 
     }
 
+    /** 특정 가맹점 유저들에게 알림 발송하는 method */
+    public void sendToFranchiseBelongTo(Integer senderMemberCode, Integer franchiseCode, String eventName, String data) {
+        List<FranchiseMember> franchiseMemberList = franchiseMemberRepository.findByFranchiseCodeAndActiveTrue(franchiseCode);
+
+        if(data == null)
+            data = senderMemberCode + "번 회원이 가맹점 회원들에게 " + eventName + "알람을 발송하였습니다";
+
+        RedisAlarmDTO redisAlarmDTO = new RedisAlarmDTO(data, eventName, senderMemberCode);
+
+        for (FranchiseMember franchiseMember : franchiseMemberList) {
+            if(senderMemberCode == franchiseMember.getMemberCode())
+                continue;
+
+            SseEmitter sseEmitter = sseRepository.findById(franchiseMember.getMemberCode());
+
+            if (sseEmitter == null) {
+                // SSE 연결이 없으므로 알람을 Redis에 저장
+                failedAlarmRepository.saveFailedAlarm(franchiseMember.getMemberCode(), redisAlarmDTO);
+                continue;
+            }
+
+            try {
+                sseEmitter.send(
+                        SseEmitter.event()
+                                .id(franchiseMember.getMemberCode().toString())
+                                .name(eventName)
+                                .data(data)
+                );
+            } catch (IOException ex) {
+                failedAlarmRepository.saveFailedAlarm(franchiseMember.getMemberCode(), redisAlarmDTO);
+                sseRepository.deleteById(franchiseMember.getMemberCode());
+            }
+        }
+
+    }
+
     /** 본사 유저들에게 알림 발송하는 method */
     public void sendToHq(Integer senderMemberCode, String eventName, String data) {
 
