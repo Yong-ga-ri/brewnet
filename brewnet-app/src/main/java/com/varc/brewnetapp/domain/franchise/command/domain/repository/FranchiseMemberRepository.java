@@ -13,4 +13,6 @@ public interface FranchiseMemberRepository extends JpaRepository<FranchiseMember
 
     Optional<List<FranchiseMember>> findByFranchiseCode(int franchiseCode);
 
+    List<FranchiseMember> findByFranchiseCodeAndActiveTrue(int franchiseCode);
+
 }
