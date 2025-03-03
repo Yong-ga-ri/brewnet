@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.order.query.controller;
 
 import com.varc.brewnetapp.shared.ResponseMessage;
-import com.varc.brewnetapp.shared.SearchCriteria;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.member.query.service.MemberServiceImpl;
 import com.varc.brewnetapp.domain.order.query.dto.FranchiseOrderDTO;

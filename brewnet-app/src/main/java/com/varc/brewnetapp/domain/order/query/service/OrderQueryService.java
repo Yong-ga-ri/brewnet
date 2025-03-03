@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.order.query.service;
 
-import com.varc.brewnetapp.shared.SearchCriteria;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.order.query.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

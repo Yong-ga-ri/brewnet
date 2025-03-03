@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.shared;
+package com.varc.brewnetapp.shared.utility.search;
 
 
 public enum SearchCriteria {

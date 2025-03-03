@@ -2,7 +2,7 @@ package com.varc.brewnetapp.domain.order.query.controller;
 
 import com.varc.brewnetapp.shared.ResponseMessage;
 
-import com.varc.brewnetapp.shared.SearchCriteria;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.order.query.dto.*;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
 import io.swagger.v3.oas.annotations.Operation;
