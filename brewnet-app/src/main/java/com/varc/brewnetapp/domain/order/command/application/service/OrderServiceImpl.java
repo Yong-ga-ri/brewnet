@@ -85,10 +85,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderRequestResponseDTO orderRequestByFranchise(
-            OrderRequestDTO orderRequestDTO, String loginId
+            OrderRequestDTO orderRequestDTO, int requestFranchiseCode, int orderRequestedMember
+
     ) {
-        int requestFranchiseCode = memberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
-        int orderRequestedMember = memberService.getMemberByLoginId(loginId).getMemberCode();
         List<OrderItemDTO> requestedOrderItemDTOList = orderRequestDTO.getOrderList();
         int orderedCode = orderRepository.save(
                 Order.builder()

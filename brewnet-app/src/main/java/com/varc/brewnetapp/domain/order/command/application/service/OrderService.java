@@ -15,7 +15,8 @@ public interface OrderService {
     // 가맹점의 주문요청
     OrderRequestResponseDTO orderRequestByFranchise(
             OrderRequestDTO orderRequestRequestDTO,
-            String loginId
+            int requestFranchiseCode,
+            int orderRequestedMember
     );
 
     void addItemsPerOrder(int orderCode,
