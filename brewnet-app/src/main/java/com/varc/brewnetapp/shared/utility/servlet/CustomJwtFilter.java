@@ -4,10 +4,12 @@ import com.varc.brewnetapp.security.utility.JwtUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class CustomJwtFilter implements Filter {
     private final JwtUtil jwtUtil;
 
