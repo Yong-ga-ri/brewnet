@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.domain.healthcheck;
+package com.varc.brewnetapp.integration.domain.healthcheck;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
