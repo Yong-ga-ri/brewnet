@@ -70,12 +70,18 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
         String loginId = authentication.getPrincipal().toString();
         String loginPassword = authentication.getCredentials().toString();
 
-        UserDetails savedUser = authService.loadUserByUsername((authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName());
+        UserDetails savedUser = authService.loadUserByUsername(
+                (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName()
+        );
 
         if (!bCryptPasswordEncoder.matches(loginPassword, savedUser.getPassword())) {
             throw new BadCredentialsException("Bad credentials");
         } else {
-            Authentication authenticationResult = new UsernamePasswordAuthenticationToken(savedUser, savedUser.getPassword(), savedUser.getAuthorities());
+            Authentication authenticationResult = new UsernamePasswordAuthenticationToken(
+                    savedUser,
+                    savedUser.getPassword(),
+                    savedUser.getAuthorities()
+            );
 
             String refreshToken = jwtUtil.generateRefreshToken(authenticationResult);
             String accessToken = jwtUtil.generateAccessToken(authenticationResult);

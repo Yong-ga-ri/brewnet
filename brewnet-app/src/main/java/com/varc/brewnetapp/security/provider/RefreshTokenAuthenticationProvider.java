@@ -65,14 +65,16 @@ public class RefreshTokenAuthenticationProvider implements AuthenticationProvide
             if (jwtUtil.isTokenValid(token)) {
                 try {
                     UserDetails savedUser = authService.loadUserByUsername(loginId);
-                    Authentication authResult =  new UsernamePasswordAuthenticationToken(savedUser, savedUser.getPassword(), savedUser.getAuthorities());
+                    Authentication authResult =  new UsernamePasswordAuthenticationToken(
+                            savedUser,
+                            savedUser.getPassword(),
+                            savedUser.getAuthorities()
+                    );
                     String accessToken = jwtUtil.generateAccessToken(authResult);
                     response.setHeader("Authorization", "Bearer " + accessToken);
-
                 } catch (Exception e) {
                     throw new IllegalArgumentException("user not found", e);
                 }
-
                 return jwtUtil.getAuthentication(token);
             } else {
                 throw new IllegalArgumentException("invalid token");
