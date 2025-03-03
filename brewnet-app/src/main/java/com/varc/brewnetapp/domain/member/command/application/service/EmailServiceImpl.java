@@ -4,8 +4,8 @@ import com.varc.brewnetapp.domain.member.command.application.dto.ConfirmEmailReq
 import com.varc.brewnetapp.domain.member.command.application.dto.SendEmailRequestDTO;
 import com.varc.brewnetapp.domain.auth.command.application.service.RedisService;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
-import com.varc.brewnetapp.exception.InvalidEmailCodeException;
-import com.varc.brewnetapp.exception.InvalidEmailException;
+import com.varc.brewnetapp.shared.exception.InvalidEmailCodeException;
+import com.varc.brewnetapp.shared.exception.InvalidEmailException;
 import io.lettuce.core.RedisException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

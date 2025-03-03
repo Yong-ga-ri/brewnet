@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.varc.brewnetapp.exception.S3Exception;
+import com.varc.brewnetapp.shared.exception.S3Exception;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

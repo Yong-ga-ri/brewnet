@@ -1,9 +1,8 @@
 package com.varc.brewnetapp.domain.notice.query.service;
 
-import com.varc.brewnetapp.domain.member.query.dto.MemberDTO;
 import com.varc.brewnetapp.domain.notice.query.dto.NoticeDTO;
 import com.varc.brewnetapp.domain.notice.query.mapper.NoticeMapper;
-import com.varc.brewnetapp.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

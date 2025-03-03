@@ -15,10 +15,10 @@ import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseR
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.PositionRepository;
-import com.varc.brewnetapp.exception.DuplicateException;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.DuplicateException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import com.varc.brewnetapp.security.service.RefreshTokenService;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.time.LocalDateTime;

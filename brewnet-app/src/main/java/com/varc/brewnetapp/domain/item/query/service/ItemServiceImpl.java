@@ -4,7 +4,7 @@ import com.varc.brewnetapp.domain.item.query.dto.ItemDTO;
 import com.varc.brewnetapp.domain.item.query.dto.MustBuyItemDTO;
 import com.varc.brewnetapp.domain.item.query.mapper.ItemMapper;
 import com.varc.brewnetapp.domain.item.query.mapper.MandatoryPurchaseMapper;
-import com.varc.brewnetapp.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
 
 import java.time.LocalDateTime;
 import java.util.List;

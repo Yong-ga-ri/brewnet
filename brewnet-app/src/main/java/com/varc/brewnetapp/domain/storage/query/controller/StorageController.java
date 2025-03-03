@@ -7,7 +7,7 @@ import com.varc.brewnetapp.domain.storage.query.dto.StorageDTO;
 import com.varc.brewnetapp.domain.storage.query.dto.StorageDetailDTO;
 import com.varc.brewnetapp.domain.storage.query.dto.StorageNameDTO;
 import com.varc.brewnetapp.domain.storage.query.service.StorageService;
-import com.varc.brewnetapp.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

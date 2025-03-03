@@ -5,7 +5,7 @@ import com.varc.brewnetapp.domain.document.query.dto.ApproverMemberDTO;
 import com.varc.brewnetapp.domain.document.query.mapper.DocumentMapper;
 import com.varc.brewnetapp.domain.document.query.dto.ApprovalDTO;
 import com.varc.brewnetapp.domain.purchase.common.KindOfApproval;
-import com.varc.brewnetapp.exception.ApprovalNotFoundException;
+import com.varc.brewnetapp.shared.exception.ApprovalNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

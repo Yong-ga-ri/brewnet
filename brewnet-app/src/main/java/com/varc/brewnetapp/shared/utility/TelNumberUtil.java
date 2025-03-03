@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.shared.utility;
 
-import com.varc.brewnetapp.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
 
 public class TelNumberUtil {
     public static String formatTelNumber(String tel) {

@@ -10,8 +10,8 @@ import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.NoticeI
 import com.varc.brewnetapp.domain.notice.command.domain.repository.NoticeImageRepository;
 import com.varc.brewnetapp.domain.notice.command.domain.repository.NoticeRepositiory;
 import com.varc.brewnetapp.domain.sse.service.SSEService;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.List;

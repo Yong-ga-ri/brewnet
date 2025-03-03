@@ -7,7 +7,7 @@ import com.varc.brewnetapp.domain.member.command.domain.repository.MemberReposit
 import com.varc.brewnetapp.domain.sse.dto.RedisAlarmDTO;
 import com.varc.brewnetapp.domain.sse.repository.FailedAlarmRepository;
 import com.varc.brewnetapp.domain.sse.repository.SSERepository;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.io.IOException;
 import java.util.List;

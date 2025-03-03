@@ -4,7 +4,7 @@ import com.varc.brewnetapp.domain.item.query.dto.CategoryDTO;
 import com.varc.brewnetapp.domain.item.query.dto.SubCategoryDTO;
 import com.varc.brewnetapp.domain.item.query.dto.SuperCategoryDTO;
 import com.varc.brewnetapp.domain.item.query.mapper.CategoryMapper;
-import com.varc.brewnetapp.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
