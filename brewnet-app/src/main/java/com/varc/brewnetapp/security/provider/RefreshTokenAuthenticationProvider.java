@@ -16,20 +16,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class RefreshTokenAuthenticationProvider implements AuthenticationProvider {
-    private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
     private final HttpServletResponse response;
 
     public RefreshTokenAuthenticationProvider(
-            JwtUtil jwtUtil,
             RefreshTokenService refreshTokenService,
             AuthService authService,
+            JwtUtil jwtUtil,
             HttpServletResponse response
-            ) {
-        this.jwtUtil = jwtUtil;
+    ) {
         this.refreshTokenService = refreshTokenService;
         this.authService = authService;
+        this.jwtUtil = jwtUtil;
         this.response = response;
     }
 

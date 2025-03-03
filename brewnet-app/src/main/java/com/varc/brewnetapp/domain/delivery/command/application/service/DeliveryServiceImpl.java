@@ -40,7 +40,7 @@ import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.OrderIte
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderItemRepository;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity.ReturningItem;
 import com.varc.brewnetapp.domain.returning.command.domain.repository.ReturningItemRepository;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Stock;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StockRepository;
 import com.varc.brewnetapp.shared.exception.DuplicateException;

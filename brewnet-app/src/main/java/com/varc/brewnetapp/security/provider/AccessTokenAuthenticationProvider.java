@@ -22,11 +22,11 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = authentication.getCredentials().toString();
-        log.debug("AccessTokenAuthenticationProvider called");
         if (jwtUtil.isTokenValid(token)) {
             return jwtUtil.getAuthentication(token);
+        } else {
+            throw new IllegalArgumentException("invalid token");
         }
-        throw new IllegalArgumentException("invalid token");
     }
 
     @Override

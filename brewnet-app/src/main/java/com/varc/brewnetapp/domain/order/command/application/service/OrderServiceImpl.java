@@ -25,7 +25,7 @@ import com.varc.brewnetapp.domain.order.command.domain.repository.OrderRepositor
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderStatusHistoryRepository;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
 import com.varc.brewnetapp.domain.order.command.domain.service.OrderValidateService;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.application.service.StorageService;
 import com.varc.brewnetapp.shared.exception.*;
 import lombok.extern.slf4j.Slf4j;
@@ -184,17 +184,7 @@ public class OrderServiceImpl implements OrderService {
         int targetManagerMemberCode = orderApproveRequestDTO.getSuperManagerMemberCode();
 
         Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
-//        List<OrderItem> orderItemList = getOrderItemsByOrderCode(order.getOrderCode());
         List<OrderApprover> orderApprover = orderApprovalRepository.findByOrderApprovalCode_OrderCode(order.getOrderCode());
-
-        Integer presentOrderDrafterMemberCode = order.getMemberCode();
-        log.debug("order.getMemberCode() - 기존 기안자: {}", presentOrderDrafterMemberCode);
-
-        OrderApprovalStatus presentOrderStatus = order.getApprovalStatus();
-        log.debug("order.getApprovalStatus() - 기존 주문 결재 상태: {}", presentOrderStatus);
-
-        DrafterApproved presentDraftedApprovedStatus = order.getDrafterApproved();
-        log.debug("order.getDrafterApproved() - 기존 기안자의 승인 상태: {}", presentDraftedApprovedStatus);
 
         // TODO: 일반 관리자의 상신
         //  - 상신된 주문 결재 요청이 있는지 확인 (validate)              [DONE]
@@ -211,16 +201,13 @@ public class OrderServiceImpl implements OrderService {
         //    - 해당 order_item의 available -> UNAVAILABLE         [DONE]
 
         if (order.getMemberCode() != null) {
-            log.debug("orderApprover: {}", orderApprover);
             if (orderApprover.isEmpty()) {
                 if (memberCode != order.getMemberCode()) {
 
                     // TODO: 앞서 결재가 취소된 경우                            [DONE]
                     //  상신 요청자가 취소한 사람(tbl_order.memberCode)인지 확인   [DONE]
-                    log.debug("memberCode != order.getMemberCode()");
                     throw new UnauthorizedAccessException("재결재에 대한 권한이 없습니다.");
                 }
-                log.debug("memberCode == order.getMemberCode()");
             } else {
                 throw new OrderApprovalAlreadyExist(
                         "order approval already exist. " +
@@ -350,15 +337,12 @@ public class OrderServiceImpl implements OrderService {
                         .orderCode(orderCode)
                         .build()
         ).orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
-        log.info("책임 관리자의 승인 전 tbl_order_approver.approved: {}", orderApprover.getApprovalStatus());
 
         if (orderApprover.getApprovalStatus().equals(ApprovalStatus.APPROVED)) {
             throw new OrderDraftAlreadyApproved("order draft already approved. orderCode: " + orderCode + ", approvedManagerMemberCode: " + memberCode);
         }
 
         Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
-        log.info("책임 관리자의 승인 전 tbl_order.approval_status: {}", order.getApprovalStatus());
-        log.info("책임 관리자의 승인 전 tbl_order.drafter_approved: {}", order.getDrafterApproved());
 
         String requestedComment = orderRequestApproveDTO.getComment();
 

@@ -19,7 +19,7 @@ import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Fran
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Stock;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StockRepository;
 import com.varc.brewnetapp.shared.exception.*;
@@ -569,7 +569,6 @@ public class ExchangeServiceImpl implements ExchangeService {
         if (member == null) {
             throw new MemberNotFoundException("교환 결재취소가 불가합니다. 아직 기안자가 없는 교환요청입니다.");
         } else if (!member.getId().equals(loginId)) {
-            log.info("*** 0. member.getId:{}   loginId:{}", member.getId(), loginId);
             throw new IllegalArgumentException("교환 결재취소가 불가합니다. 기안자만 결재취소요청을 할 수 있습니다.");
         } else if (exchange.getDrafterApproved() != DrafterApproved.APPROVE) {
             throw new IllegalArgumentException("교환 결재취소가 불가합니다. 기안자의 교환 승인 여부가 '승인'인 경우에만 결재취소가 가능합니다.");

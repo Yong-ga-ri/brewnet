@@ -25,8 +25,6 @@ public class RefreshTokenService {
     public void saveRefreshToken(String loginId, String refreshToken) {
         long expirationTime = Long.parseLong(Objects.requireNonNull(environment.getProperty("token.refresh.expiration_time")));
         redisTemplate.opsForValue().set(loginId, refreshToken, expirationTime, TimeUnit.MILLISECONDS);
-        log.debug("refresh token expires in {} seconds", expirationTime);
-        log.debug("refresh token saved");
     }
 
     public String getRefreshToken(String loginId) {

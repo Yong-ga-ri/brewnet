@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
@@ -30,10 +31,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        log.debug("loadUserByUsername");
-        log.info("loginId: {}", loginId);
+        if (Objects.equals(loginId, "NONE_PROVIDED")) {
+            throw new UsernameNotFoundException(loginId);
+        }
+
         MemberVO loginMember = authenticationMapper.selectMemberByIdWithAuthorities(loginId);
-        log.debug("loginMember: {}", loginMember);
 
         if (loginMember == null) {
             throw new UsernameNotFoundException(loginId);

@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.domain.sse.repository;
+package com.varc.brewnetapp.shared.sse.repository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

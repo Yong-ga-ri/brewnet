@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private final MemberRepository memberRepository;
 
     @Value("${mail.username}")
-    private static String senderEmail;
+    private String senderEmail;
 
     @Autowired
     public EmailServiceImpl(JavaMailSender javaMailSender, RedisService redisService, MemberRepository memberRepository) {

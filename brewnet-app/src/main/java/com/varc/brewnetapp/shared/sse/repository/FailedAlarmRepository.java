@@ -1,6 +1,6 @@
-package com.varc.brewnetapp.domain.sse.repository;
+package com.varc.brewnetapp.shared.sse.repository;
 
-import com.varc.brewnetapp.domain.sse.dto.RedisAlarmDTO;
+import com.varc.brewnetapp.shared.sse.dto.RedisAlarmDTO;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

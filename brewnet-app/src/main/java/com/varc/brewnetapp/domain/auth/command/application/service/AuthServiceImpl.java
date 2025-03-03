@@ -157,8 +157,6 @@ public class AuthServiceImpl implements AuthService {
 
             Role role = roleRepository.findByRole(grantAuthRequestDTO.getAuthName()).orElse(null);
 
-            log.info("" + role);
-
             List<MemberRole> existMemberRole = memberRoleRepository.findByMemberCode(member.getMemberCode()).orElse(null);
 
             if(role == null) {

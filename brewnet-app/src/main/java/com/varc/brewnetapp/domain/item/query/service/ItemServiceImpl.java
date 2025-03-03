@@ -88,7 +88,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public List<MustBuyItemDTO> getMustBuyItemsForFranchise() {
-        log.debug("getMustBuyItemsForFranchise called");
         return mandatoryPurchaseMapper.getMandatoryPurchaseListForFranchise(LocalDateTime.now());
     }
 

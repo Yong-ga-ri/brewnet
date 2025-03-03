@@ -23,7 +23,7 @@ import com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo.Returnin
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo.ReturningReqItemVO;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo.ReturningReqVO;
 import com.varc.brewnetapp.domain.returning.command.domain.repository.*;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Stock;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StockRepository;
 import com.varc.brewnetapp.shared.exception.InvalidStatusException;
@@ -419,7 +419,6 @@ public class ReturningServiceImpl implements ReturningService {
         if (member == null) {
             throw new MemberNotFoundException("반품 결재취소가 불가합니다. 아직 기안자가 없는 반품요청입니다.");
         } else if (!member.getId().equals(loginId)) {
-            log.info("*** 0. member.getId:{}   loginId:{}", member.getId(), loginId);
             throw new IllegalArgumentException("반품 결재취소가 불가합니다. 기안자만 결재취소요청을 할 수 있습니다.");
         } else if (returning.getDrafterApproved() != DrafterApproved.APPROVE) {
             throw new IllegalArgumentException("반품 결재취소가 불가합니다. 기안자의 반품 승인 여부가 '승인'인 경우에만 결재취소가 가능합니다.");

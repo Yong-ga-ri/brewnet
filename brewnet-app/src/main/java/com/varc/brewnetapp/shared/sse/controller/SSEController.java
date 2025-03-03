@@ -1,6 +1,6 @@
-package com.varc.brewnetapp.domain.sse.controller;
+package com.varc.brewnetapp.shared.sse.controller;
 
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
