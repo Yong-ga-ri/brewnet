@@ -2,7 +2,7 @@ package com.varc.brewnetapp.domain.member.command.application.service;
 
 import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import com.varc.brewnetapp.domain.member.command.application.dto.CreateCompanyRequestDTO;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Company;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Seal;

@@ -7,7 +7,7 @@ import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Fran
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseRepository;
 import com.varc.brewnetapp.exception.EmptyDataException;
 import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import org.modelmapper.ModelMapper;

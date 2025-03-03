@@ -19,7 +19,7 @@ import com.varc.brewnetapp.exception.InvalidDataException;
 import com.varc.brewnetapp.exception.InvalidItemException;
 import com.varc.brewnetapp.exception.MandatoryPurchaseNotFound;
 import com.varc.brewnetapp.exception.MustBuyItemAlreadySet;
-import com.varc.brewnetapp.utility.time.Formatter;
+import com.varc.brewnetapp.shared.utility.time.Formatter;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;

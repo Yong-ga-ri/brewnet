@@ -4,7 +4,7 @@ import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckNumDTO;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Position;
 import com.varc.brewnetapp.exception.EmptyDataException;
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Franchise;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;

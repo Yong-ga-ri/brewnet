@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.utility.servlet;
+package com.varc.brewnetapp.shared.utility.servlet;
 
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import jakarta.servlet.*;

@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.utility.time;
+package com.varc.brewnetapp.shared.utility.time;
 
 
 import java.time.LocalDateTime;

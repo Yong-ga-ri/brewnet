@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.utility;
+package com.varc.brewnetapp.shared.utility;
 
 import com.varc.brewnetapp.exception.InvalidDataException;
 
