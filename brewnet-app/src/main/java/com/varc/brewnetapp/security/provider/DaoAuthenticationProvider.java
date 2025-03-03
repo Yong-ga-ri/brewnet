@@ -5,6 +5,7 @@ import com.varc.brewnetapp.security.service.RefreshTokenService;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,21 +19,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoAuthenticationProvider implements AuthenticationProvider {
     private final AuthService authService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RefreshTokenService refreshTokenService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
     private final HttpServletResponse response;
 
+    @Autowired
     public DaoAuthenticationProvider(
             AuthService authService,
-            BCryptPasswordEncoder bCryptPasswordEncoder,
             RefreshTokenService refreshTokenService,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
             JwtUtil jwtUtil,
             HttpServletResponse response
     ) {
         this.authService = authService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.refreshTokenService = refreshTokenService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtUtil = jwtUtil;
         this.response = response;
     }

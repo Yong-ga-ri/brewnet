@@ -16,9 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class JwtAccessTokenFilter extends OncePerRequestFilter {
     private final ProviderManager providerManager;
 
+    @Autowired
     public JwtAccessTokenFilter(ProviderManager providerManager) {
         this.providerManager = providerManager;
     }
@@ -30,19 +32,14 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        log.debug("JwtAccessTokenFilter called");
-        // 헤더가 있는지 확인
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             Authentication authentication = providerManager.authenticate(
                     new JwtAuthenticationAccessToken(authorizationHeader.replace("Bearer ", ""))
             );
-            // 인증 성공 시 SecurityContext에 설정
             if (authentication != null && authentication.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        log.debug("access token 필터 끝");
         filterChain.doFilter(request, response);
-
     }
 }

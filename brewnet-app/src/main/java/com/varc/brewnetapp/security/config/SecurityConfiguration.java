@@ -1,10 +1,8 @@
 package com.varc.brewnetapp.security.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.varc.brewnetapp.security.filter.DaoAuthenticationFilter;
 import com.varc.brewnetapp.security.filter.JwtAccessTokenFilter;
 import com.varc.brewnetapp.security.filter.JwtRefreshTokenFilter;
-import com.varc.brewnetapp.security.provider.ProviderManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,22 +19,26 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private final ObjectMapper objectMapper;
-    private final ProviderManager providerManager;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
+    private final JwtAccessTokenFilter jwtAccessTokenFilter;
+    private final JwtRefreshTokenFilter jwtRefreshTokenFilter;
+    private final DaoAuthenticationFilter daoAuthenticationFilter;
+
 
     @Autowired
     public SecurityConfiguration(
-            ObjectMapper objectMapper,
-            ProviderManager providerManager,
             AuthenticationEntryPoint authenticationEntryPoint,
-            AccessDeniedHandler accessDeniedHandler
+            AccessDeniedHandler accessDeniedHandler,
+            JwtAccessTokenFilter jwtAccessTokenFilter,
+            JwtRefreshTokenFilter jwtRefreshTokenFilter,
+            DaoAuthenticationFilter daoAuthenticationFilter
     ) {
-        this.objectMapper = objectMapper;
-        this.providerManager = providerManager;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
+        this.jwtAccessTokenFilter = jwtAccessTokenFilter;
+        this.jwtRefreshTokenFilter = jwtRefreshTokenFilter;
+        this.daoAuthenticationFilter = daoAuthenticationFilter;
     }
 
     @Bean
@@ -84,9 +86,9 @@ public class SecurityConfiguration {
                         .accessDeniedHandler(accessDeniedHandler)           // 403 FORBIDDEN
                 )
 
-                .addFilterBefore(new JwtAccessTokenFilter(providerManager), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtRefreshTokenFilter(providerManager, objectMapper), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new DaoAuthenticationFilter(providerManager, objectMapper));
+                .addFilterBefore(jwtAccessTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtRefreshTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilter(daoAuthenticationFilter);
 
         return http.build();
     }
