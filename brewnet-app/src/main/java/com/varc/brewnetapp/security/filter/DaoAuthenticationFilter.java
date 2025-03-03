@@ -66,13 +66,17 @@ public class DaoAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     ) throws AuthenticationException {
         try {
             LoginRequestVO loginRequestVO = objectMapper.readValue(request.getInputStream(), LoginRequestVO.class);
-            return providerManager.authenticate(
+
+            UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
-                            loginRequestVO.getLoginId(), loginRequestVO.getPassword(), new ArrayList<>()
-                    )
-            );
+                            loginRequestVO.getLoginId(),
+                            loginRequestVO.getPassword(),
+                            new ArrayList<>()
+                    );
+            return providerManager.authenticate(authToken);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            log.error("로그인 요청 파싱 실패", e);
+            throw new IllegalArgumentException("로그인 요청 파싱 실패", e);
         }
     }
 
@@ -92,16 +96,25 @@ public class DaoAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain chain,
             Authentication authResult
     ) throws IOException {
-        final ResponseMessage<String> responseMessage = new ResponseMessage<>(
+        ResponseMessage<String> responseMessage = new ResponseMessage<>(
                 HttpServletResponse.SC_OK,
                 "login successful",
                 null
         );
+        writeJsonResponse(response, responseMessage);
+    }
 
+    /**
+     * 응답 객체에 JSON 형태의 메시지를 작성합니다.
+     *
+     * @param response        HttpServletResponse
+     * @param responseMessage 응답에 사용할 메시지 객체
+     * @throws IOException JSON 작성 중 발생하는 예외
+     */
+    private void writeJsonResponse(HttpServletResponse response, ResponseMessage<String> responseMessage) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
         final String jsonResponse = objectMapper.writeValueAsString(responseMessage);
         response.getWriter().write(jsonResponse);
     }

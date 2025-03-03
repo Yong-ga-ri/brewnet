@@ -63,30 +63,37 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         if (refreshTokenRequestMatcher.matches(request)) {
-            String authenticationHeader = request.getHeader("Refresh-Token");
+            String refreshToken = request.getHeader("Refresh-Token");
 
-            if (authenticationHeader != null) {
-                providerManager.authenticate(
-                        new JwtAuthenticationRefreshToken(authenticationHeader)
-                );
-
-                final ResponseMessage<String> responseMessage = new ResponseMessage<>(
+            if (refreshToken != null && !refreshToken.isEmpty()) {
+                providerManager.authenticate(new JwtAuthenticationRefreshToken(refreshToken));
+                ResponseMessage<String> responseMessage = new ResponseMessage<>(
                         HttpServletResponse.SC_OK,
                         "access token refreshed successfully",
                         null
                 );
-
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-
-                final String jsonResponse = objectMapper.writeValueAsString(responseMessage);
-                response.getWriter().write(jsonResponse);
-
+                writeJsonResponse(response, responseMessage);
                 return;
+            } else {
+                log.warn("리프레시 토큰 헤더가 존재하지 않습니다.");
             }
         }
         filterChain.doFilter(request, response);
 
+    }
+
+    /**
+     * 응답 객체에 JSON 형태의 메시지를 작성합니다.
+     *
+     * @param response        HttpServletResponse
+     * @param responseMessage 응답에 사용할 메시지 객체
+     * @throws IOException JSON 작성 중 발생하는 예외
+     */
+    private void writeJsonResponse(HttpServletResponse response, ResponseMessage<String> responseMessage) throws IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        final String jsonResponse = objectMapper.writeValueAsString(responseMessage);
+        response.getWriter().write(jsonResponse);
     }
 }

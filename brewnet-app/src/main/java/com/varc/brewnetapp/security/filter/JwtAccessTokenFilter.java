@@ -54,9 +54,8 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            Authentication authentication = providerManager.authenticate(
-                    new JwtAuthenticationAccessToken(authorizationHeader.replace("Bearer ", ""))
-            );
+            String token = authorizationHeader.substring("Bearer ".length());
+            Authentication authentication = providerManager.authenticate(new JwtAuthenticationAccessToken(token));
             if (authentication != null && authentication.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
