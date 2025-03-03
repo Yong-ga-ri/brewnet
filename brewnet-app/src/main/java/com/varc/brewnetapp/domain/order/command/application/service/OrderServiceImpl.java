@@ -86,7 +86,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderRequestResponseDTO orderRequestByFranchise(
             OrderRequestDTO orderRequestDTO, int requestFranchiseCode, int orderRequestedMember
-
     ) {
         List<OrderItemDTO> requestedOrderItemDTOList = orderRequestDTO.getOrderList();
         int orderedCode = orderRepository.save(
