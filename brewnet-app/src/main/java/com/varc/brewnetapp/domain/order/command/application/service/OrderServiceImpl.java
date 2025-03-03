@@ -24,7 +24,7 @@ import com.varc.brewnetapp.domain.order.command.domain.repository.OrderItemRepos
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderRepository;
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderStatusHistoryRepository;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
-import com.varc.brewnetapp.domain.order.query.service.OrderValidateService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderValidateService;
 import com.varc.brewnetapp.domain.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.application.service.StorageService;
 import com.varc.brewnetapp.shared.exception.*;

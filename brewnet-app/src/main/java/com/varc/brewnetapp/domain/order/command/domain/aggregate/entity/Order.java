@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Entity(name = "tbl_order")
+@Entity
+@Table(name = "tbl_order")
 @ToString
 public class Order {
     @Id
