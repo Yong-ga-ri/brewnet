@@ -1,18 +1,16 @@
 package com.varc.brewnetapp.domain.delivery.command.application.service;
 
 
-import com.varc.brewnetapp.common.domain.order.Available;
+import com.varc.brewnetapp.shared.domain.order.Available;
 import com.varc.brewnetapp.domain.delivery.command.application.dto.CreateDeliveryStatusRequestDTO;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.DeliveryKind;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.DeliveryStatus;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelExStock;
-import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelExStock.ConfirmationStatus;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelExStockItem;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelReStock;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelReStock.StockStatus;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelReStockItem;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelRefund;
-import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelRefund.RefundStatus;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DelRefundItem;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DeliveryExchange;
 import com.varc.brewnetapp.domain.delivery.command.domain.aggregate.entity.DeliveryExchangeStatusHistory;
@@ -35,14 +33,11 @@ import com.varc.brewnetapp.domain.delivery.command.domain.repository.DeliveryOrd
 import com.varc.brewnetapp.domain.delivery.command.domain.repository.DeliveryReturnRepository;
 import com.varc.brewnetapp.domain.delivery.command.domain.repository.DeliveryReturnStatusHistoryRepository;
 import com.varc.brewnetapp.domain.exchange.command.application.repository.ExchangeItemRepository;
-import com.varc.brewnetapp.domain.exchange.command.application.repository.ExchangeRepository;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.entity.ExchangeItem;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
-import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.Order;
 import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.OrderItem;
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderItemRepository;
-import com.varc.brewnetapp.domain.order.command.domain.repository.OrderRepository;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity.ReturningItem;
 import com.varc.brewnetapp.domain.returning.command.domain.repository.ReturningItemRepository;
 import com.varc.brewnetapp.domain.sse.service.SSEService;

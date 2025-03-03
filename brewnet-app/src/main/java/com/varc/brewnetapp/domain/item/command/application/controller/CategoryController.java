@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.item.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.item.command.application.dto.CreateCategoryRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.dto.DeleteSubCategoryRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.dto.DeleteSuperCategoryRequestDTO;
@@ -8,7 +8,6 @@ import com.varc.brewnetapp.domain.item.command.application.dto.UpdateSubCategory
 import com.varc.brewnetapp.domain.item.command.application.dto.UpdateSuperCategoryRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

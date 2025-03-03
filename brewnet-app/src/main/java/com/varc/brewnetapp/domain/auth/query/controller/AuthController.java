@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.auth.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.auth.query.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

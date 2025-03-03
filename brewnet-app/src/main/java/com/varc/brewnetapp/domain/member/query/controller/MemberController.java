@@ -1,7 +1,6 @@
 package com.varc.brewnetapp.domain.member.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.ApprovalStatus;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.dto.ApprovalDTO;
 import com.varc.brewnetapp.domain.member.query.dto.CompanyDTO;
 import com.varc.brewnetapp.domain.member.query.dto.MemberDTO;

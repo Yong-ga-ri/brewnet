@@ -1,14 +1,13 @@
-package com.varc.brewnetapp.common.domain.returning;
+package com.varc.brewnetapp.shared.domain.exchange;
 
-public enum ReturningReason {
+public enum ExchangeReason {
     DAMAGED("파손"),
     DEFECTIVE("품질불량"),
-    MIND_CHANGE("단순변심"),
     OTHER("기타");
 
     private String krName;
 
-    ReturningReason(String krName) {
+    ExchangeReason(String krName) {
         this.krName = krName;
     }
 

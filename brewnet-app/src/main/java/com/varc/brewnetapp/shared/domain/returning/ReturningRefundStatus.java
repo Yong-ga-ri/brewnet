@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common.domain.returning;
+package com.varc.brewnetapp.shared.domain.returning;
 public enum ReturningRefundStatus {
     TOTAL_REFUND("전체환불"),
     PARTIAL_REFUND("부분환불"),

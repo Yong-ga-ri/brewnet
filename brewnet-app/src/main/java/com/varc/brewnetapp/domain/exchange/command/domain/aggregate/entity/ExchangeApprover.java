@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
 import jakarta.persistence.*;
 import lombok.*;
 

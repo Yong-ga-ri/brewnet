@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.storage.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.storage.common.PageResponse;
 import com.varc.brewnetapp.domain.storage.query.dto.StockDTO;
 import com.varc.brewnetapp.domain.storage.query.dto.StorageDTO;

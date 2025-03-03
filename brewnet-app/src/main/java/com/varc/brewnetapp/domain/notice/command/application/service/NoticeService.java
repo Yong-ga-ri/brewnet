@@ -1,10 +1,9 @@
 package com.varc.brewnetapp.domain.notice.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
+import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.notice.command.application.dto.CreateNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.DeleteNoticeRequestDTO;
-import com.varc.brewnetapp.domain.notice.command.application.dto.NoticeAlarmDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.UpdateNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.Notice;
 import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.NoticeImage;

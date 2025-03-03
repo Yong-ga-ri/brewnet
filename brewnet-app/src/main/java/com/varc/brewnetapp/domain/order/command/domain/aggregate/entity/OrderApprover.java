@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.order.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.order.ApprovalStatus;
+import com.varc.brewnetapp.shared.domain.order.ApprovalStatus;
 import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.compositionkey.OrderApprovalCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

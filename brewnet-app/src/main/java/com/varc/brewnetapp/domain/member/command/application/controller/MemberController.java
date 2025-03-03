@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.member.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangeMemberRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangePwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckNumDTO;

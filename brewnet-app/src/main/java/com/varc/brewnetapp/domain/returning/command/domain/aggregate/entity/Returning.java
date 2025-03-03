@@ -1,11 +1,10 @@
 package com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.approve.Approval;
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.returning.ReturningReason;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.returning.ReturningReason;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity.ExOrder;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
-import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.Order;
 import jakarta.persistence.*;
 import lombok.*;
 

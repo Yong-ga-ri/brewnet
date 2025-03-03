@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common.domain.approve;
+package com.varc.brewnetapp.shared.domain.approve;
 
 public enum Approval {
     APPROVED("승인"),

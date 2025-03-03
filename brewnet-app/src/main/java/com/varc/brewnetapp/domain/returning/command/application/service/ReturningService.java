@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.returning.command.application.service;
 
-import com.varc.brewnetapp.common.domain.approve.Approval;
-import com.varc.brewnetapp.common.domain.returning.ReturningStatus;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.returning.ReturningStatus;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity.Returning;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo.ReturningDrafterApproveReqVO;

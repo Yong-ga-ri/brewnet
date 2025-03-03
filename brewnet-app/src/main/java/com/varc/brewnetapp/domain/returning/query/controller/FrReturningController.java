@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.returning.query.aggregate.vo.FranReturningDetailVO;
 import com.varc.brewnetapp.domain.returning.query.aggregate.vo.FranReturningItemVO;
 import com.varc.brewnetapp.domain.returning.query.aggregate.vo.FranReturningStatusVO;

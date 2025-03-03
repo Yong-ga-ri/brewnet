@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.query.mapper;
 
-import com.varc.brewnetapp.common.domain.exchange.ExchangeStatus;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus;
 import com.varc.brewnetapp.domain.exchange.query.aggregate.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.query.service;
 
-import com.varc.brewnetapp.common.domain.returning.ReturningStatus;
+import com.varc.brewnetapp.shared.domain.returning.ReturningStatus;
 import com.varc.brewnetapp.domain.returning.query.aggregate.vo.*;
 import com.varc.brewnetapp.domain.returning.query.mapper.ReturningMapper;
 import com.varc.brewnetapp.exception.ReturningNotFoundException;

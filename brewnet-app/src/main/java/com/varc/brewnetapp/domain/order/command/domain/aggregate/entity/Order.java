@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.order.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.OrderApprovalStatus;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.OrderApprovalStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

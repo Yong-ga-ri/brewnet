@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common.domain.member;
+package com.varc.brewnetapp.shared.domain.member;
 
 import lombok.Getter;
 

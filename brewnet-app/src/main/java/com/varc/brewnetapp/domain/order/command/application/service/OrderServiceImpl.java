@@ -1,10 +1,10 @@
 package com.varc.brewnetapp.domain.order.command.application.service;
 
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.ApprovalStatus;
-import com.varc.brewnetapp.common.domain.order.Available;
-import com.varc.brewnetapp.common.domain.order.OrderHistoryStatus;
-import com.varc.brewnetapp.common.domain.order.OrderApprovalStatus;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.ApprovalStatus;
+import com.varc.brewnetapp.shared.domain.order.Available;
+import com.varc.brewnetapp.shared.domain.order.OrderHistoryStatus;
+import com.varc.brewnetapp.shared.domain.order.OrderApprovalStatus;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
 import com.varc.brewnetapp.domain.item.query.service.ItemService;

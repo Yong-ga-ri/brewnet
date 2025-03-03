@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common;
+package com.varc.brewnetapp.shared;
 
 import lombok.*;
 

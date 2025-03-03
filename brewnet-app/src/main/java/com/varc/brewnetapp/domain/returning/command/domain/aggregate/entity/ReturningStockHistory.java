@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.approve.Confirmed;
-import com.varc.brewnetapp.common.domain.returning.ReturningHistoryStatus;
+import com.varc.brewnetapp.shared.domain.approve.Confirmed;
+import com.varc.brewnetapp.shared.domain.returning.ReturningHistoryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

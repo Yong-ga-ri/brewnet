@@ -1,14 +1,13 @@
 package com.varc.brewnetapp.domain.returning.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
-import com.varc.brewnetapp.common.domain.approve.Approval;
-import com.varc.brewnetapp.common.domain.approve.Confirmed;
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.Available;
-import com.varc.brewnetapp.common.domain.returning.ReturningStatus;
+import com.varc.brewnetapp.shared.S3ImageService;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.approve.Confirmed;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.Available;
+import com.varc.brewnetapp.shared.domain.returning.ReturningStatus;
 import com.varc.brewnetapp.domain.exchange.command.application.repository.ExOrderItemRepository;
 import com.varc.brewnetapp.domain.exchange.command.application.repository.ExOrderRepository;
-import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.entity.ExchangeItem;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity.ExOrder;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity.ExOrderItem;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity.ExOrderItemCode;

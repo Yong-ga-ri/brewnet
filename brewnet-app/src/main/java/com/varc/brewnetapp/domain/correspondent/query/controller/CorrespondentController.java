@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.correspondent.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.correspondent.common.PageResponse;
 import com.varc.brewnetapp.domain.correspondent.query.dto.CorrespondentDTO;
 import com.varc.brewnetapp.domain.correspondent.query.dto.CorrespondentItemDTO;

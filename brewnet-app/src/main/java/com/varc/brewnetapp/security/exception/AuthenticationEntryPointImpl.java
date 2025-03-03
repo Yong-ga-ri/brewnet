@@ -1,10 +1,7 @@
 package com.varc.brewnetapp.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.varc.brewnetapp.common.ResponseMessage;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

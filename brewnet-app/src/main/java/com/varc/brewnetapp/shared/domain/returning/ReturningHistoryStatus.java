@@ -1,12 +1,13 @@
-package com.varc.brewnetapp.common.domain.exchange;
-public enum ExchangeHistoryStatus {
+package com.varc.brewnetapp.shared.domain.returning;
+
+public enum ReturningHistoryStatus {
     TOTAL_INBOUND("전체입고"),
     TOTAL_DISPOSAL("전체폐기"),
     PARTIAL_INBOUND("부분입고");
 
     private String krName;
 
-    ExchangeHistoryStatus(String krName) {
+    ReturningHistoryStatus(String krName) {
         this.krName = krName;
     }
 

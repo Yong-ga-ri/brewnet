@@ -1,9 +1,8 @@
 package com.varc.brewnetapp.domain.item.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.item.query.dto.ItemDTO;
 import com.varc.brewnetapp.domain.item.query.service.ItemService;
-import com.varc.brewnetapp.domain.member.query.dto.MemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common.domain.returning;
+package com.varc.brewnetapp.shared.domain.returning;
 
 public enum ReturningStatus {
     REQUESTED("반품요청"),

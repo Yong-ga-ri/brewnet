@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.member.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
+import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckNumDTO;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Position;
 import com.varc.brewnetapp.exception.EmptyDataException;
@@ -13,7 +13,6 @@ import com.varc.brewnetapp.domain.member.command.application.dto.ChangeMemberReq
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangePwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckPwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.LoginIdRequestDTO;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.PositionName;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.PositionRepository;

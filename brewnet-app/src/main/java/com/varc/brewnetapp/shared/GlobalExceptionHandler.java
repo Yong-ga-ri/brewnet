@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common;
+package com.varc.brewnetapp.shared;
 
 import com.varc.brewnetapp.exception.*;
 import lombok.extern.slf4j.Slf4j;

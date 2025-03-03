@@ -1,9 +1,8 @@
 package com.varc.brewnetapp.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.security.provider.ProviderManager;
-import com.varc.brewnetapp.security.utility.JwtUtil;
 import com.varc.brewnetapp.security.vo.LoginRequestVO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

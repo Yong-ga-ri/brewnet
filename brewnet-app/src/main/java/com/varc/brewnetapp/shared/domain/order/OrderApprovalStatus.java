@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.common.domain.order;
+package com.varc.brewnetapp.shared.domain.order;
 
 
 public enum OrderApprovalStatus {

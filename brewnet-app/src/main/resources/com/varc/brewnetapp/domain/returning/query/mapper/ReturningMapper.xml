@@ -952,7 +952,7 @@
 
     <!-- 반품코드로 가장 최근 반품상태(status) 1개를 조회하는 쿼리 -->
     <!-- 반품취소 시, 해당 반품요청의 상태가 REQUESTED인지 조회하기 위해 사용 -->
-    <select id="selectReturningLatestStatusBy" resultType="com.varc.brewnetapp.common.domain.returning.ReturningStatus">
+    <select id="selectReturningLatestStatusBy" resultType="com.varc.brewnetapp.shared.domain.returning.ReturningStatus">
         SELECT
         A.status
         FROM tbl_return_status_history A
