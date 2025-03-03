@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Entity(name = "tbl_order_approver")
+@Entity
+@Table(name = "tbl_order_approver")
 public class OrderApprover {
     @EmbeddedId
     private OrderApprovalCode orderApprovalCode;

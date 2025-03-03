@@ -20,5 +20,4 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             @Param("franchiseCode") int franchiseCode,
             @Param("orderCode") int orderCode
     );
-
 }

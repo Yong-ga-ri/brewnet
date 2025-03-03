@@ -1,8 +1,8 @@
 package com.varc.brewnetapp.domain.order.command.application.service;
 
+import com.varc.brewnetapp.domain.order.command.domain.repository.OrderApprovalRepository;
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderRepository;
 import com.varc.brewnetapp.domain.order.command.domain.service.OrderValidateService;
-import com.varc.brewnetapp.domain.order.query.mapper.OrderValidateMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderValidateServiceImpl implements OrderValidateService {
 
-    private final OrderValidateMapper orderValidateMapper;
     private final OrderRepository orderRepository;
+    private final OrderApprovalRepository orderApprovalRepository;
 
     @Autowired
-    public OrderValidateServiceImpl(OrderValidateMapper orderValidateMapper, OrderRepository orderRepository) {
-        this.orderValidateMapper = orderValidateMapper;
+    public OrderValidateServiceImpl(OrderRepository orderRepository, OrderApprovalRepository orderApprovalRepository) {
         this.orderRepository = orderRepository;
+        this.orderApprovalRepository = orderApprovalRepository;
     }
 
     @Transactional
@@ -27,8 +27,9 @@ public class OrderValidateServiceImpl implements OrderValidateService {
         return orderRepository.checkIsOrderFrom(franchiseCode, orderCode);
     }
 
+    @Transactional
     @Override
-    public boolean isOrderDrafted(Integer orderCode) {
-        return orderValidateMapper.checkIsOrderDrafted(orderCode);
+    public boolean isOrderDrafted(int orderCode) {
+        return orderApprovalRepository.checkIsOrderDrafted(orderCode);
     }
 }
