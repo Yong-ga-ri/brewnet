@@ -142,7 +142,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/master/**", "/api/v1/require-auth/master").hasRole(ROLE_MASTER)
 
                         // 마스터
-                        .requestMatchers(new AntPathRequestMatcher("/api/v1/delivery")).hasAnyRole(ROLE_DELIVERY, ROLE_MASTER)
+                        .requestMatchers("/api/v1/delivery").hasAnyRole(ROLE_DELIVERY, ROLE_MASTER)
 
                         .anyRequest().authenticated()
                 )
