@@ -33,7 +33,7 @@ public class HQOrderController {
     ) {
         int memberCode = memberService.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean isDrafted = orderService.requestApproveOrder(orderCode, memberCode, orderApproveRequestDTO);
+        orderService.requestApproveOrder(orderCode, memberCode, orderApproveRequestDTO);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "order approval requested successfully", null)
         );

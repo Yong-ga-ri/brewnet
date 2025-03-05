@@ -176,7 +176,7 @@ public class OrderServiceImpl implements OrderService {
     // 가맹점 주문 요청에 대한 일반 관리자의 상신
     @Transactional
     @Override
-    public boolean requestApproveOrder(
+    public void requestApproveOrder(
             int orderCode,  // 주문 번호
             int memberCode, // 기안자 코드
             OrderApproveRequestDTO orderApproveRequestDTO   // 주문 상신 DTO
@@ -244,8 +244,6 @@ public class OrderServiceImpl implements OrderService {
 
         // 상신받은 책임 결재자에게 알림
         sseService.sendToMember(memberCode, "OrderApprovalReqEvent", targetManagerMemberCode, "주문 결재 요청이 도착했습니다.");
-
-        return true;
     }
 
     // 일반 관리자의 주문요청 상신 취소

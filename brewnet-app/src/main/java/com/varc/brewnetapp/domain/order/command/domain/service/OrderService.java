@@ -29,7 +29,7 @@ public interface OrderService {
                               String loginId);
 
     // 주문 결재 상신
-    boolean requestApproveOrder(int orderCode,
+    void requestApproveOrder(int orderCode,
                                 int memberCode,
                                 OrderApproveRequestDTO orderApproveRequestDTO);
 
