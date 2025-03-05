@@ -281,7 +281,7 @@
                 o.ORDER_CODE
                 FROM tbl_order o
                 WHERE o.ACTIVE = 1
-                AND CAST(o.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.keyword}, '%')
+                AND CAST(o.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.searchWord}, '%')
                 <if test="retrieve.filter == 'UNCONFIRMED'">
                     AND o.APPROVAL_STATUS = #{retrieve.filter}
                 </if>
@@ -355,7 +355,7 @@
                 FROM tbl_order o
                 LEFT JOIN tbl_franchise f ON o.FRANCHISE_CODE = f.FRANCHISE_CODE
                 WHERE o.ACTIVE = 1
-                AND f.FRANCHISE_NAME LIKE CONCAT('%', #{retrieve.keyword}, '%')
+                AND f.FRANCHISE_NAME LIKE CONCAT('%', #{retrieve.searchWord}, '%')
                 <if test="retrieve.filter == 'UNCONFIRMED'">
                     AND o.APPROVAL_STATUS = #{retrieve.filter}
                 </if>
@@ -429,7 +429,7 @@
                 FROM tbl_order o
                 LEFT JOIN tbl_member m ON o.MEMBER_CODE = m.MEMBER_CODE
                 WHERE o.ACTIVE = 1
-                AND m.NAME LIKE CONCAT('%', #{retrieve.keyword}, '%')
+                AND m.NAME LIKE CONCAT('%', #{retrieve.searchWord}, '%')
                 <if test="retrieve.filter == 'UNCONFIRMED'">
                     AND o.APPROVAL_STATUS = #{retrieve.filter}
                 </if>

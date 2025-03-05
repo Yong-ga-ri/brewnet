@@ -26,7 +26,7 @@
           FROM tbl_order O
          WHERE 1=1
            AND O.ACTIVE = 1
-           AND CAST(O.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.keyword}, '%')
+           AND CAST(O.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.searchWord}, '%')
         <if test="retrieve.startDate != null and retrieve.startDate != ''">
            AND O.CREATED_AT &gt;= STR_TO_DATE(#{retrieve.startDate}, '%Y-%m-%d')
         </if>
@@ -45,7 +45,7 @@
                ON o.FRANCHISE_CODE = f.FRANCHISE_CODE
          WHERE 1=1
            AND o.ACTIVE = 1
-           AND f.FRANCHISE_NAME LIKE CONCAT('%', #{retrieve.keyword}, '%')
+           AND f.FRANCHISE_NAME LIKE CONCAT('%', #{retrieve.searchWord}, '%')
         <if test="retrieve.startDate != null and retrieve.startDate != ''">
            AND o.CREATED_AT &gt;= STR_TO_DATE(#{retrieve.startDate}, '%Y-%m-%d')
         </if>
@@ -63,7 +63,7 @@
                ON o.MEMBER_CODE = m.MEMBER_CODE
          WHERE 1=1
            AND o.ACTIVE = 1
-           AND m.NAME LIKE CONCAT('%', #{retrieve.keyword}, '%')
+           AND m.NAME LIKE CONCAT('%', #{retrieve.searchWord}, '%')
         <if test="retrieve.startDate != null and retrieve.startDate != ''">
            AND o.CREATED_AT &gt;= STR_TO_DATE(#{retrieve.startDate}, '%Y-%m-%d')
         </if>
@@ -97,7 +97,7 @@
                COUNT(*)
           FROM tbl_order O
          WHERE O.FRANCHISE_CODE = #{franchiseCode}
-           AND CAST(O.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.keyword}, '%')
+           AND CAST(O.ORDER_CODE AS CHAR) LIKE CONCAT('%', #{retrieve.searchWord}, '%')
            AND O.ACTIVE = 1
         <if test="retrieve.startDate != null and retrieve.startDate != ''">
            AND O.CREATED_AT &gt;= STR_TO_DATE(#{retrieve.startDate}, '%Y-%m-%d')
@@ -119,7 +119,7 @@
                ON oi.ITEM_CODE = i.ITEM_CODE
          WHERE o.ACTIVE = 1
            AND o.FRANCHISE_CODE = #{franchiseCode}
-           AND i.NAME LIKE CONCAT('%', #{retrieve.keyword}, '%')
+           AND i.NAME LIKE CONCAT('%', #{retrieve.searchWord}, '%')
         <if test="retrieve.startDate != null and retrieve.startDate != ''">
             AND o.CREATED_AT &gt;= STR_TO_DATE(#{retrieve.startDate}, '%Y-%m-%d')
         </if>

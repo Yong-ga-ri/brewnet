@@ -143,7 +143,6 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
         List<FranchiseOrderDTO> orderList;
         int totalCount;
-        log.debug("retrieve.getCriteria(): {}", retrieve.getCriteria());
 
         switch (retrieve.getCriteria()) {
             case ORDER_CODE -> {
