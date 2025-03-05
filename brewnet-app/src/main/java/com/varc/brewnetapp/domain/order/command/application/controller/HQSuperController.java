@@ -34,7 +34,7 @@ public class HQSuperController {
     ) {
         int memberCode = memberservice.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean approved = orderService.approveOrderDraft(orderCode, memberCode, orderRequestApproveDTO);
+        orderService.approveOrderDraft(orderCode, memberCode, orderRequestApproveDTO);
 
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "successfully approved order request", null)
@@ -50,7 +50,7 @@ public class HQSuperController {
     ) {
         int memberCode = memberservice.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean rejected = orderService.rejectOrderDraft(orderCode, memberCode, orderApprovalRequestRejectDTO);
+        orderService.rejectOrderDraft(orderCode, memberCode, orderApprovalRequestRejectDTO);
         return  ResponseEntity.ok(
                 new ResponseMessage<>(200, "successfully rejected order request", null)
         );

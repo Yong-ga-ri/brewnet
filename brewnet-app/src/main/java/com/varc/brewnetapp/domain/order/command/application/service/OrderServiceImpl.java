@@ -308,7 +308,7 @@ public class OrderServiceImpl implements OrderService {
     // 주문요청 상신에 책임 관리자의 승인
     @Transactional
     @Override
-    public boolean approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO) {
+    public void approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO) {
 
         // TODO: 책임 관리자의 상신에 대한 승인 처리
         //  - tbl_order_approver 수정              [DONE]
@@ -324,8 +324,8 @@ public class OrderServiceImpl implements OrderService {
                 OrderApprovalCode.builder()
                         .memberCode(memberCode)
                         .orderCode(orderCode)
-                        .build()
-        ).orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
+                        .build())
+                .orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
 
         if (orderApprover.getApprovalStatus().equals(ApprovalStatus.APPROVED)) {
             throw new OrderDraftAlreadyApproved("order draft already approved. orderCode: " + orderCode + ", approvedManagerMemberCode: " + memberCode);
@@ -375,18 +375,19 @@ public class OrderServiceImpl implements OrderService {
         );
 
         sseService.sendToFranchise(memberCode, "OrderApprovedEvent", memberCode + "번 주문 요청이 승인되었습니다.");
-        return true;
     }
 
     // 주문요청 상신에 책임 관리자의 반려
     @Transactional
     @Override
-    public boolean rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO) {
+    public void rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO) {
         OrderApprover orderApprover = orderApprovalRepository.findById(OrderApprovalCode.builder()
-                .memberCode(memberCode)
-                .orderCode(orderCode)
-                .build()).orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+                        .memberCode(memberCode)
+                        .orderCode(orderCode)
+                        .build())
+                .orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
+        Order order = orderRepository.findById(orderCode)
+                .orElseThrow(() -> new OrderNotFound("Order not found"));
 
         // TODO: 책임 관리자의 상신에 대한 반려 처리
         //  - validate                             [DONE]
@@ -432,10 +433,7 @@ public class OrderServiceImpl implements OrderService {
         recordOrderStatusHistory(orderCode, OrderHistoryStatus.REJECTED);
 
         // 본사에서 주문신청한 가맹점 회원들에게 알림
-        sendToOrderFranchiseMember(order.getFranchiseCode(), "OrderRejectionEvent"
-                , order.getOrderCode() + "번 요청이 반려되었습니다.");
-
-        return true;
+        sendToOrderFranchiseMember(order.getFranchiseCode(), "OrderRejectionEvent", order.getOrderCode() + "번 요청이 반려되었습니다.");
     }
 
 

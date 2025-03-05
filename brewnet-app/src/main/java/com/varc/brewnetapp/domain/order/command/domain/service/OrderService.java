@@ -37,9 +37,9 @@ public interface OrderService {
     void cancelOrderApproval(int orderCode, int memberCode);
 
     // 상신된 주문에 대한 승인
-    boolean approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO);
+    void approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO);
 
     // 상신된 주문에 대한 반려
-    boolean rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO);
+    void rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO);
 
 }
