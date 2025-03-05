@@ -34,7 +34,7 @@ public interface OrderService {
                                 OrderApproveRequestDTO orderApproveRequestDTO);
 
     // 주문 결재 상신 취소
-    boolean cancelOrderApproval(int orderCode, int memberCode);
+    void cancelOrderApproval(int orderCode, int memberCode);
 
     // 상신된 주문에 대한 승인
     boolean approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO);

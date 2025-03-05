@@ -47,7 +47,7 @@ public class HQOrderController {
     ) {
         int memberCode = memberService.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean isCanceled = orderService.cancelOrderApproval(orderCode, memberCode);
+        orderService.cancelOrderApproval(orderCode, memberCode);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "order approval canceled successfully", null)
         );

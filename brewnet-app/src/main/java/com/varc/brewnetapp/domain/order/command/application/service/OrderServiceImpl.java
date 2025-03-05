@@ -249,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
     // 일반 관리자의 주문요청 상신 취소
     @Transactional
     @Override
-    public boolean cancelOrderApproval(int orderCode, int memberCode) {
+    public void cancelOrderApproval(int orderCode, int memberCode) {
         Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
         List<OrderApprover> orderApproval = orderApprovalRepository.findByOrderApprovalCode_OrderCode(orderCode);
         OrderStatusHistory optionalOrderStatusHistory = orderStatusHistoryRepository.findFirstByOrderCodeOrderByCreatedAtDesc(order.getOrderCode())
@@ -303,8 +303,6 @@ public class OrderServiceImpl implements OrderService {
         );
 
         recordOrderStatusHistory(orderCode, OrderHistoryStatus.REQUESTED);
-
-        return true;
     }
 
     // 주문요청 상신에 책임 관리자의 승인
