@@ -1,5 +1,6 @@
 package com.varc.brewnetapp.domain.order.query.mapper;
 
+import com.varc.brewnetapp.shared.request.Retrieve;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -7,49 +8,22 @@ import org.apache.ibatis.annotations.Param;
 public interface OrderCounterMapper {
 
     // for HQ
-    int countOrdersForHq(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate
-    );
-    int countSearchedOrdersForHQByOrderCode(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
-    int countSearchedOrdersForHQByOrderedFranchiseName(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
-    int countSearchedOrdersForHQByOrderManager(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
+    int countOrdersForHq(@Param("retrieve") Retrieve retrieve);
+    int countSearchedOrdersForHQByOrderCode(@Param("retrieve") Retrieve retrieve);
+    int countSearchedOrdersForHQByOrderedFranchiseName(@Param("retrieve") Retrieve retrieve);
+    int countSearchedOrdersForHQByOrderManager(@Param("retrieve") Retrieve retrieve);
 
     // for FRANCHISE
     int countOrdersForFranchise(
-            @Param("filter") String filter,
-            @Param("franchiseCode") int franchiseCode,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate
+            @Param("retrieve") Retrieve retrieve,
+            @Param("franchiseCode") int franchiseCode
     );
     int countSearchedOrdersForFranchiseByOrderCode(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("franchiseCode") int franchiseCode,
-            @Param("keyword") String keyword
+            @Param("retrieve") Retrieve retrieve,
+            @Param("franchiseCode") int franchiseCode
     );
     int countSearchedOrdersForFranchiseByItemName(
-            @Param("filter") String filter,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("franchiseCode") int franchiseCode,
-            @Param("keyword") String keyword
+            @Param("retrieve") Retrieve retrieve,
+            @Param("franchiseCode") int franchiseCode
     );
 }

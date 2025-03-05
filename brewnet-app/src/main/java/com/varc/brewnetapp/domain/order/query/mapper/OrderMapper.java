@@ -1,6 +1,7 @@
 package com.varc.brewnetapp.domain.order.query.mapper;
 
 import com.varc.brewnetapp.domain.order.query.dto.*;
+import com.varc.brewnetapp.shared.request.Retrieve;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,93 +10,30 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-// default: 주문일 역순(최신순)
-// 주문일 순
-// 주문 금액 높은 순
-// 주문 금액 낮은 순
-
     // for HQ
-    List<HQOrderDTO> findOrdersForHQBy(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate
-    );
+    List<HQOrderDTO> findOrdersForHQBy(@Param("retrieve") Retrieve retrieve);
     OrderDetailForHQDTO findOrderDetailForHqBy(int orderCode);
 
     // search
-    List<HQOrderDTO> searchOrdersForHQByOrderCode(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
-    List<HQOrderDTO> searchOrdersForHQByOrderedFranchiseName(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
-    List<HQOrderDTO> searchOrdersForHQByOrderManager(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("keyword") String keyword
-    );
+    List<HQOrderDTO> searchOrdersForHQByOrderCode(@Param("retrieve") Retrieve retrieve);
+    List<HQOrderDTO> searchOrdersForHQByOrderedFranchiseName(@Param("retrieve") Retrieve retrieve);
+    List<HQOrderDTO> searchOrdersForHQByOrderManager(@Param("retrieve") Retrieve retrieve);
 
     // for FRANCHISE
-    List<FranchiseOrderDTO> findOrdersForFranchise(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("franchiseCode") int franchiseCode
-    );
     OrderDetailForFranchiseDTO findOrderDetailForFranchiseBy(int orderCode);
+    List<FranchiseOrderDTO> findOrdersForFranchise(@Param("retrieve") Retrieve retrieve,
+                                                   @Param("franchiseCode") int franchiseCode);
 
     // search
-    List<FranchiseOrderDTO> searchOrdersForFranchiseByOrderCode(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("franchiseCode") int franchiseCode,
-            @Param("keyword") String keyword
-    );
+    List<FranchiseOrderDTO> searchOrdersForFranchiseByOrderCode(@Param("retrieve") Retrieve retrieve,
+                                                                @Param("franchiseCode") int franchiseCode);
+    List<FranchiseOrderDTO> searchOrdersForFranchiseByItemName(@Param("retrieve") Retrieve retrieve,
+                                                               @Param("franchiseCode") int franchiseCode);
 
-    List<FranchiseOrderDTO> searchOrdersForFranchiseByItemName(
-            @Param("filter") String filter,
-            @Param("sort") String sort,
-            @Param("size") Integer size,
-            @Param("offset") Integer offset,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate,
-            @Param("franchiseCode") int franchiseCode,
-            @Param("keyword") String keyword
-    );
-    
-
-    // common
+    // for Common
     List<OrderApprovalHistoryDTO> findOrderApprovalHistoriesBy(int orderCode);
-    OrderStatusHistory findRecentHistoryByOrderId(
-            @Param("orderCode") int orderCode
-    );
-    List<OrderStatusHistory> findOrderHistoriesByOrderId(
-            @Param("orderId") int orderId
-    );
+    OrderStatusHistory findRecentHistoryByOrderId(@Param("orderCode") int orderCode);
+    List<OrderStatusHistory> findOrderHistoriesByOrderId(@Param("orderId") int orderId);
 }
+
+

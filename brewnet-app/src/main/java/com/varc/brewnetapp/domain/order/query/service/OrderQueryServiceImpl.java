@@ -45,128 +45,58 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     @Override
     @Transactional
     public Page<HQOrderDTO> getOrderListForHQ(Retrieve retrieve) {
-        String filter = retrieve.getFilter();
-        String sort = retrieve.getSort();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        Pageable pageable = retrieve.getPageable();
-
-        int page = pageable.getPageNumber();
-        int size = pageable.getPageSize();
-        int offset = page * size;
 
         // TODO: check if filter value is one of ["UNCONFIRMED", null]
         // TODO: check if sort value is one of ["createdAtDesc", "createdAtAsc", "sumPriceDesc", "sumPriceAsc"]
-        List<HQOrderDTO> hqOrderDTOList = orderMapper.findOrdersForHQBy(filter, sort, size, offset, startDate, endDate);
 
-        int total = orderCounterMapper.countOrdersForHq(filter, startDate, endDate);
-        return new PageImpl<>(hqOrderDTOList, pageable, total);
+        return new PageImpl<>(
+                orderMapper.findOrdersForHQBy(retrieve),
+                retrieve.getPageable(),
+                orderCounterMapper.countOrdersForHq(retrieve)
+        );
     }
 
     @Override
     @Transactional
     public Page<HQOrderDTO> searchOrderListForHQ(Retrieve retrieve) {
-        SearchCriteria criteria = retrieve.getCriteria();
-        String filter = retrieve.getFilter();
-        String sort = retrieve.getSort();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        String keyword = retrieve.getSearchWord();
-        Pageable pageable = retrieve.getPageable();
-
-        int page = pageable.getPageNumber();
-        int size = pageable.getPageSize();
-        int offset = page * size;
 
         List<HQOrderDTO> orderList;
         int totalCount;
 
-        switch (criteria) {
+        switch (retrieve.getCriteria()) {
             case ORDER_CODE -> {
-                orderList = orderMapper.searchOrdersForHQByOrderCode(
-                        filter, sort, size, offset, startDate, endDate, keyword);
-                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderCode(
-                        filter, startDate, endDate, keyword);
+                orderList = orderMapper.searchOrdersForHQByOrderCode(retrieve);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderCode(retrieve);
             }
             case ORDERED_FRANCHISE_NAME -> {
-                orderList = orderMapper.searchOrdersForHQByOrderedFranchiseName(
-                        filter, sort, size, offset, startDate, endDate, keyword);
-                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderedFranchiseName(
-                        filter, startDate, endDate, keyword);
+                orderList = orderMapper.searchOrdersForHQByOrderedFranchiseName(retrieve);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderedFranchiseName(retrieve);
             }
             case ORDER_MANAGER -> {
-                orderList = orderMapper.searchOrdersForHQByOrderManager(
-                        filter, sort, size, offset, startDate, endDate, keyword);
-                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderManager(
-                        filter, startDate, endDate, keyword);
+                orderList = orderMapper.searchOrdersForHQByOrderManager(retrieve);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderManager(retrieve);
             }
             case ALL -> {
-                orderList = orderMapper.findOrdersForHQBy(
-                        filter, sort, size, offset, startDate, endDate);
-                totalCount = orderCounterMapper.countOrdersForHq(
-                        filter, startDate, endDate);
+                orderList = orderMapper.findOrdersForHQBy(retrieve);
+                totalCount = orderCounterMapper.countOrdersForHq(retrieve);
             }
-            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
+            default -> throw new InvalidCriteriaException();
         }
-        return new PageImpl<>(orderList, pageable, totalCount);
-
+        return new PageImpl<>(orderList, retrieve.getPageable(), totalCount);
     }
 
     @Override
     @Transactional
     public List<HQOrderDTO> getExcelDataForHQBy(Retrieve retrieve) {
-        SearchCriteria criteria = retrieve.getCriteria();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        String keyword = retrieve.getSearchWord();
-
-
-        switch (criteria) {
-            case ORDER_CODE -> {
-                return orderMapper.searchOrdersForHQByOrderCode(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate,
-                        keyword
-                );
-            }
-            case ORDERED_FRANCHISE_NAME -> {
-                return orderMapper.searchOrdersForHQByOrderedFranchiseName(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate,
-                        keyword
-                );
-            }
-            case ORDER_MANAGER -> {
-                return orderMapper.searchOrdersForHQByOrderManager(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate,
-                        keyword
-                );
-            }
-            case ALL -> {
-                return orderMapper.findOrdersForHQBy(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate
-                );
-            }
-            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
+        List<HQOrderDTO> hqOrderDTOList;
+        switch (retrieve.getCriteria()) {
+            case ORDER_CODE -> hqOrderDTOList = orderMapper.searchOrdersForHQByOrderCode(retrieve);
+            case ORDERED_FRANCHISE_NAME -> hqOrderDTOList = orderMapper.searchOrdersForHQByOrderedFranchiseName(retrieve);
+            case ORDER_MANAGER -> hqOrderDTOList = orderMapper.searchOrdersForHQByOrderManager(retrieve);
+            case ALL -> hqOrderDTOList = orderMapper.findOrdersForHQBy(retrieve);
+            default -> throw new InvalidCriteriaException();
         }
+        return hqOrderDTOList;
     }
 
     @Override
@@ -184,7 +114,6 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     public OrderRequestDTO printOrderRequest(int orderCode) {
 
         // TODO: check is tbl_order.approval_status is 'APPROVED'
-
         // TODO: get order detail information
 
         return null;
@@ -197,37 +126,14 @@ public class OrderQueryServiceImpl implements OrderQueryService {
             Retrieve retrieve,
             int franchiseCode
     ) {
-        String filter = retrieve.getFilter();
-        String sort = retrieve.getSort();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        Pageable pageable = retrieve.getPageable();
 
         // TODO: check if franchise valid
-
-        int page = pageable.getPageNumber();
-        int size = pageable.getPageSize();
-        int offset = page * size;
-
         // TODO: get order list query for franchise
 
         return new PageImpl<>(
-                orderMapper.findOrdersForFranchise(
-                        filter,
-                        sort,
-                        size,
-                        offset,
-                        startDate,
-                        endDate,
-                        franchiseCode
-                ),
-                pageable,
-                orderCounterMapper.countOrdersForFranchise(
-                        filter,
-                        franchiseCode,
-                        startDate,
-                        endDate
-                )
+                orderMapper.findOrdersForFranchise(retrieve, franchiseCode),
+                retrieve.getPageable(),
+                orderCounterMapper.countOrdersForFranchise(retrieve, franchiseCode)
         );
     }
 
@@ -235,43 +141,26 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     @Transactional(readOnly = true)
     public Page<FranchiseOrderDTO> searchOrderListForFranchise(Retrieve retrieve, int franchiseCode) {
 
-        SearchCriteria criteria = retrieve.getCriteria();
-        String filter = retrieve.getFilter();
-        String sort = retrieve.getSort();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        String keyword = retrieve.getSearchWord();
-        Pageable pageable = retrieve.getPageable();
-
-        int page = pageable.getPageNumber();
-        int size = pageable.getPageSize();
-        int offset = page * size;
-
         List<FranchiseOrderDTO> orderList;
         int totalCount;
+        log.debug("retrieve.getCriteria(): {}", retrieve.getCriteria());
 
-        switch (criteria) {
+        switch (retrieve.getCriteria()) {
             case ORDER_CODE -> {
-                orderList = orderMapper.searchOrdersForFranchiseByOrderCode(
-                        filter, sort, size, offset, startDate, endDate, franchiseCode, keyword);
-                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByOrderCode(
-                        filter, startDate, endDate, franchiseCode, keyword);
+                orderList = orderMapper.searchOrdersForFranchiseByOrderCode(retrieve, franchiseCode);
+                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByOrderCode(retrieve, franchiseCode);
             }
             case ITEM_NAME -> {
-                orderList = orderMapper.searchOrdersForFranchiseByItemName(
-                        filter, sort, size, offset, startDate, endDate, franchiseCode, keyword);
-                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByItemName(
-                        filter, startDate, endDate, franchiseCode, keyword);
+                orderList = orderMapper.searchOrdersForFranchiseByItemName(retrieve, franchiseCode);
+                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByItemName(retrieve, franchiseCode);
             }
             case ALL -> {
-                orderList = orderMapper.findOrdersForFranchise(
-                        filter, sort, size, offset, startDate, endDate, franchiseCode);
-                totalCount = orderCounterMapper.countOrdersForFranchise(
-                        filter, franchiseCode, startDate, endDate);
+                orderList = orderMapper.findOrdersForFranchise(retrieve, franchiseCode);
+                totalCount = orderCounterMapper.countOrdersForFranchise(retrieve, franchiseCode);
             }
-            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
+            default -> throw new InvalidCriteriaException();
         }
-        return new PageImpl<>(orderList, pageable, totalCount);
+        return new PageImpl<>(orderList, retrieve.getPageable(), totalCount);
     }
 
     @Override
@@ -279,50 +168,14 @@ public class OrderQueryServiceImpl implements OrderQueryService {
             Retrieve retrieve,
             int franchiseCode
     ) {
-
-        SearchCriteria criteria = retrieve.getCriteria();
-        String startDate = retrieve.getStartDate();
-        String endDate = retrieve.getEndDate();
-        String keyword = retrieve.getSearchWord();
-
-        switch (criteria) {
-            case ORDER_CODE -> {
-                return orderMapper.searchOrdersForFranchiseByOrderCode(
-                            null,
-                            null,
-                            null,
-                            null,
-                            startDate,
-                            endDate,
-                            franchiseCode,
-                            keyword
-                    );
-            }
-            case ITEM_NAME -> {
-                return orderMapper.searchOrdersForFranchiseByItemName(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate,
-                        franchiseCode,
-                        keyword
-                );
-            }
-            case ALL -> {
-                return orderMapper.findOrdersForFranchise(
-                        null,
-                        null,
-                        null,
-                        null,
-                        startDate,
-                        endDate,
-                        franchiseCode
-                );
-            }
-            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
+        List<FranchiseOrderDTO> franchiseOrderDTOList;
+        switch (retrieve.getCriteria()) {
+            case ORDER_CODE -> franchiseOrderDTOList = orderMapper.searchOrdersForFranchiseByOrderCode(retrieve, franchiseCode);
+            case ITEM_NAME -> franchiseOrderDTOList = orderMapper.searchOrdersForFranchiseByItemName(retrieve, franchiseCode);
+            case ALL -> franchiseOrderDTOList = orderMapper.findOrdersForFranchise(retrieve, franchiseCode);
+            default -> throw new InvalidCriteriaException();
         }
+        return franchiseOrderDTOList;
     }
 
     @Override

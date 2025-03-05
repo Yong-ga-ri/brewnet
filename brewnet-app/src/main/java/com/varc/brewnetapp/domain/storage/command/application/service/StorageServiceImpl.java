@@ -141,7 +141,7 @@ public class StorageServiceImpl implements StorageService{
     public Stock setStockReadyToDepart(int storageCode, int itemCode, int quantity) {
 
         Stock stock = stockRepository.findStockByStorageCodeAndItemCodeAndActiveIsTrue(storageCode, itemCode)
-                .orElseThrow(() -> new InvalidStockException("Invalid stock. storageCode: " + storageCode + ", itemCode: " + itemCode));
+                .orElseThrow(InvalidStockException::new);
         return stockRepository.save(
                 new Stock(
                         storageCode,

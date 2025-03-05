@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
             InvalidItemException.class,
             MustBuyItemAlreadySet.class,
             MandatoryPurchaseNotFound.class,
+            InvalidStockException.class
     })
     public ResponseEntity<ResponseMessage<Object>> handleBadRequestException(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
