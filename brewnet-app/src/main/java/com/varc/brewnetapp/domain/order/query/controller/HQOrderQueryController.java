@@ -111,7 +111,7 @@ public class HQOrderQueryController {
 
     @GetMapping("/detail/{orderCode}/history")
     @Operation(summary = "본사의 주문 히스토리 조회")
-    public ResponseEntity<ResponseMessage<List<OrderStatusHistory>>> healthcheck(
+    public ResponseEntity<ResponseMessage<List<OrderStatusHistory>>> getOrderHistoryList(
             @PathVariable("orderCode") Integer orderCode
     ) {
         List<OrderStatusHistory> orderHistoryList = orderQueryService.getOrderHistoryByOrderCode(orderCode);
