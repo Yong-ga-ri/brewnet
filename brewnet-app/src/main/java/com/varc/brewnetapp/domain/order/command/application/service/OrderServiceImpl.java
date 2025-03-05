@@ -1,5 +1,6 @@
 package com.varc.brewnetapp.domain.order.command.application.service;
 
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
 import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
 import com.varc.brewnetapp.shared.domain.order.ApprovalStatus;
 import com.varc.brewnetapp.shared.domain.order.Available;

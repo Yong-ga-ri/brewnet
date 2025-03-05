@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.domain.order.command.application.service;
+package com.varc.brewnetapp.domain.order.command.domain.service;
 
 import com.varc.brewnetapp.domain.order.command.application.dto.DrafterRejectOrderRequestDTO;
 import com.varc.brewnetapp.domain.order.command.application.dto.OrderApproveRequestDTO;

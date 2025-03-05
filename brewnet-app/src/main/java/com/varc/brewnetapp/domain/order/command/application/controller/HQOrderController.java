@@ -4,7 +4,7 @@ import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.command.application.dto.DrafterRejectOrderRequestDTO;
 import com.varc.brewnetapp.domain.order.command.application.dto.OrderApproveRequestDTO;
-import com.varc.brewnetapp.domain.order.command.application.service.OrderService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
