@@ -1,6 +1,7 @@
 package com.varc.brewnetapp.domain.order.query.service;
 
 import com.varc.brewnetapp.domain.order.command.domain.service.OrderValidateService;
+import com.varc.brewnetapp.shared.request.Retrieve;
 import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.query.dto.*;
@@ -43,13 +44,13 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     // for HQ
     @Override
     @Transactional
-    public Page<HQOrderDTO> getOrderListForHQ(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate
-    ) {
+    public Page<HQOrderDTO> getOrderListForHQ(Retrieve retrieve) {
+        String filter = retrieve.getFilter();
+        String sort = retrieve.getSort();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        Pageable pageable = retrieve.getPageable();
+
         int page = pageable.getPageNumber();
         int size = pageable.getPageSize();
         int offset = page * size;
@@ -64,20 +65,18 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     @Transactional
-    public Page<HQOrderDTO> searchOrderListForHQ(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
-            SearchCriteria criteria,
-            String keyword
-    ) {
+    public Page<HQOrderDTO> searchOrderListForHQ(Retrieve retrieve) {
+        SearchCriteria criteria = retrieve.getCriteria();
+        String filter = retrieve.getFilter();
+        String sort = retrieve.getSort();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        String keyword = retrieve.getSearchWord();
+        Pageable pageable = retrieve.getPageable();
+
         int page = pageable.getPageNumber();
         int size = pageable.getPageSize();
         int offset = page * size;
-
-        if (criteria == null) criteria = SearchCriteria.ALL;
 
         List<HQOrderDTO> orderList;
         int totalCount;
@@ -115,13 +114,12 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     @Transactional
-    public List<HQOrderDTO> getExcelDataForHQBy(
-            String startDate,
-            String endDate,
-            SearchCriteria criteria,
-            String keyword
-    ) {
-        if (criteria == null) criteria = SearchCriteria.ALL;
+    public List<HQOrderDTO> getExcelDataForHQBy(Retrieve retrieve) {
+        SearchCriteria criteria = retrieve.getCriteria();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        String keyword = retrieve.getSearchWord();
+
 
         switch (criteria) {
             case ORDER_CODE -> {
@@ -167,11 +165,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
                         endDate
                 );
             }
-            default -> throw new InvalidCriteriaException(
-                    "Invalid Order Criteria. " +
-                            "entered Criteria: " + criteria + ". " +
-                            " entered keyword: " + keyword + "."
-            );
+            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
         }
     }
 
@@ -200,13 +194,14 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     @Override
     @Transactional
     public Page<FranchiseOrderDTO> getOrderListForFranchise(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
+            Retrieve retrieve,
             int franchiseCode
     ) {
+        String filter = retrieve.getFilter();
+        String sort = retrieve.getSort();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        Pageable pageable = retrieve.getPageable();
 
         // TODO: check if franchise valid
 
@@ -238,12 +233,19 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<FranchiseOrderDTO> searchOrderListForFranchise(Pageable pageable, String filter, String sort, String startDate, String endDate, int franchiseCode, SearchCriteria criteria, String keyword) {
+    public Page<FranchiseOrderDTO> searchOrderListForFranchise(Retrieve retrieve, int franchiseCode) {
+
+        SearchCriteria criteria = retrieve.getCriteria();
+        String filter = retrieve.getFilter();
+        String sort = retrieve.getSort();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        String keyword = retrieve.getSearchWord();
+        Pageable pageable = retrieve.getPageable();
+
         int page = pageable.getPageNumber();
         int size = pageable.getPageSize();
         int offset = page * size;
-
-        if (criteria == null) criteria = SearchCriteria.ALL;
 
         List<FranchiseOrderDTO> orderList;
         int totalCount;
@@ -274,13 +276,14 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     public List<FranchiseOrderDTO> getExcelDataForFranchiseBy(
-            String startDate,
-            String endDate,
-            int franchiseCode,
-            SearchCriteria criteria,
-            String keyword
+            Retrieve retrieve,
+            int franchiseCode
     ) {
-        if (criteria == null) criteria = SearchCriteria.ALL;
+
+        SearchCriteria criteria = retrieve.getCriteria();
+        String startDate = retrieve.getStartDate();
+        String endDate = retrieve.getEndDate();
+        String keyword = retrieve.getSearchWord();
 
         switch (criteria) {
             case ORDER_CODE -> {
@@ -318,8 +321,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
                         franchiseCode
                 );
             }
-            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + "."
-            );
+            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
         }
     }
 
