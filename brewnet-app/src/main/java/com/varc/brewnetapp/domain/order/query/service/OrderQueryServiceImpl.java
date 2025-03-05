@@ -77,95 +77,40 @@ public class OrderQueryServiceImpl implements OrderQueryService {
         int size = pageable.getPageSize();
         int offset = page * size;
 
-        if (criteria == null) {
-            criteria = SearchCriteria.valueOf("ALL");
-        }
+        if (criteria == null) criteria = SearchCriteria.ALL;
+
+        List<HQOrderDTO> orderList;
+        int totalCount;
 
         switch (criteria) {
             case ORDER_CODE -> {
-                return new PageImpl<>(
-                        orderMapper.searchOrdersForHQByOrderCode(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                keyword
-                        ),
-                        pageable,
-                        orderCounterMapper.countSearchedOrdersForHQByOrderCode(
-                                filter,
-                                startDate,
-                                endDate,
-                                keyword
-                        )
-                );
+                orderList = orderMapper.searchOrdersForHQByOrderCode(
+                        filter, sort, size, offset, startDate, endDate, keyword);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderCode(
+                        filter, startDate, endDate, keyword);
             }
             case ORDERED_FRANCHISE_NAME -> {
-                return new PageImpl<>(
-                        orderMapper.searchOrdersForHQByOrderedFranchiseName(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                keyword
-                        ),
-                        pageable,
-                        orderCounterMapper.countSearchedOrdersForHQByOrderedFranchiseName(
-                                filter,
-                                startDate,
-                                endDate,
-                                keyword
-                        )
-                );
+                orderList = orderMapper.searchOrdersForHQByOrderedFranchiseName(
+                        filter, sort, size, offset, startDate, endDate, keyword);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderedFranchiseName(
+                        filter, startDate, endDate, keyword);
             }
             case ORDER_MANAGER -> {
-                return new PageImpl<>(
-                        orderMapper.searchOrdersForHQByOrderManager(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                keyword
-                        ),
-                        pageable,
-                        orderCounterMapper.countSearchedOrdersForHQByOrderManager(
-                                filter,
-                                startDate,
-                                endDate,
-                                keyword
-                        )
-                );
+                orderList = orderMapper.searchOrdersForHQByOrderManager(
+                        filter, sort, size, offset, startDate, endDate, keyword);
+                totalCount = orderCounterMapper.countSearchedOrdersForHQByOrderManager(
+                        filter, startDate, endDate, keyword);
             }
             case ALL -> {
-                return new PageImpl<>(
-                        orderMapper.findOrdersForHQBy(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate
-                        ),
-                        pageable,
-                        orderCounterMapper.countOrdersForHq(
-                                filter,
-                                startDate,
-                                endDate
-                        )
-                );
+                orderList = orderMapper.findOrdersForHQBy(
+                        filter, sort, size, offset, startDate, endDate);
+                totalCount = orderCounterMapper.countOrdersForHq(
+                        filter, startDate, endDate);
             }
-            default -> throw new InvalidCriteriaException(
-                    "Invalid Order Criteria. " +
-                            "entered Criteria: " + criteria + ". " +
-                            " entered keyword: " + keyword + "."
-            );
+            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
         }
+        return new PageImpl<>(orderList, pageable, totalCount);
+
     }
 
     @Override
@@ -176,9 +121,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
             SearchCriteria criteria,
             String keyword
     ) {
-        if (criteria == null) {
-            criteria = SearchCriteria.valueOf("ALL");
-        }
+        if (criteria == null) criteria = SearchCriteria.ALL;
 
         switch (criteria) {
             case ORDER_CODE -> {
@@ -294,96 +237,39 @@ public class OrderQueryServiceImpl implements OrderQueryService {
     }
 
     @Override
-    @Transactional
-    public Page<FranchiseOrderDTO> searchOrderListForFranchise(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
-            int franchiseCode,
-            SearchCriteria criteria,
-            String keyword
-    ) {
+    @Transactional(readOnly = true)
+    public Page<FranchiseOrderDTO> searchOrderListForFranchise(Pageable pageable, String filter, String sort, String startDate, String endDate, int franchiseCode, SearchCriteria criteria, String keyword) {
         int page = pageable.getPageNumber();
         int size = pageable.getPageSize();
         int offset = page * size;
 
-        if (criteria == null) {
-            criteria = SearchCriteria.valueOf("ALL");
-        }
+        if (criteria == null) criteria = SearchCriteria.ALL;
+
+        List<FranchiseOrderDTO> orderList;
+        int totalCount;
 
         switch (criteria) {
             case ORDER_CODE -> {
-                return new PageImpl<>(
-                        orderMapper.searchOrdersForFranchiseByOrderCode(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                franchiseCode,
-                                keyword
-                        ),
-                        pageable,
-                        orderCounterMapper.countSearchedOrdersForFranchiseByOrderCode(
-                                filter,
-                                startDate,
-                                endDate,
-                                franchiseCode,
-                                keyword
-                        )
-                );
+                orderList = orderMapper.searchOrdersForFranchiseByOrderCode(
+                        filter, sort, size, offset, startDate, endDate, franchiseCode, keyword);
+                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByOrderCode(
+                        filter, startDate, endDate, franchiseCode, keyword);
             }
             case ITEM_NAME -> {
-                return new PageImpl<>(
-                        orderMapper.searchOrdersForFranchiseByItemName(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                franchiseCode,
-                                keyword
-                        ),
-                        pageable,
-                        orderCounterMapper.countSearchedOrdersForFranchiseByItemName(
-                                filter,
-                                startDate,
-                                endDate,
-                                franchiseCode,
-                                keyword
-                        )
-                );
+                orderList = orderMapper.searchOrdersForFranchiseByItemName(
+                        filter, sort, size, offset, startDate, endDate, franchiseCode, keyword);
+                totalCount = orderCounterMapper.countSearchedOrdersForFranchiseByItemName(
+                        filter, startDate, endDate, franchiseCode, keyword);
             }
             case ALL -> {
-                return new PageImpl<>(
-                        orderMapper.findOrdersForFranchise(
-                                filter,
-                                sort,
-                                size,
-                                offset,
-                                startDate,
-                                endDate,
-                                franchiseCode
-                        ),
-                        pageable,
-                        orderCounterMapper.countOrdersForFranchise(
-                                filter,
-                                franchiseCode,
-                                startDate,
-                                endDate
-                        )
-                );
+                orderList = orderMapper.findOrdersForFranchise(
+                        filter, sort, size, offset, startDate, endDate, franchiseCode);
+                totalCount = orderCounterMapper.countOrdersForFranchise(
+                        filter, franchiseCode, startDate, endDate);
             }
-            default -> throw new InvalidCriteriaException(
-                    "Invalid Order Criteria. " +
-                            "entered Criteria: " + criteria + ". " +
-                            " entered keyword: " + keyword + "."
-            );
+            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + ".");
         }
+        return new PageImpl<>(orderList, pageable, totalCount);
     }
 
     @Override
@@ -394,9 +280,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
             SearchCriteria criteria,
             String keyword
     ) {
-        if (criteria == null) {
-            criteria = SearchCriteria.valueOf("ALL");
-        }
+        if (criteria == null) criteria = SearchCriteria.ALL;
 
         switch (criteria) {
             case ORDER_CODE -> {
@@ -434,10 +318,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
                         franchiseCode
                 );
             }
-            default -> throw new InvalidCriteriaException(
-                    "Invalid Order Criteria. " +
-                            "entered Criteria: " + criteria + ". " +
-                            " entered keyword: " + keyword + "."
+            default -> throw new InvalidCriteriaException("Invalid Order Criteria. " + "entered Criteria: " + criteria + ". " + " entered keyword: " + keyword + "."
             );
         }
     }

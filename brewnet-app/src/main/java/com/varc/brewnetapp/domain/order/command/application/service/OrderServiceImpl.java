@@ -183,7 +183,8 @@ public class OrderServiceImpl implements OrderService {
     ) {
         int targetManagerMemberCode = orderApproveRequestDTO.getSuperManagerMemberCode();
 
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+        Order order = orderRepository.findById(orderCode)
+                .orElseThrow(() -> new OrderNotFound("Order not found"));
         List<OrderApprover> orderApprover = orderApprovalRepository.findByOrderApprovalCode_OrderCode(order.getOrderCode());
 
         // TODO: 일반 관리자의 상신
@@ -203,17 +204,10 @@ public class OrderServiceImpl implements OrderService {
         if (order.getMemberCode() != null) {
             if (orderApprover.isEmpty()) {
                 if (memberCode != order.getMemberCode()) {
-
-                    // TODO: 앞서 결재가 취소된 경우                            [DONE]
-                    //  상신 요청자가 취소한 사람(tbl_order.memberCode)인지 확인   [DONE]
                     throw new UnauthorizedAccessException("재결재에 대한 권한이 없습니다.");
                 }
             } else {
-                throw new OrderApprovalAlreadyExist(
-                        "order approval already exist. " +
-                                "already requested by memberCode:" + order.getMemberCode() +
-                                ", orderCode: " + order.getMemberCode()
-                );
+                throw new OrderApprovalAlreadyExist("order approval already exist. " + "already requested by memberCode:" + order.getMemberCode() + ", orderCode: " + order.getMemberCode());
             }
         }
 
@@ -249,8 +243,7 @@ public class OrderServiceImpl implements OrderService {
         );
 
         // 상신받은 책임 결재자에게 알림
-        sseService.sendToMember(memberCode, "OrderApprovalReqEvent", targetManagerMemberCode
-                , "주문 결재 요청이 도착했습니다.");
+        sseService.sendToMember(memberCode, "OrderApprovalReqEvent", targetManagerMemberCode, "주문 결재 요청이 도착했습니다.");
 
         return true;
     }
