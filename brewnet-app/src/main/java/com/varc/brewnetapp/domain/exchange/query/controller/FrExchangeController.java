@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.exchange.query.aggregate.vo.FranExchangeDetailVO;
 import com.varc.brewnetapp.domain.exchange.query.aggregate.vo.FranExchangeItemVO;
 import com.varc.brewnetapp.domain.exchange.query.aggregate.vo.FranExchangeListVO;

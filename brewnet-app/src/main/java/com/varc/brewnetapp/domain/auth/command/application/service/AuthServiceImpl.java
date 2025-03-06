@@ -1,9 +1,8 @@
 package com.varc.brewnetapp.domain.auth.command.application.service;
 
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import com.varc.brewnetapp.domain.auth.command.application.dto.GrantAuthRequestDTO;
 import com.varc.brewnetapp.domain.auth.command.application.dto.SignUpRequestDto;
-import com.varc.brewnetapp.domain.auth.command.domain.aggregate.MemberRolePK;
 import com.varc.brewnetapp.domain.auth.command.domain.aggregate.RoleType;
 import com.varc.brewnetapp.domain.auth.command.domain.aggregate.entity.MemberRole;
 import com.varc.brewnetapp.domain.auth.command.domain.aggregate.entity.Role;
@@ -13,22 +12,19 @@ import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Fran
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseRepository;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.PositionName;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.PositionRepository;
-import com.varc.brewnetapp.exception.DuplicateException;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.DuplicateException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import com.varc.brewnetapp.security.service.RefreshTokenService;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,8 +156,6 @@ public class AuthServiceImpl implements AuthService {
                 throw new InvalidDataException("권한을 부여하려는 회원이 없습니다");
 
             Role role = roleRepository.findByRole(grantAuthRequestDTO.getAuthName()).orElse(null);
-
-            log.info("" + role);
 
             List<MemberRole> existMemberRole = memberRoleRepository.findByMemberCode(member.getMemberCode()).orElse(null);
 

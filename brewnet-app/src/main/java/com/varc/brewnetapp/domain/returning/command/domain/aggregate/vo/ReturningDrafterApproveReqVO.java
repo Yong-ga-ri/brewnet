@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo;
 
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
 import lombok.*;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.member.query.service;
 
 import com.varc.brewnetapp.domain.member.query.mapper.MemberValidateMapper;
-import com.varc.brewnetapp.exception.MemberNotInFranchiseException;
+import com.varc.brewnetapp.shared.exception.MemberNotInFranchiseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -10,7 +10,7 @@ import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Stock;
 import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Storage;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StockRepository;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StorageRepository;
-import com.varc.brewnetapp.exception.*;
+import com.varc.brewnetapp.shared.exception.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,7 +141,7 @@ public class StorageServiceImpl implements StorageService{
     public Stock setStockReadyToDepart(int storageCode, int itemCode, int quantity) {
 
         Stock stock = stockRepository.findStockByStorageCodeAndItemCodeAndActiveIsTrue(storageCode, itemCode)
-                .orElseThrow(() -> new InvalidStockException("Invalid stock. storageCode: " + storageCode + ", itemCode: " + itemCode));
+                .orElseThrow(InvalidStockException::new);
         return stockRepository.save(
                 new Stock(
                         storageCode,

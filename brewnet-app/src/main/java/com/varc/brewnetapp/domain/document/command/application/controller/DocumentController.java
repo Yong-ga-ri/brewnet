@@ -1,11 +1,9 @@
 package com.varc.brewnetapp.domain.document.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.document.command.application.dto.ApproverRequestDTO;
 import com.varc.brewnetapp.domain.document.command.application.service.ApprovalService;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

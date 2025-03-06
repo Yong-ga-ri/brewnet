@@ -6,10 +6,10 @@ import com.varc.brewnetapp.domain.correspondent.command.domain.aggregate.Corresp
 import com.varc.brewnetapp.domain.correspondent.command.domain.repository.CorrespondentItemRepository;
 import com.varc.brewnetapp.domain.correspondent.command.domain.repository.CorrespondentRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
-import com.varc.brewnetapp.exception.CorrespondentNotFoundException;
-import com.varc.brewnetapp.exception.InvalidApiRequestException;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.CorrespondentNotFoundException;
+import com.varc.brewnetapp.shared.exception.InvalidApiRequestException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

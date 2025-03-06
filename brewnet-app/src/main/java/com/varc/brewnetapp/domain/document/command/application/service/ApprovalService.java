@@ -1,14 +1,11 @@
 package com.varc.brewnetapp.domain.document.command.application.service;
 
 import com.varc.brewnetapp.domain.document.command.application.dto.ApproverRequestDTO;
-import com.varc.brewnetapp.domain.document.command.domain.aggregate.ApprovalKind;
 import com.varc.brewnetapp.domain.document.command.domain.aggregate.entity.Approval;
 import com.varc.brewnetapp.domain.document.command.domain.repository.ApprovalRepository;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.PositionName;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Position;
 import com.varc.brewnetapp.domain.member.command.domain.repository.PositionRepository;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.Collection;

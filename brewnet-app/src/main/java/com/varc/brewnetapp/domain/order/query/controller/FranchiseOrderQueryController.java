@@ -1,7 +1,8 @@
 package com.varc.brewnetapp.domain.order.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
-import com.varc.brewnetapp.common.SearchCriteria;
+import com.varc.brewnetapp.shared.ResponseMessage;
+import com.varc.brewnetapp.shared.request.Retrieve;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.member.query.service.MemberServiceImpl;
 import com.varc.brewnetapp.domain.order.query.dto.FranchiseOrderDTO;
@@ -47,15 +48,14 @@ public class FranchiseOrderQueryController {
         int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
                 .getFranchiseCode();
 
-        Page<FranchiseOrderDTO> orderDTOList = orderQueryService.getOrderListForFranchise(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate,
-                franchiseCode
-        );
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDTOList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderListForFranchise(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, null, null),
+                        franchiseCode
+                )
+        ));
     }
 
 
@@ -74,18 +74,14 @@ public class FranchiseOrderQueryController {
         int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
                 .getFranchiseCode();
 
-        Page<FranchiseOrderDTO> searchedOrderList = orderQueryService.searchOrderListForFranchise(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate,
-                franchiseCode,
-                criteria,
-                searchWord
-        );
-
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", searchedOrderList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.searchOrderListForFranchise(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, criteria, searchWord),
+                        franchiseCode
+                )
+        ));
     }
 
     @GetMapping("/excel")
@@ -99,17 +95,13 @@ public class FranchiseOrderQueryController {
         int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
                 .getFranchiseCode();
 
-        List<FranchiseOrderDTO> resultOrderDataDTO = orderQueryService.getExcelDataForFranchiseBy(
-                startDate,
-                endDate,
-                franchiseCode,
-                criteria,
-                keyword
-        );
-
-        return ResponseEntity.ok(
-                new ResponseMessage<>(200, "OK", resultOrderDataDTO)
-        );
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getExcelDataForFranchiseBy(
+                        Retrieve.with(null, null, null, startDate, endDate, criteria, keyword),
+                        franchiseCode)
+                ));
 
     }
 
@@ -119,8 +111,10 @@ public class FranchiseOrderQueryController {
             @PathVariable("orderCode") int orderCode,
             @RequestAttribute("loginId") String loginId
     ) {
-        OrderDetailForFranchiseDTO orderDetailForFranchiseDTO = orderQueryService.getOrderDetailForFranchiseBy(orderCode, loginId);
-
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDetailForFranchiseDTO));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderDetailForFranchiseBy(orderCode, loginId)
+        ));
     }
 }

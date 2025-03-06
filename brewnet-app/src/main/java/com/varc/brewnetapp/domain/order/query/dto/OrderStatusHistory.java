@@ -1,6 +1,5 @@
 package com.varc.brewnetapp.domain.order.query.dto;
 
-import com.varc.brewnetapp.common.domain.order.OrderHistoryStatus;
 import lombok.*;
 
 @Getter

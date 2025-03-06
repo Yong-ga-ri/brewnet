@@ -1,11 +1,10 @@
 package com.varc.brewnetapp.domain.franchise.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.CreateFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.DeleteFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.UpdateFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.application.service.FranchiseService;
-import com.varc.brewnetapp.domain.member.command.application.dto.CreateCompanyRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

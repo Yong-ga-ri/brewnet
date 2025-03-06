@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo;
 
-import com.varc.brewnetapp.common.domain.returning.ReturningReason;
+import com.varc.brewnetapp.shared.domain.returning.ReturningReason;
 import lombok.*;
 
 import java.util.List;

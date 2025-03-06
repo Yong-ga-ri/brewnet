@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.returning.ReturningStatus;
+import com.varc.brewnetapp.shared.domain.returning.ReturningStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

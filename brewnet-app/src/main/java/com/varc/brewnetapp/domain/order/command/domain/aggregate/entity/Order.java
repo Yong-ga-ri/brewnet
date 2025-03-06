@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.order.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.OrderApprovalStatus;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.OrderApprovalStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Entity(name = "tbl_order")
+@Entity
+@Table(name = "tbl_order")
 @ToString
 public class Order {
     @Id

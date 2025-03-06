@@ -3,7 +3,7 @@ package com.varc.brewnetapp.domain.franchise.query.service;
 import com.varc.brewnetapp.domain.franchise.query.dto.FranchiseDTO;
 import com.varc.brewnetapp.domain.franchise.query.dto.FranchiseMemberDTO;
 import com.varc.brewnetapp.domain.franchise.query.mapper.FranchiseMapper;
-import com.varc.brewnetapp.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.data.domain.Page;

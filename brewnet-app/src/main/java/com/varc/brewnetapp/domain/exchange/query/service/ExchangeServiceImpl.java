@@ -1,24 +1,17 @@
 package com.varc.brewnetapp.domain.exchange.query.service;
 
-import com.varc.brewnetapp.common.domain.exchange.ExchangeStatus;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus;
 import com.varc.brewnetapp.domain.exchange.query.aggregate.vo.*;
 import com.varc.brewnetapp.domain.exchange.query.mapper.ExchangeMapper;
-import com.varc.brewnetapp.exception.ExchangeNotFoundException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.ExchangeNotFoundException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service("ExchangeServiceQuery")

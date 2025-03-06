@@ -1,12 +1,9 @@
 package com.varc.brewnetapp.domain.item.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
-import com.varc.brewnetapp.domain.item.command.application.dto.CreateCategoryRequestDTO;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.item.command.application.dto.CreateItemRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.dto.DeleteItemRequestDTO;
-import com.varc.brewnetapp.domain.item.command.application.dto.DeleteSubCategoryRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.dto.UpdateItemRequestDTO;
-import com.varc.brewnetapp.domain.item.command.application.dto.UpdateSubCategoryRequestDTO;
 import com.varc.brewnetapp.domain.item.command.application.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

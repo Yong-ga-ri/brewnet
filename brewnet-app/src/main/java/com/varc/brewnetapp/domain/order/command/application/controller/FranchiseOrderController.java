@@ -1,10 +1,10 @@
 package com.varc.brewnetapp.domain.order.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.command.application.dto.orderrequest.OrderRequestDTO;
 import com.varc.brewnetapp.domain.order.command.application.dto.orderrequest.OrderRequestResponseDTO;
-import com.varc.brewnetapp.domain.order.command.application.service.OrderService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,10 @@ public class FranchiseOrderController {
             @RequestBody OrderRequestDTO orderRequestDTO,
             @RequestAttribute("loginId") String loginId
     ) {
-        OrderRequestResponseDTO orderRequestResponse = orderService.orderRequestByFranchise(orderRequestDTO, loginId);
+        int requestFranchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
+        int orderRequestedMember = queryMemberService.getMemberByLoginId(loginId).getMemberCode();
+
+        OrderRequestResponseDTO orderRequestResponse = orderService.orderRequestByFranchise(orderRequestDTO, requestFranchiseCode, orderRequestedMember);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "본사로의 주문요청이 완료됐습니다.", orderRequestResponse)
         );

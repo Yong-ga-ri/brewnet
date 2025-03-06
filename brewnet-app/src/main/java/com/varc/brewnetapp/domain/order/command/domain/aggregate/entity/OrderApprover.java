@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.order.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.order.ApprovalStatus;
+import com.varc.brewnetapp.shared.domain.order.ApprovalStatus;
 import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.compositionkey.OrderApprovalCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Entity(name = "tbl_order_approver")
+@Entity
+@Table(name = "tbl_order_approver")
 public class OrderApprover {
     @EmbeddedId
     private OrderApprovalCode orderApprovalCode;

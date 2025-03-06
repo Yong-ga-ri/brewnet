@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

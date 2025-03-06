@@ -1,18 +1,17 @@
 package com.varc.brewnetapp.domain.notice.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
+import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.notice.command.application.dto.CreateNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.DeleteNoticeRequestDTO;
-import com.varc.brewnetapp.domain.notice.command.application.dto.NoticeAlarmDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.UpdateNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.Notice;
 import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.NoticeImage;
 import com.varc.brewnetapp.domain.notice.command.domain.repository.NoticeImageRepository;
 import com.varc.brewnetapp.domain.notice.command.domain.repository.NoticeRepositiory;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.List;

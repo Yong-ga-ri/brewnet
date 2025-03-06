@@ -1,10 +1,10 @@
 package com.varc.brewnetapp.domain.order.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.command.application.dto.OrderRequestApproveDTO;
 import com.varc.brewnetapp.domain.order.command.application.dto.OrderApprovalRequestRejectDTO;
-import com.varc.brewnetapp.domain.order.command.application.service.OrderService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class HQSuperController {
     ) {
         int memberCode = memberservice.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean approved = orderService.approveOrderDraft(orderCode, memberCode, orderRequestApproveDTO);
+        orderService.approveOrderDraft(orderCode, memberCode, orderRequestApproveDTO);
 
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "successfully approved order request", null)
@@ -50,7 +50,7 @@ public class HQSuperController {
     ) {
         int memberCode = memberservice.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean rejected = orderService.rejectOrderDraft(orderCode, memberCode, orderApprovalRequestRejectDTO);
+        orderService.rejectOrderDraft(orderCode, memberCode, orderApprovalRequestRejectDTO);
         return  ResponseEntity.ok(
                 new ResponseMessage<>(200, "successfully rejected order request", null)
         );

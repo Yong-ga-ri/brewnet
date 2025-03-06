@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.purchase.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.purchase.command.application.dto.*;
 import com.varc.brewnetapp.domain.purchase.command.application.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
