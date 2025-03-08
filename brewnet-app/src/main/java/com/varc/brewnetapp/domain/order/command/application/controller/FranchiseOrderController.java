@@ -1,5 +1,7 @@
 package com.varc.brewnetapp.domain.order.command.application.controller;
 
+import com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO;
+import com.varc.brewnetapp.security.service.RefreshTokenService;
 import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.command.application.dto.orderrequest.OrderRequestDTO;
@@ -17,26 +19,39 @@ public class FranchiseOrderController {
 
     private final OrderService orderService;
     private final MemberService queryMemberService;
+    private final RefreshTokenService refreshTokenService;
 
     @Autowired
     public FranchiseOrderController(
             OrderService orderService,
-            MemberService queryMemberService
+            MemberService queryMemberService,
+            RefreshTokenService refreshTokenService
     ) {
         this.orderService = orderService;
         this.queryMemberService = queryMemberService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     // 주문 요청
     @PostMapping
     public ResponseEntity<ResponseMessage<OrderRequestResponseDTO>> franchiseOrder(
             @RequestBody OrderRequestDTO orderRequestDTO,
-            @RequestAttribute("loginId") String loginId
+            @RequestAttribute("loginId") String loginId,
+            @RequestAttribute("memberInfoDTO") MemberInfoDTO memberInfoDTO
     ) {
-        int requestFranchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
-        int orderRequestedMember = queryMemberService.getMemberByLoginId(loginId).getMemberCode();
+        Integer requestFranchiseCode;
+        Integer requestedMemberCode;
 
-        OrderRequestResponseDTO orderRequestResponse = orderService.orderRequestByFranchise(orderRequestDTO, requestFranchiseCode, orderRequestedMember);
+        if (memberInfoDTO != null) {
+            log.debug("from redis info: {}", memberInfoDTO);
+            requestFranchiseCode = memberInfoDTO.getFranchiseCode();
+            requestedMemberCode = memberInfoDTO.getMemberCode();
+        } else {
+            requestFranchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
+            requestedMemberCode = queryMemberService.getMemberByLoginId(loginId).getMemberCode();
+        }
+
+        OrderRequestResponseDTO orderRequestResponse = orderService.orderRequestByFranchise(orderRequestDTO, requestFranchiseCode, requestedMemberCode);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "본사로의 주문요청이 완료됐습니다.", orderRequestResponse)
         );
