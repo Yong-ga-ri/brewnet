@@ -118,7 +118,7 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
-                                "/",
+                                "/actuator/**",
                                 "/api/v1/check/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/email/**",
