@@ -9,5 +9,6 @@ public interface AuthService extends UserDetailsService {
     @Override
     UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException;
 
+    boolean isMatchInputPasswordWithSavedPassword(String tryingPassword, UserDetails savedUser);
     List<String> getAuths();
 }

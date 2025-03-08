@@ -4,6 +4,7 @@ import com.varc.brewnetapp.domain.auth.query.mapper.AuthenticationMapper;
 import com.varc.brewnetapp.domain.auth.query.vo.MemberVO;
 import com.varc.brewnetapp.domain.auth.query.vo.RoleVO;
 import com.varc.brewnetapp.security.domain.CustomUser;
+import com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -22,10 +24,12 @@ import java.util.Set;
 @Service(value="queryAuthenticationService")
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationMapper authenticationMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public AuthServiceImpl(AuthenticationMapper authenticationMapper) {
+    public AuthServiceImpl(AuthenticationMapper authenticationMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.authenticationMapper = authenticationMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -53,6 +57,11 @@ public class AuthServiceImpl implements AuthService {
                 loginMember.getName(),
                 grantedAuthorities
         );
+    }
+
+    @Override
+    public boolean isMatchInputPasswordWithSavedPassword(String tryingPassword, UserDetails savedUser) {
+        return bCryptPasswordEncoder.matches(tryingPassword, savedUser.getPassword());
     }
 
     @Override
