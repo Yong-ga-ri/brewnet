@@ -1,4 +1,4 @@
-package com.varc.brewnetapp.security.config;
+package com.varc.brewnetapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

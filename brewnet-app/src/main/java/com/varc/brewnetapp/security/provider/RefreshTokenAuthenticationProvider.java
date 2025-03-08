@@ -62,23 +62,9 @@ public class RefreshTokenAuthenticationProvider implements AuthenticationProvide
         String token = authentication.getCredentials().toString();
         String loginId = jwtUtil.getLoginId(token);
         if (refreshTokenService.checkRefreshTokenInRedis(loginId, token)) {
-            if (jwtUtil.isTokenValid(token)) {
-                try {
-                    UserDetails savedUser = authService.loadUserByUsername(loginId);
-                    Authentication authResult =  new UsernamePasswordAuthenticationToken(
-                            savedUser,
-                            savedUser.getPassword(),
-                            savedUser.getAuthorities()
-                    );
-                    String accessToken = jwtUtil.generateAccessToken(authResult);
-                    response.setHeader("Authorization", "Bearer " + accessToken);
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("user not found", e);
-                }
-                return jwtUtil.getAuthentication(token);
-            } else {
-                throw new IllegalArgumentException("invalid token");
-            }
+            String refreshedAccessToken = jwtUtil.tokenRefresh(token);
+            response.setHeader("Authorization", "Bearer " + refreshedAccessToken);
+            return jwtUtil.getAuthentication(refreshedAccessToken);
         } else {
             throw new IllegalArgumentException("refresh token not found");
         }

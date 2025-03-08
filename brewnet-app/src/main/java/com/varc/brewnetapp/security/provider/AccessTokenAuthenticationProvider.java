@@ -40,11 +40,7 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = authentication.getCredentials().toString();
-        if (jwtUtil.isTokenValid(token)) {
-            return jwtUtil.getAuthentication(token);
-        } else {
-            throw new IllegalArgumentException("invalid token");
-        }
+        return jwtUtil.getAuthentication(token);
     }
 
     /**

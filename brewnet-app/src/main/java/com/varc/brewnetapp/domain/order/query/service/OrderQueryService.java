@@ -20,7 +20,7 @@ public interface OrderQueryService {
 
     // requested by franchise
     Page<FranchiseOrderDTO> getOrderListForFranchise(Retrieve retrieve, int franchiseCode);
-    OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(int orderCode, String loginId);
+    OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(int orderCode, int franchiseCode);
     Page<FranchiseOrderDTO> searchOrderListForFranchise(Retrieve retrieve, int franchiseCode);
     List<FranchiseOrderDTO> getExcelDataForFranchiseBy(Retrieve retrieve, int franchiseCode);
 
