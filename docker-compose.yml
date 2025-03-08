@@ -1,0 +1,106 @@
+services:
+  frontend:
+    build:
+      context: ./brewnet-web
+    ports:
+      - "80:80"
+      # - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+    # volumes:
+    #   - /home/ec2-user/app/bangflix/frontend/ssl/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
+    #   - /home/ec2-user/app/bangflix/frontend/ssl/privkey.pem:/etc/ssl/private/privkey.pem:ro
+
+  backend:
+    build:
+      context: ./brewnet-app
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - redis
+      - db
+    mem_limit: 1g
+    cpu_shares: 512 # CPU 상대 비율 (기본값: 1024)
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    networks:
+      - mynetwork
+    ports:
+      - "6379:6379"
+
+  db:
+    build:
+      context: ./db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - mynetwork
+    mem_limit: 1g
+    cpu_shares: 256
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
+      - prometheus
+      - node-exporter
+
+  node-exporter:
+    image: prom/node-exporter
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/host"
+      - "--no-collector.os" # macOS와 호환되지 않는 /etc/os-release 매트릭 제외
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/host:ro
+    pid: "host" # 호스트의 PID 네임스페이스 공유
+    ports:
+      - "9100:9100"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  db-data:
+  grafana-data:
