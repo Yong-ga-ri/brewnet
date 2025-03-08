@@ -60,6 +60,25 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public MemberInfoDTO getMemberInfoDTO(UserDetails userDetails, String refreshToken) {
+        CustomUser user = (CustomUser) userDetails;
+        int memberCode = user.getMemberCode();
+
+        MemberInfoDTO memberInfoDTO = new MemberInfoDTO();
+
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_FRANCHISE"))) {
+            Integer franchiseCode = authenticationMapper.selectFranchiseCodeByMemberCode(memberCode);
+            if (franchiseCode == null) throw new IllegalArgumentException("member not belongs to any franchise");
+            else memberInfoDTO.setFranchiseCode(franchiseCode);
+        }
+
+        memberInfoDTO.setMemberCode(memberCode);
+        memberInfoDTO.setRefreshToken(refreshToken);
+
+        return memberInfoDTO;
+    }
+
+    @Override
     public boolean isMatchInputPasswordWithSavedPassword(String tryingPassword, UserDetails savedUser) {
         return bCryptPasswordEncoder.matches(tryingPassword, savedUser.getPassword());
     }

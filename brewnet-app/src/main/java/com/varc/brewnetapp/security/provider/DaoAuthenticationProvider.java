@@ -63,14 +63,13 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String loginId = authentication.getPrincipal().toString();
         String loginPassword = authentication.getCredentials().toString();
 
         UserDetails savedUser = authService.loadUserByUsername(
                 (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName()
         );
 
-        if (!authService.isMatchInputPasswordWithSavedPassword(loginPassword,savedUser)) {
+        if (!authService.isMatchInputPasswordWithSavedPassword(loginPassword, savedUser)) {
             throw new BadCredentialsException("Bad credentials");
         } else {
             Authentication authenticationResult = new UsernamePasswordAuthenticationToken(
@@ -82,7 +81,7 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
             String refreshToken = jwtUtil.generateRefreshToken(authenticationResult);
             String accessToken = jwtUtil.generateAccessToken(authenticationResult);
 
-            refreshTokenService.saveRefreshToken(loginId, refreshToken);
+            refreshTokenService.saveRefreshToken(savedUser, refreshToken);
             response.setHeader("Authorization", "Bearer " + accessToken);
             response.setHeader("Refresh-Token", refreshToken);
 
