@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.config;
 
-import com.varc.brewnetapp.shared.utility.servlet.CustomJwtFilter;
+import com.varc.brewnetapp.shared.servlet.CustomJwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
