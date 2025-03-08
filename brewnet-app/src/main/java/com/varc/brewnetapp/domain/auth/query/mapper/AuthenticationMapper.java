@@ -1,5 +1,6 @@
 package com.varc.brewnetapp.domain.auth.query.mapper;
 
+import com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO;
 import com.varc.brewnetapp.domain.auth.query.vo.MemberVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,4 +13,6 @@ public interface AuthenticationMapper {
     List<String> selectAuths();
 
     Integer selectFranchiseCodeByMemberCode(@Param("memberCode") int memberCode);
+
+    MemberInfoDTO selectFranchiseMemberInfoBy(@Param("loginId") String loginId);
 }

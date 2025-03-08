@@ -36,6 +36,18 @@
          WHERE FM.MEMBER_CODE = #{ memberCode }
     </select>
 
+    <select id="selectFranchiseMemberInfoBy" parameterType="string" resultType="com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO">
+        SELECT
+               M.MEMBER_CODE AS memberCode
+             , FM.FRANCHISE_CODE AS franchiseCode
+
+          FROM tbl_member M
+          JOIN tbl_franchise_member FM
+            ON M.MEMBER_CODE = FM.MEMBER_CODE
+         WHERE M.ID = #{ loginId }
+
+    </select>
+
     <select id="selectAuths" resultType="java.lang.String">
       SELECT role
         FROM tbl_Role
