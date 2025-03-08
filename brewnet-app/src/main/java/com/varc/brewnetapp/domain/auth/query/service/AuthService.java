@@ -14,5 +14,7 @@ public interface AuthService extends UserDetailsService {
     boolean isMatchInputPasswordWithSavedPassword(String tryingPassword, UserDetails savedUser);
     List<String> getAuths();
 
-    MemberInfoDTO getMemberInfoDTO(UserDetails loginId, String refreshToken);
+    MemberInfoDTO getMemberInfoDTO(UserDetails userDetails, String refreshToken);
+    MemberInfoDTO getMemberInfoDTOBy(String loginId);
+
 }

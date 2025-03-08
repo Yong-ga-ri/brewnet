@@ -79,6 +79,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public MemberInfoDTO getMemberInfoDTOBy(String loginId) {
+        return authenticationMapper.selectFranchiseMemberInfoBy(loginId);
+    }
+
+    @Override
     public boolean isMatchInputPasswordWithSavedPassword(String tryingPassword, UserDetails savedUser) {
         return bCryptPasswordEncoder.matches(tryingPassword, savedUser.getPassword());
     }
