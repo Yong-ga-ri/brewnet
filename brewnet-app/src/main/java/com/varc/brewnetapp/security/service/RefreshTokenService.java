@@ -57,7 +57,7 @@ public class RefreshTokenService {
         else return memberInfoDTO.getRefreshToken();
     }
 
-    private MemberInfoDTO getMemberInfoFromRedis(String loginId) {
+    public MemberInfoDTO getMemberInfoFromRedis(String loginId) {
         String json = redisTemplate.opsForValue().get(loginId);
         if (json == null) {
             return null;
