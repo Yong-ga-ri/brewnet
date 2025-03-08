@@ -56,6 +56,21 @@ public class JwtUtil {
         );
     }
 
+    public String tokenRefresh(String accessToken) {
+        if (isTokenValid(accessToken)) {
+            String loginId = getLoginId(accessToken);
+            UserDetails savedUser = authService.loadUserByUsername(loginId);
+            Authentication authResult = new UsernamePasswordAuthenticationToken(
+                    savedUser,
+                    savedUser.getPassword(),
+                    savedUser.getAuthorities()
+            );
+            return generateAccessToken(authResult);
+        } else {
+            throw new IllegalArgumentException("invalid token");
+        }
+    }
+
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
@@ -74,28 +89,32 @@ public class JwtUtil {
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = parseClaims(token);
-
-        Collection<? extends GrantedAuthority> authorities = null;
-
-        if (claims.get("authorities") != null) {
-            authorities = Arrays.stream(
-                            claims.get("authorities").toString()
-                                    .replace("[", "")
-                                    .replace("]", "")
-                                    .split(", ")
-                    )
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toSet());
+        if (!isTokenValid(token)) {
+            throw new IllegalArgumentException("invalid token");
         } else {
-            throw new IllegalArgumentException("No authorities found in token");
+            Claims claims = parseClaims(token);
+
+            Collection<? extends GrantedAuthority> authorities;
+
+            if (claims.get("authorities") != null) {
+                authorities = Arrays.stream(
+                                claims.get("authorities").toString()
+                                        .replace("[", "")
+                                        .replace("]", "")
+                                        .split(", ")
+                        )
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toSet());
+            } else {
+                throw new IllegalArgumentException("No authorities found in token");
+            }
+            UserDetails savedUser = authService.loadUserByUsername(getLoginId(token));
+            return new UsernamePasswordAuthenticationToken(
+                    savedUser,
+                    savedUser.getPassword(),
+                    authorities
+            );
         }
-        UserDetails savedUser = authService.loadUserByUsername(getLoginId(token));
-        return new UsernamePasswordAuthenticationToken(
-                savedUser,
-                savedUser.getPassword(),
-                authorities
-        );
     }
 
     public Claims parseClaims(String token) {

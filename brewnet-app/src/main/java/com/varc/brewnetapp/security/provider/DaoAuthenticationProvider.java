@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 public class DaoAuthenticationProvider implements AuthenticationProvider {
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
     private final HttpServletResponse response;
 
@@ -36,7 +35,6 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
      *
      * @param authService           사용자 정보를 로드하기 위한 AuthService
      * @param refreshTokenService   리프레시 토큰 저장 및 검증을 위한 RefreshTokenService
-     * @param bCryptPasswordEncoder 비밀번호 암호화를 위한 BCryptPasswordEncoder
      * @param jwtUtil               JWT 토큰 생성 및 검증을 위한 JwtUtil
      * @param response              인증 성공 시 토큰을 헤더에 설정하기 위한 HttpServletResponse
      */
@@ -44,13 +42,11 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
     public DaoAuthenticationProvider(
             AuthService authService,
             RefreshTokenService refreshTokenService,
-            BCryptPasswordEncoder bCryptPasswordEncoder,
             JwtUtil jwtUtil,
             HttpServletResponse response
     ) {
         this.authService = authService;
         this.refreshTokenService = refreshTokenService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtUtil = jwtUtil;
         this.response = response;
     }
@@ -74,7 +70,7 @@ public class DaoAuthenticationProvider implements AuthenticationProvider {
                 (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName()
         );
 
-        if (!bCryptPasswordEncoder.matches(loginPassword, savedUser.getPassword())) {
+        if (!authService.isMatchInputPasswordWithSavedPassword(loginPassword,savedUser)) {
             throw new BadCredentialsException("Bad credentials");
         } else {
             Authentication authenticationResult = new UsernamePasswordAuthenticationToken(
