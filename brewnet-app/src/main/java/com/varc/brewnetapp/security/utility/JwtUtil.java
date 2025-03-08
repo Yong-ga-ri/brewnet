@@ -76,6 +76,7 @@ public class JwtUtil {
             Jwts.parserBuilder()
                     .setSigningKey(key).build()
                     .parseClaimsJws(token);
+            return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid token {}", e.getMessage());
         } catch (ExpiredJwtException e) {
@@ -85,7 +86,7 @@ public class JwtUtil {
         } catch (IllegalArgumentException e) {
             log.info("Empty token {}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     public Authentication getAuthentication(String token) {
