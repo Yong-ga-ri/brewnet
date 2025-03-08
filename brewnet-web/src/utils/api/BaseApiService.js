@@ -57,20 +57,20 @@ export default class BaseApiService {
         const responseData = await response.json();
 
         // logging
-        const parsedUrl = new URL(requestUrl);
-        console.group(`Request: ${fetchOptions.method} ${parsedUrl.pathname}`);
-        console.group('QueryParams');
-        const printQuery = {};
-        parsedUrl.searchParams.forEach((value, key) => {
-          printQuery[key] = value;
-        });
-        console.table(printQuery);
-        console.groupEnd();
-        console.group('Response Data');
-        console.table({ status: responseData.status, message: responseData.message });
-        console.dir(responseData.result, { depth: null });
-        console.groupEnd();
-        console.groupEnd();
+        // const parsedUrl = new URL(requestUrl);
+        // console.group(`Request: ${fetchOptions.method} ${parsedUrl.pathname}`);
+        // console.group('QueryParams');
+        // const printQuery = {};
+        // parsedUrl.searchParams.forEach((value, key) => {
+        //   printQuery[key] = value;
+        // });
+        // console.table(printQuery);
+        // console.groupEnd();
+        // console.group('Response Data');
+        // console.table({ status: responseData.status, message: responseData.message });
+        // console.dir(responseData.result, { depth: null });
+        // console.groupEnd();
+        // console.groupEnd();
 
         return responseData.result;
       } else {
