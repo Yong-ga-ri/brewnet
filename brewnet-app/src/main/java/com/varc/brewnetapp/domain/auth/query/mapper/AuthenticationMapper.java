@@ -3,10 +3,13 @@ package com.varc.brewnetapp.domain.auth.query.mapper;
 import com.varc.brewnetapp.domain.auth.query.vo.MemberVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AuthenticationMapper {
-    MemberVO selectMemberByIdWithAuthorities(String id);
+    MemberVO selectMemberByIdWithAuthorities(String loginId);
 
     List<String> selectAuths();
+
+    Integer selectFranchiseCodeByMemberCode(@Param("memberCode") int memberCode);
 }

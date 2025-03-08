@@ -25,8 +25,15 @@
             ON (M.MEMBER_CODE = MR.MEMBER_CODE)
          INNER JOIN tbl_role R
             ON (MR.ROLE_CODE = R.ROLE_CODE)
-         WHERE M.ID = #{ id }
+         WHERE M.ID = #{ loginId }
          GROUP BY R.ROLE
+    </select>
+
+    <select id="selectFranchiseCodeByMemberCode" parameterType="int" resultType="int">
+        SELECT
+               FM.FRANCHISE_CODE AS FRANCHISE_CODE
+          FROM tbl_franchise_member FM
+         WHERE FM.MEMBER_CODE = #{ memberCode }
     </select>
 
     <select id="selectAuths" resultType="java.lang.String">
