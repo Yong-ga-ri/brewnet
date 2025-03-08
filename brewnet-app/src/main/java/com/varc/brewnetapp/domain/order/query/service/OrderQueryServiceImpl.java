@@ -179,9 +179,7 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
     @Override
     @Transactional
-    public OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(int orderCode, String loginId) {
-        int franchiseCode = getFranchiseCodeByLoginId(loginId);
-
+    public OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(int orderCode, int franchiseCode) {
         boolean isOrderFromFranchise = orderValidateService.isOrderFromFranchise(
                 franchiseCode,
                 orderCode
