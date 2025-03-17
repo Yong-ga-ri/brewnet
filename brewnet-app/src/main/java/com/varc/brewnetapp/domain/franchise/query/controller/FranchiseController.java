@@ -1,7 +1,6 @@
 package com.varc.brewnetapp.domain.franchise.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
-import com.varc.brewnetapp.domain.franchise.command.application.dto.CreateFranchiseRequestDTO;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.franchise.query.dto.FranchiseDTO;
 import com.varc.brewnetapp.domain.franchise.query.dto.FranchiseMemberDTO;
 import com.varc.brewnetapp.domain.franchise.query.service.FranchiseService;
@@ -14,7 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

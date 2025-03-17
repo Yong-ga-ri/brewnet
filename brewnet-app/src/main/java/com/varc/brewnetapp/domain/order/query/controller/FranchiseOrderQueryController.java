@@ -1,13 +1,14 @@
 package com.varc.brewnetapp.domain.order.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
-import com.varc.brewnetapp.common.SearchCriteria;
-import com.varc.brewnetapp.domain.member.query.service.MemberService;
-import com.varc.brewnetapp.domain.member.query.service.MemberServiceImpl;
+import com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO;
+import com.varc.brewnetapp.shared.ResponseMessage;
+import com.varc.brewnetapp.shared.request.Retrieve;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.order.query.dto.FranchiseOrderDTO;
 import com.varc.brewnetapp.domain.order.query.dto.OrderDetailForFranchiseDTO;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,44 +19,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.varc.brewnetapp.shared.interceptor.CachingMemberInfoInterceptor.SERVLET_ATTRIBUTE_MEMBER_INFO_KEY;
+
 @Slf4j
 @RestController
 @RequestMapping("api/v1/franchise/orders")
 public class FranchiseOrderQueryController {
 
     private final OrderQueryService orderQueryService;
-    private final MemberService queryMemberService;
 
     @Autowired
-    public FranchiseOrderQueryController(
-            OrderQueryService orderQueryService,
-            MemberServiceImpl queryMemberService) {
+    public FranchiseOrderQueryController(OrderQueryService orderQueryService) {
         this.orderQueryService = orderQueryService;
-        this.queryMemberService = queryMemberService;
     }
 
     @GetMapping("/list")
     @Operation(summary = "가맹점의 주문리스트 조회")
     public ResponseEntity<ResponseMessage<Page<FranchiseOrderDTO>>> getOrderList(
             @PageableDefault(size = 10, page = 0) Pageable pageable,
-            @RequestAttribute("loginId") String loginId,
+            @RequestAttribute(SERVLET_ATTRIBUTE_MEMBER_INFO_KEY) MemberInfoDTO memberInfoDTO,
             @RequestParam(name = "filter", required = false) String filter,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "startDate", required = false) String startDate,
             @RequestParam(name = "endDate", required = false) String endDate
     ) {
-        int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
-                .getFranchiseCode();
 
-        Page<FranchiseOrderDTO> orderDTOList = orderQueryService.getOrderListForFranchise(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate,
-                franchiseCode
-        );
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDTOList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderListForFranchise(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, null, null),
+                        memberInfoDTO.getFranchiseCode()
+                )
+        ));
     }
 
 
@@ -63,7 +59,7 @@ public class FranchiseOrderQueryController {
     @Operation(summary = "가맹점의 주문리스트 검색")
     public ResponseEntity<ResponseMessage<Page<FranchiseOrderDTO>>> searchOrderList(
             @PageableDefault(size = 10, page = 0) Pageable pageable,
-            @RequestAttribute("loginId") String loginId,
+            @RequestAttribute(SERVLET_ATTRIBUTE_MEMBER_INFO_KEY) MemberInfoDTO memberInfoDTO,
             @RequestParam(name = "filter", required = false) String filter,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "startDate", required = false) String startDate,
@@ -71,45 +67,33 @@ public class FranchiseOrderQueryController {
             @RequestParam(name = "criteria", required = false) SearchCriteria criteria,
             @RequestParam(name = "searchWord", required = false) String searchWord
     ) {
-        int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
-                .getFranchiseCode();
 
-        Page<FranchiseOrderDTO> searchedOrderList = orderQueryService.searchOrderListForFranchise(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate,
-                franchiseCode,
-                criteria,
-                searchWord
-        );
-
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", searchedOrderList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.searchOrderListForFranchise(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, criteria, searchWord),
+                        memberInfoDTO.getFranchiseCode()
+                )
+        ));
     }
 
     @GetMapping("/excel")
     public ResponseEntity<ResponseMessage<List<FranchiseOrderDTO>>> getOrderDetailList(
-            @RequestAttribute("loginId") String loginId,
+            @RequestAttribute(SERVLET_ATTRIBUTE_MEMBER_INFO_KEY) MemberInfoDTO memberInfoDTO,
             @RequestParam(name = "startDate", required = false) String startDate,
             @RequestParam(name = "endDate", required = false) String endDate,
             @RequestParam(name = "criteria", required = false) SearchCriteria criteria,
             @RequestParam(name = "keyword", required = false) String keyword
     ) {
-        int franchiseCode = queryMemberService.getFranchiseInfoByLoginId(loginId)
-                .getFranchiseCode();
 
-        List<FranchiseOrderDTO> resultOrderDataDTO = orderQueryService.getExcelDataForFranchiseBy(
-                startDate,
-                endDate,
-                franchiseCode,
-                criteria,
-                keyword
-        );
-
-        return ResponseEntity.ok(
-                new ResponseMessage<>(200, "OK", resultOrderDataDTO)
-        );
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getExcelDataForFranchiseBy(
+                        Retrieve.with(null, null, null, startDate, endDate, criteria, keyword),
+                        memberInfoDTO.getFranchiseCode())
+                ));
 
     }
 
@@ -117,10 +101,13 @@ public class FranchiseOrderQueryController {
     @Operation(summary = "가맹점의 주문 상세 정보 조회")
     public ResponseEntity<ResponseMessage<OrderDetailForFranchiseDTO>> getOrderDetail(
             @PathVariable("orderCode") int orderCode,
-            @RequestAttribute("loginId") String loginId
+            @RequestAttribute(SERVLET_ATTRIBUTE_MEMBER_INFO_KEY) MemberInfoDTO memberInfoDTO
     ) {
-        OrderDetailForFranchiseDTO orderDetailForFranchiseDTO = orderQueryService.getOrderDetailForFranchiseBy(orderCode, loginId);
 
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDetailForFranchiseDTO));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderDetailForFranchiseBy(orderCode, memberInfoDTO.getFranchiseCode())
+        ));
     }
 }

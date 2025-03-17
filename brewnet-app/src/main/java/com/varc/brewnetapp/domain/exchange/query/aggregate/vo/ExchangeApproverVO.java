@@ -1,7 +1,7 @@
 package com.varc.brewnetapp.domain.exchange.query.aggregate.vo;
 
-import com.varc.brewnetapp.common.domain.approve.Approval;
-import com.varc.brewnetapp.common.domain.position.Position;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.position.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

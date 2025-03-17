@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.order.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.order.OrderHistoryStatus;
+import com.varc.brewnetapp.shared.domain.order.OrderHistoryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.statistics.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.statistics.query.dto.MyWaitApprovalDTO;
 import com.varc.brewnetapp.domain.statistics.query.dto.OrderCountPriceDTO;
 import com.varc.brewnetapp.domain.statistics.query.dto.OrderStatisticsDTO;

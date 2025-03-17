@@ -1,9 +1,9 @@
 package com.varc.brewnetapp.domain.exchange.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
-import com.varc.brewnetapp.common.domain.approve.Confirmed;
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.Available;
+import com.varc.brewnetapp.shared.S3ImageService;
+import com.varc.brewnetapp.shared.domain.approve.Confirmed;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.Available;
 import com.varc.brewnetapp.domain.exchange.command.application.repository.*;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.entity.*;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity.ExOrder;
@@ -13,17 +13,16 @@ import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.vo.ExchangeD
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.vo.ExchangeManagerApproveReqVO;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.vo.ExchangeReqItemVO;
 import com.varc.brewnetapp.domain.exchange.command.domain.aggregate.vo.ExchangeReqVO;
-import com.varc.brewnetapp.common.domain.approve.Approval;
-import com.varc.brewnetapp.common.domain.exchange.ExchangeStatus;
-import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Franchise;
+import com.varc.brewnetapp.shared.domain.approve.Approval;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.domain.aggregate.Stock;
 import com.varc.brewnetapp.domain.storage.command.domain.repository.StockRepository;
-import com.varc.brewnetapp.exception.*;
+import com.varc.brewnetapp.shared.exception.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Service("ExchangeServiceCommand")
@@ -571,7 +569,6 @@ public class ExchangeServiceImpl implements ExchangeService {
         if (member == null) {
             throw new MemberNotFoundException("교환 결재취소가 불가합니다. 아직 기안자가 없는 교환요청입니다.");
         } else if (!member.getId().equals(loginId)) {
-            log.info("*** 0. member.getId:{}   loginId:{}", member.getId(), loginId);
             throw new IllegalArgumentException("교환 결재취소가 불가합니다. 기안자만 결재취소요청을 할 수 있습니다.");
         } else if (exchange.getDrafterApproved() != DrafterApproved.APPROVE) {
             throw new IllegalArgumentException("교환 결재취소가 불가합니다. 기안자의 교환 승인 여부가 '승인'인 경우에만 결재취소가 가능합니다.");

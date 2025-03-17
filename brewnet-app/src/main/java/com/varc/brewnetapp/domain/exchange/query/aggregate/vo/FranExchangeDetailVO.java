@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.query.aggregate.vo;
 
-import com.varc.brewnetapp.common.domain.exchange.ExchangeStatus;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

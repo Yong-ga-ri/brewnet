@@ -1,7 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.command.domain.aggregate.ex_entity;
 
-import com.varc.brewnetapp.common.domain.order.Available;
-import com.varc.brewnetapp.domain.order.command.domain.aggregate.entity.compositionkey.OrderItemCode;
+import com.varc.brewnetapp.shared.domain.order.Available;
 import jakarta.persistence.*;
 import lombok.*;
 

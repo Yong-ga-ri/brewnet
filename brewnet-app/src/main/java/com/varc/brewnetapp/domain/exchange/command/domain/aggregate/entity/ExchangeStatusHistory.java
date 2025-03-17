@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.command.domain.aggregate.entity;
 
-import com.varc.brewnetapp.common.domain.exchange.ExchangeStatus;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

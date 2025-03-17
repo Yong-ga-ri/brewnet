@@ -1,8 +1,9 @@
 package com.varc.brewnetapp.domain.order.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 
-import com.varc.brewnetapp.common.SearchCriteria;
+import com.varc.brewnetapp.shared.request.Retrieve;
+import com.varc.brewnetapp.shared.utility.search.SearchCriteria;
 import com.varc.brewnetapp.domain.order.query.dto.*;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,9 +24,7 @@ public class HQOrderQueryController {
     private final OrderQueryService orderQueryService;
 
     @Autowired
-    public HQOrderQueryController(
-            OrderQueryService orderQueryService
-    ) {
+    public HQOrderQueryController(OrderQueryService orderQueryService) {
         this.orderQueryService = orderQueryService;
     }
 
@@ -41,14 +40,12 @@ public class HQOrderQueryController {
             @RequestParam(name = "startDate", required = false) String startDate,
             @RequestParam(name = "endDate", required = false) String endDate
     ) {
-        Page<HQOrderDTO> orderDTOList = orderQueryService.getOrderListForHQ(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate
-        );
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDTOList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderListForHQ(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, null, null)
+                )));
     }
 
     @GetMapping("/excel")
@@ -59,16 +56,14 @@ public class HQOrderQueryController {
             @RequestParam(name = "criteria", required = false) SearchCriteria criteria,
             @RequestParam(name = "searchWord", required = false) String searchWord
     ) {
-        List<HQOrderDTO> resultOrderDataDTO = orderQueryService.getExcelDataForHQBy(
-                startDate,
-                endDate,
-                criteria,
-                searchWord
-        );
-
         return ResponseEntity.ok(
-                new ResponseMessage<>(200, "OK", resultOrderDataDTO)
-        );
+                new ResponseMessage<>(
+                        200,
+                        "OK",
+                        orderQueryService.getExcelDataForHQBy(
+                                Retrieve.with(null, null, null, startDate, endDate, criteria, searchWord)
+                        )
+                ));
     }
 
     @GetMapping("/search")
@@ -84,18 +79,13 @@ public class HQOrderQueryController {
             @RequestParam(name = "endDate", required = false) String endDate,
             @RequestParam(name = "criteria", required = false) SearchCriteria criteria,
             @RequestParam(name = "searchWord", required = false) String searchWord
-
     ) {
-        Page<HQOrderDTO> orderDTOList = orderQueryService.searchOrderListForHQ(
-                pageable,
-                filter,
-                sort,
-                startDate,
-                endDate,
-                criteria,
-                searchWord
-        );
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDTOList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.searchOrderListForHQ(
+                        Retrieve.with(pageable, filter, sort, startDate, endDate, criteria, searchWord)
+                )));
     }
 
     @GetMapping("/detail/{orderCode}")
@@ -105,17 +95,23 @@ public class HQOrderQueryController {
     )
     public ResponseEntity<ResponseMessage<OrderDetailForHQDTO>> getOrderInformation(
             @PathVariable("orderCode") Integer orderCode) {
-        OrderDetailForHQDTO orderDetailDTO = orderQueryService.getOrderDetailForHqBy(orderCode);
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderDetailDTO));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderDetailForHqBy(orderCode)
+        ));
     }
 
     @GetMapping("/detail/{orderCode}/history")
     @Operation(summary = "본사의 주문 히스토리 조회")
-    public ResponseEntity<ResponseMessage<List<OrderStatusHistory>>> healthcheck(
+    public ResponseEntity<ResponseMessage<List<OrderStatusHistory>>> getOrderHistoryList(
             @PathVariable("orderCode") Integer orderCode
     ) {
-        List<OrderStatusHistory> orderHistoryList = orderQueryService.getOrderHistoryByOrderCode(orderCode);
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderHistoryList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderHistoryByOrderCode(orderCode)
+        ));
     }
 
     @GetMapping("/detail/{orderCode}/history/approval")
@@ -123,15 +119,22 @@ public class HQOrderQueryController {
     public ResponseEntity<ResponseMessage<List<OrderApprovalHistoryDTO>>> getApprovalHistories(
             @PathVariable("orderCode") Integer orderCode
     ) {
-        List<OrderApprovalHistoryDTO> orderApprovalHistoryDTOList = orderQueryService.getOrderApprovalHistories(orderCode);
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", orderApprovalHistoryDTOList));
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.getOrderApprovalHistories(orderCode)
+                ));
     }
 
     @GetMapping("/detail/{orderCode}/print/order-request")
     @Operation(summary = "주문 코드를 path variable로 활용한 주문요청서 출력데이터 조회")
     public ResponseEntity<ResponseMessage<OrderRequestDTO>> printOrderRequest(
-            @PathVariable("orderCode") Integer orderCode) {
-        OrderRequestDTO printedRequestedOrder = orderQueryService.printOrderRequest(orderCode);
-        return ResponseEntity.ok(new ResponseMessage<>(200, "OK", printedRequestedOrder));
+            @PathVariable("orderCode") Integer orderCode
+    ) {
+        return ResponseEntity.ok(new ResponseMessage<>(
+                200,
+                "OK",
+                orderQueryService.printOrderRequest(orderCode)
+                ));
     }
 }

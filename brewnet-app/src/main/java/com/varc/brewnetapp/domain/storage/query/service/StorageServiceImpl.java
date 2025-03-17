@@ -8,7 +8,7 @@ import com.varc.brewnetapp.domain.storage.query.dto.StorageDTO;
 import com.varc.brewnetapp.domain.storage.query.dto.StorageDetailDTO;
 import com.varc.brewnetapp.domain.storage.query.dto.StorageNameDTO;
 import com.varc.brewnetapp.domain.storage.query.mapper.StorageMapper;
-import com.varc.brewnetapp.exception.StorageNotFoundException;
+import com.varc.brewnetapp.shared.exception.StorageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

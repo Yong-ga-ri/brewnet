@@ -805,7 +805,7 @@
 
     <!-- 교환코드로 가장 최근 교환상태(status) 1개를 조회하는 쿼리 -->
     <!-- 교환취소 시, 해당 교환요청의 상태가 REQUESTED인지 조회하기 위해 사용 -->
-    <select id="selectExchangeLatestStatusBy" resultType="com.varc.brewnetapp.common.domain.exchange.ExchangeStatus">
+    <select id="selectExchangeLatestStatusBy" resultType="com.varc.brewnetapp.shared.domain.exchange.ExchangeStatus">
         SELECT
               A.status
          FROM tbl_exchange_status_history A

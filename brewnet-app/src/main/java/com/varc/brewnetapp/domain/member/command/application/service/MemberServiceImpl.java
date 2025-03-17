@@ -1,10 +1,11 @@
 package com.varc.brewnetapp.domain.member.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
+import com.varc.brewnetapp.security.service.RefreshTokenService;
+import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckNumDTO;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Position;
-import com.varc.brewnetapp.exception.EmptyDataException;
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Franchise;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
@@ -13,14 +14,13 @@ import com.varc.brewnetapp.domain.member.command.application.dto.ChangeMemberReq
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangePwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckPwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.LoginIdRequestDTO;
-import com.varc.brewnetapp.domain.member.command.domain.aggregate.PositionName;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Member;
 import com.varc.brewnetapp.domain.member.command.domain.repository.MemberRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.PositionRepository;
-import com.varc.brewnetapp.exception.InvalidApiRequestException;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.MemberNotFoundException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.InvalidApiRequestException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import java.util.Collection;
 import java.util.UUID;
@@ -50,13 +50,15 @@ public class MemberServiceImpl implements MemberService {
     private final S3ImageService s3ImageService;
     private final StringRedisTemplate redisTemplate;
 
+    private final RefreshTokenService refreshTokenService;
+
     @Autowired
     public MemberServiceImpl(MemberRepository memberRepository,
         PositionRepository positionRepository,
         FranchiseRepository franchiseRepository,
         FranchiseMemberRepository franchiseMemberRepository,
         BCryptPasswordEncoder bCryptPasswordEncoder, JwtUtil jwtUtil, ModelMapper modelMapper,
-        S3ImageService s3ImageService, StringRedisTemplate redisTemplate) {
+        S3ImageService s3ImageService, StringRedisTemplate redisTemplate, RefreshTokenService refreshTokenService) {
         this.memberRepository = memberRepository;
         this.positionRepository = positionRepository;
         this.franchiseRepository = franchiseRepository;
@@ -66,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
         this.modelMapper = modelMapper;
         this.s3ImageService = s3ImageService;
         this.redisTemplate = redisTemplate;
+        this.refreshTokenService = refreshTokenService;
     }
 
 
@@ -88,22 +91,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void deleteMember(String accessToken, LoginIdRequestDTO loginIdRequestDTO) {
-        Authentication authentication = jwtUtil.getAuthentication(accessToken.replace("Bearer ", ""));
-
-        // 권한을 리스트 형태로 가져옴
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        if (authorities.stream().anyMatch(auth -> "ROLE_MASTER".equals(auth.getAuthority()))) {
-            Member member = memberRepository.findById(loginIdRequestDTO.getLoginId())
+        String loginId = loginIdRequestDTO.getLoginId();
+        Member member = memberRepository.findById(loginId)
                 .orElseThrow(() -> new MemberNotFoundException("삭제하려는 회원이 없습니다"));
+        if(!member.getActive()) throw new InvalidDataException("삭제하려는 회원이 없습니다");
 
-            if(!member.getActive())
-                throw new InvalidDataException("삭제하려는 회원이 없습니다");
 
-            member.setActive(false);
-            memberRepository.save(member);
-        } else
-            throw new UnauthorizedAccessException("마스터 권한이 없는 사용자입니다");
+        member.setActive(false);
+        memberRepository.save(member);
+        refreshTokenService.deleteRefreshToken(loginId);
     }
 
     @Override

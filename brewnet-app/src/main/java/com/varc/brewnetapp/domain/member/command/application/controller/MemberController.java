@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.member.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangeMemberRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.ChangePwRequestDTO;
 import com.varc.brewnetapp.domain.member.command.application.dto.CheckNumDTO;
@@ -12,7 +12,7 @@ import com.varc.brewnetapp.domain.member.command.application.dto.SendEmailReques
 import com.varc.brewnetapp.domain.member.command.application.service.CompanyService;
 import com.varc.brewnetapp.domain.member.command.application.service.EmailService;
 import com.varc.brewnetapp.domain.member.command.application.service.MemberService;
-import com.varc.brewnetapp.exception.InvalidEmailCodeException;
+import com.varc.brewnetapp.shared.exception.InvalidEmailCodeException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

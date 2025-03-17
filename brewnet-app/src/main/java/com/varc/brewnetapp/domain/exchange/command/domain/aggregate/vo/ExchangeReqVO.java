@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.exchange.command.domain.aggregate.vo;
 
-import com.varc.brewnetapp.common.domain.exchange.ExchangeReason;
+import com.varc.brewnetapp.shared.domain.exchange.ExchangeReason;
 import lombok.*;
 
 import java.util.List;

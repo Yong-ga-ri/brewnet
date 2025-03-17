@@ -1,11 +1,9 @@
 package com.varc.brewnetapp.domain.notice.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.notice.query.dto.NoticeDTO;
 import com.varc.brewnetapp.domain.notice.query.service.NoticeService;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

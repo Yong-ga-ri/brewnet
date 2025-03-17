@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.item.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
+import com.varc.brewnetapp.shared.S3ImageService;
 import com.varc.brewnetapp.domain.correspondent.command.domain.aggregate.Correspondent;
 import com.varc.brewnetapp.domain.correspondent.command.domain.aggregate.CorrespondentItem;
 import com.varc.brewnetapp.domain.correspondent.command.domain.aggregate.CorrespondentItemId;
@@ -14,15 +14,12 @@ import com.varc.brewnetapp.domain.item.command.domain.aggregate.entity.Item;
 import com.varc.brewnetapp.domain.item.command.domain.aggregate.entity.MandatoryPurchase;
 import com.varc.brewnetapp.domain.item.command.domain.repository.ItemRepository;
 import com.varc.brewnetapp.domain.item.command.domain.repository.MandatoryPurchaseRepository;
-import com.varc.brewnetapp.domain.notice.command.domain.aggregate.entity.NoticeImage;
-import com.varc.brewnetapp.exception.DuplicateException;
-import com.varc.brewnetapp.exception.EmptyDataException;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.exception.InvalidItemException;
-import com.varc.brewnetapp.exception.ItemNotFoundException;
-import com.varc.brewnetapp.exception.MandatoryPurchaseNotFound;
-import com.varc.brewnetapp.exception.MustBuyItemAlreadySet;
-import com.varc.brewnetapp.utility.time.Formatter;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.exception.InvalidItemException;
+import com.varc.brewnetapp.shared.exception.MandatoryPurchaseNotFound;
+import com.varc.brewnetapp.shared.exception.MustBuyItemAlreadySet;
+import com.varc.brewnetapp.shared.utility.time.Formatter;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service

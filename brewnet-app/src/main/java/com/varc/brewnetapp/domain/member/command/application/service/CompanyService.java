@@ -1,15 +1,15 @@
 package com.varc.brewnetapp.domain.member.command.application.service;
 
-import com.varc.brewnetapp.common.S3ImageService;
-import com.varc.brewnetapp.exception.InvalidDataException;
-import com.varc.brewnetapp.utility.TelNumberUtil;
+import com.varc.brewnetapp.shared.S3ImageService;
+import com.varc.brewnetapp.shared.exception.InvalidDataException;
+import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import com.varc.brewnetapp.domain.member.command.application.dto.CreateCompanyRequestDTO;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Company;
 import com.varc.brewnetapp.domain.member.command.domain.aggregate.entity.Seal;
 import com.varc.brewnetapp.domain.member.command.domain.repository.CompanyRepository;
 import com.varc.brewnetapp.domain.member.command.domain.repository.SealRepository;
-import com.varc.brewnetapp.exception.InvalidApiRequestException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.InvalidApiRequestException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import com.varc.brewnetapp.security.utility.JwtUtil;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -135,7 +135,6 @@ public class CompanyService {
             if(company == null || company.isEmpty())
                 throw new InvalidDataException("회사 정보를 먼저 생성해주세요");
 
-            log.info("법인 인감 entity 생성");
             Seal seal = Seal.builder()
                 .imageUrl(s3Url)
                 .createdAt(LocalDateTime.now())
@@ -159,7 +158,6 @@ public class CompanyService {
             List<Seal> sealList = sealRepository.findAll();
 
             if(sealList == null || sealList.isEmpty()){
-                log.info("법인 인감 없음");
                 createSeal(accessToken, sealImage);
                 return;
             }

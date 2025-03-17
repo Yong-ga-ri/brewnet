@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.item.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.item.query.dto.MustBuyItemDTO;
 import com.varc.brewnetapp.domain.item.query.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;

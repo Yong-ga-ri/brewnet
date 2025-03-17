@@ -1,75 +1,33 @@
 package com.varc.brewnetapp.domain.order.query.service;
 
-import com.varc.brewnetapp.common.SearchCriteria;
+import com.varc.brewnetapp.shared.request.Retrieve;
 import com.varc.brewnetapp.domain.order.query.dto.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-
+/**
+ * 주문 조회를 위한 Query Service 인터페이스.
+ */
 public interface OrderQueryService {
 
-
     // requested by hq
-    Page<HQOrderDTO> getOrderListForHQ(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate
-    );
-    Page<HQOrderDTO> searchOrderListForHQ(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
-            SearchCriteria criteria,
-            String keyword
-    );
+    Page<HQOrderDTO> getOrderListForHQ(Retrieve retrieve);
+    Page<HQOrderDTO> searchOrderListForHQ(Retrieve retrieve);
     OrderRequestDTO printOrderRequest(int orderCode);
     OrderDetailForHQDTO getOrderDetailForHqBy(int orderCode);
-    List<HQOrderDTO> getExcelDataForHQBy(
-            String startDate,
-            String endDate,
-            SearchCriteria criteria,
-            String keyword
-    );
-
+    List<HQOrderDTO> getExcelDataForHQBy(Retrieve retrieve);
 
     // requested by franchise
-    Page<FranchiseOrderDTO> getOrderListForFranchise(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
-            int franchiseCode
-    );
-    OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(
-            int orderCode, String loginId
-    );
-    Page<FranchiseOrderDTO> searchOrderListForFranchise(
-            Pageable pageable,
-            String filter,
-            String sort,
-            String startDate,
-            String endDate,
-            int franchiseCode,
-            SearchCriteria criteria,
-            String searchWord
-    );
-    List<FranchiseOrderDTO> getExcelDataForFranchiseBy(
-            String startDate,
-            String endDate,
-            int franchiseCode,
-            SearchCriteria criteria,
-            String keyword
-    );
+    Page<FranchiseOrderDTO> getOrderListForFranchise(Retrieve retrieve, int franchiseCode);
+    OrderDetailForFranchiseDTO getOrderDetailForFranchiseBy(int orderCode, int franchiseCode);
+    Page<FranchiseOrderDTO> searchOrderListForFranchise(Retrieve retrieve, int franchiseCode);
+    List<FranchiseOrderDTO> getExcelDataForFranchiseBy(Retrieve retrieve, int franchiseCode);
 
     // common
     OrderStatusHistory getOrderStatusHistoryByOrderCode(int orderCode);
     List<OrderStatusHistory> getOrderHistoryByOrderCode(int orderCode);
     List<OrderApprovalHistoryDTO> getOrderApprovalHistories(Integer orderCode);
 }
+
+

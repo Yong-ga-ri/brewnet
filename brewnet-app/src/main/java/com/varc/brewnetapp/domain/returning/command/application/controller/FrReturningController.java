@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.returning.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.returning.command.application.service.ReturningService;
 import com.varc.brewnetapp.domain.returning.command.domain.aggregate.vo.ReturningReqVO;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,10 +1,10 @@
 package com.varc.brewnetapp.domain.order.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;
 import com.varc.brewnetapp.domain.order.command.application.dto.DrafterRejectOrderRequestDTO;
 import com.varc.brewnetapp.domain.order.command.application.dto.OrderApproveRequestDTO;
-import com.varc.brewnetapp.domain.order.command.application.service.OrderService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class HQOrderController {
     ) {
         int memberCode = memberService.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean isDrafted = orderService.requestApproveOrder(orderCode, memberCode, orderApproveRequestDTO);
+        orderService.requestApproveOrder(orderCode, memberCode, orderApproveRequestDTO);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "order approval requested successfully", null)
         );
@@ -47,7 +47,7 @@ public class HQOrderController {
     ) {
         int memberCode = memberService.getMemberByLoginId(loginId).getMemberCode();
 
-        boolean isCanceled = orderService.cancelOrderApproval(orderCode, memberCode);
+        orderService.cancelOrderApproval(orderCode, memberCode);
         return ResponseEntity.ok(
                 new ResponseMessage<>(200, "order approval canceled successfully", null)
         );

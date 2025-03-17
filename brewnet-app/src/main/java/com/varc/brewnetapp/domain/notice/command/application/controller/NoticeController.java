@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.notice.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.notice.command.application.dto.CreateNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.DeleteNoticeRequestDTO;
 import com.varc.brewnetapp.domain.notice.command.application.dto.UpdateNoticeRequestDTO;

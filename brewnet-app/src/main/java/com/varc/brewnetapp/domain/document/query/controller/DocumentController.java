@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.document.query.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.document.query.dto.ApproverDTO;
 import com.varc.brewnetapp.domain.document.query.service.ApprovalService;
 import com.varc.brewnetapp.domain.document.query.dto.ApprovalDTO;

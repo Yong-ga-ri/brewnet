@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.correspondent.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.correspondent.command.application.dto.CorrespondentDeleteRequestDTO;
 import com.varc.brewnetapp.domain.correspondent.command.application.dto.CorrespondentRequestDTO;
 import com.varc.brewnetapp.domain.correspondent.command.application.service.CorrespondentService;

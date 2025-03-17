@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.item.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.item.command.application.dto.MustBuyItemDTO;
 import com.varc.brewnetapp.domain.item.command.application.service.ItemService;
 import com.varc.brewnetapp.domain.member.query.service.MemberService;

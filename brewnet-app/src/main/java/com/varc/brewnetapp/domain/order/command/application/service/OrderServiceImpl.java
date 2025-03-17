@@ -1,10 +1,11 @@
 package com.varc.brewnetapp.domain.order.command.application.service;
 
-import com.varc.brewnetapp.common.domain.drafter.DrafterApproved;
-import com.varc.brewnetapp.common.domain.order.ApprovalStatus;
-import com.varc.brewnetapp.common.domain.order.Available;
-import com.varc.brewnetapp.common.domain.order.OrderHistoryStatus;
-import com.varc.brewnetapp.common.domain.order.OrderApprovalStatus;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderService;
+import com.varc.brewnetapp.shared.domain.drafter.DrafterApproved;
+import com.varc.brewnetapp.shared.domain.order.ApprovalStatus;
+import com.varc.brewnetapp.shared.domain.order.Available;
+import com.varc.brewnetapp.shared.domain.order.OrderHistoryStatus;
+import com.varc.brewnetapp.shared.domain.order.OrderApprovalStatus;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.FranchiseMember;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseMemberRepository;
 import com.varc.brewnetapp.domain.item.query.service.ItemService;
@@ -24,10 +25,10 @@ import com.varc.brewnetapp.domain.order.command.domain.repository.OrderItemRepos
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderRepository;
 import com.varc.brewnetapp.domain.order.command.domain.repository.OrderStatusHistoryRepository;
 import com.varc.brewnetapp.domain.order.query.service.OrderQueryService;
-import com.varc.brewnetapp.domain.order.query.service.OrderValidateService;
-import com.varc.brewnetapp.domain.sse.service.SSEService;
+import com.varc.brewnetapp.domain.order.command.domain.service.OrderValidateService;
+import com.varc.brewnetapp.shared.sse.service.SSEService;
 import com.varc.brewnetapp.domain.storage.command.application.service.StorageService;
-import com.varc.brewnetapp.exception.*;
+import com.varc.brewnetapp.shared.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,10 +86,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderRequestResponseDTO orderRequestByFranchise(
-            OrderRequestDTO orderRequestDTO, String loginId
+            OrderRequestDTO orderRequestDTO, int requestFranchiseCode, int orderRequestedMember
     ) {
-        int requestFranchiseCode = memberService.getFranchiseInfoByLoginId(loginId).getFranchiseCode();
-        int orderRequestedMember = memberService.getMemberByLoginId(loginId).getMemberCode();
         List<OrderItemDTO> requestedOrderItemDTOList = orderRequestDTO.getOrderList();
         int orderedCode = orderRepository.save(
                 Order.builder()
@@ -126,49 +125,18 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void cancelOrderRequest(Integer orderCode, Integer requestMemberFranchiseCode) {
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+        Order order = orderRepository.findById(orderCode).orElseThrow(OrderNotFound::new);
 
-        int targetFranchiseCode = order.getFranchiseCode();
-
-        // TODO: validate
-        //  If the requester is from target franchise  [DONE]
-        if (!Objects.equals(targetFranchiseCode, requestMemberFranchiseCode)) {
-            throw new UnauthorizedAccessException(
-                    "Unauthorized access." + "OrderCode: " + orderCode + " is from franchiseCode: " + targetFranchiseCode + ". Your franchise code is: " + requestMemberFranchiseCode
-            );
-        }
-
-        // TODO: validate
-        //  1. check if member_code in tbl_order is null and the order is valid(.active=1) [DONE]
-        //  2. If the status column in tbl_order_status_history is 'REQUESTED'             [DONE]
-
-        // TODO: Order Item 상태 수정
-        //  3. tbl_order_item 목록 수정 available, active -> UNAVAILABLE, false              [DONE]
-
-        if (orderValidateService.isOrderDrafted(orderCode)) {
-            throw new OrderApprovalAlreadyExist("Order already drafted. Order code is: " + orderCode + ". Unable to cancel the order.");
-        }
-
-        String recentOrderStatus = orderQueryService.getOrderStatusHistoryByOrderCode(orderCode).getOrderHistoryStatus();
-        if (!recentOrderStatus.equals(OrderHistoryStatus.REQUESTED.getValue())) {
-            throw new UnexpectedOrderStatus("expected status: " + OrderHistoryStatus.REQUESTED + " but got " + recentOrderStatus);
-        }
+        if (order.getFranchiseCode() != requestMemberFranchiseCode)                {throw new UnauthorizedAccessException("Unauthorized access.");}
+        if (orderValidateService.isOrderDrafted(orderCode))                        {throw new OrderApprovalAlreadyExist("Order already drafted. Order code is: " + orderCode + ". Unable to cancel the order.");}
+        if (!getRecentOrderStatus(orderCode).equals(OrderHistoryStatus.REQUESTED)) {throw new UnexpectedOrderStatus("expected status: " + OrderHistoryStatus.REQUESTED);}
 
         updateOrderedItemListStatusTo(getOrderItemsByOrderCode(orderCode), Available.UNAVAILABLE);
 
         orderRepository.save(
                 Order.builder()
-                        .orderCode(order.getOrderCode())
-                        .comment("가맹점의 주문 요청 취소")
-                        .createdAt(order.getCreatedAt())
-                        .active(order.isActive())
-                        .approvalStatus(order.getApprovalStatus())
-                        .drafterApproved(order.getDrafterApproved())
-                        .sumPrice(order.getSumPrice())
-                        .franchiseCode(order.getFranchiseCode())
-                        .memberCode(order.getMemberCode())
-                        .deliveryCode(order.getDeliveryCode())
-                        .build()
+                .orderCode(order.getOrderCode()).comment("가맹점의 주문 요청 취소").createdAt(order.getCreatedAt()).active(order.isActive()).approvalStatus(order.getApprovalStatus()).drafterApproved(order.getDrafterApproved()).sumPrice(order.getSumPrice()).franchiseCode(order.getFranchiseCode()).memberCode(order.getMemberCode()).deliveryCode(order.getDeliveryCode())
+                .build()
         );
 
         recordOrderStatusHistory(orderCode, OrderHistoryStatus.CANCELED);
@@ -177,25 +145,16 @@ public class OrderServiceImpl implements OrderService {
     // 가맹점 주문 요청에 대한 일반 관리자의 상신
     @Transactional
     @Override
-    public boolean requestApproveOrder(
+    public void requestApproveOrder(
             int orderCode,  // 주문 번호
             int memberCode, // 기안자 코드
             OrderApproveRequestDTO orderApproveRequestDTO   // 주문 상신 DTO
     ) {
         int targetManagerMemberCode = orderApproveRequestDTO.getSuperManagerMemberCode();
 
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
-//        List<OrderItem> orderItemList = getOrderItemsByOrderCode(order.getOrderCode());
+        Order order = orderRepository.findById(orderCode)
+                .orElseThrow(OrderNotFound::new);
         List<OrderApprover> orderApprover = orderApprovalRepository.findByOrderApprovalCode_OrderCode(order.getOrderCode());
-
-        Integer presentOrderDrafterMemberCode = order.getMemberCode();
-        log.debug("order.getMemberCode() - 기존 기안자: {}", presentOrderDrafterMemberCode);
-
-        OrderApprovalStatus presentOrderStatus = order.getApprovalStatus();
-        log.debug("order.getApprovalStatus() - 기존 주문 결재 상태: {}", presentOrderStatus);
-
-        DrafterApproved presentDraftedApprovedStatus = order.getDrafterApproved();
-        log.debug("order.getDrafterApproved() - 기존 기안자의 승인 상태: {}", presentDraftedApprovedStatus);
 
         // TODO: 일반 관리자의 상신
         //  - 상신된 주문 결재 요청이 있는지 확인 (validate)              [DONE]
@@ -212,22 +171,12 @@ public class OrderServiceImpl implements OrderService {
         //    - 해당 order_item의 available -> UNAVAILABLE         [DONE]
 
         if (order.getMemberCode() != null) {
-            log.debug("orderApprover: {}", orderApprover);
             if (orderApprover.isEmpty()) {
                 if (memberCode != order.getMemberCode()) {
-
-                    // TODO: 앞서 결재가 취소된 경우                            [DONE]
-                    //  상신 요청자가 취소한 사람(tbl_order.memberCode)인지 확인   [DONE]
-                    log.debug("memberCode != order.getMemberCode()");
                     throw new UnauthorizedAccessException("재결재에 대한 권한이 없습니다.");
                 }
-                log.debug("memberCode == order.getMemberCode()");
             } else {
-                throw new OrderApprovalAlreadyExist(
-                        "order approval already exist. " +
-                                "already requested by memberCode:" + order.getMemberCode() +
-                                ", orderCode: " + order.getMemberCode()
-                );
+                throw new OrderApprovalAlreadyExist("order approval already exist. " + "already requested by memberCode:" + order.getMemberCode() + ", orderCode: " + order.getMemberCode());
             }
         }
 
@@ -263,20 +212,18 @@ public class OrderServiceImpl implements OrderService {
         );
 
         // 상신받은 책임 결재자에게 알림
-        sseService.sendToMember(memberCode, "OrderApprovalReqEvent", targetManagerMemberCode
-                , "주문 결재 요청이 도착했습니다.");
-
-        return true;
+        sseService.sendToMember(memberCode, "OrderApprovalReqEvent", targetManagerMemberCode, "주문 결재 요청이 도착했습니다.");
     }
 
     // 일반 관리자의 주문요청 상신 취소
     @Transactional
     @Override
-    public boolean cancelOrderApproval(int orderCode, int memberCode) {
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+    public void cancelOrderApproval(int orderCode, int memberCode) {
+        Order order = orderRepository.findById(orderCode)
+                .orElseThrow(OrderNotFound::new);
         List<OrderApprover> orderApproval = orderApprovalRepository.findByOrderApprovalCode_OrderCode(orderCode);
         OrderStatusHistory optionalOrderStatusHistory = orderStatusHistoryRepository.findFirstByOrderCodeOrderByCreatedAtDesc(order.getOrderCode())
-                .orElseThrow(() -> new OrderNotFound("Order not found"));
+                .orElseThrow(OrderNotFound::new);
 
         if (orderApproval == null) {
             throw new ApprovalNotFoundException("취소할 주문 결재가 존재하지 않습니다.");
@@ -326,14 +273,12 @@ public class OrderServiceImpl implements OrderService {
         );
 
         recordOrderStatusHistory(orderCode, OrderHistoryStatus.REQUESTED);
-
-        return true;
     }
 
     // 주문요청 상신에 책임 관리자의 승인
     @Transactional
     @Override
-    public boolean approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO) {
+    public void approveOrderDraft(int orderCode, int memberCode, OrderRequestApproveDTO orderRequestApproveDTO) {
 
         // TODO: 책임 관리자의 상신에 대한 승인 처리
         //  - tbl_order_approver 수정              [DONE]
@@ -349,17 +294,14 @@ public class OrderServiceImpl implements OrderService {
                 OrderApprovalCode.builder()
                         .memberCode(memberCode)
                         .orderCode(orderCode)
-                        .build()
-        ).orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
-        log.info("책임 관리자의 승인 전 tbl_order_approver.approved: {}", orderApprover.getApprovalStatus());
+                        .build())
+                .orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
 
         if (orderApprover.getApprovalStatus().equals(ApprovalStatus.APPROVED)) {
             throw new OrderDraftAlreadyApproved("order draft already approved. orderCode: " + orderCode + ", approvedManagerMemberCode: " + memberCode);
         }
 
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
-        log.info("책임 관리자의 승인 전 tbl_order.approval_status: {}", order.getApprovalStatus());
-        log.info("책임 관리자의 승인 전 tbl_order.drafter_approved: {}", order.getDrafterApproved());
+        Order order = orderRepository.findById(orderCode).orElseThrow(OrderNotFound::new);
 
         String requestedComment = orderRequestApproveDTO.getComment();
 
@@ -403,18 +345,19 @@ public class OrderServiceImpl implements OrderService {
         );
 
         sseService.sendToFranchise(memberCode, "OrderApprovedEvent", memberCode + "번 주문 요청이 승인되었습니다.");
-        return true;
     }
 
     // 주문요청 상신에 책임 관리자의 반려
     @Transactional
     @Override
-    public boolean rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO) {
+    public void rejectOrderDraft(int orderCode, int memberCode, OrderApprovalRequestRejectDTO orderApprovalRequestRejectDTO) {
         OrderApprover orderApprover = orderApprovalRepository.findById(OrderApprovalCode.builder()
-                .memberCode(memberCode)
-                .orderCode(orderCode)
-                .build()).orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
-        Order order = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+                        .memberCode(memberCode)
+                        .orderCode(orderCode)
+                        .build())
+                .orElseThrow(() -> new OrderApprovalNotFound("Order approval not found"));
+        Order order = orderRepository.findById(orderCode)
+                .orElseThrow(OrderNotFound::new);
 
         // TODO: 책임 관리자의 상신에 대한 반려 처리
         //  - validate                             [DONE]
@@ -460,10 +403,7 @@ public class OrderServiceImpl implements OrderService {
         recordOrderStatusHistory(orderCode, OrderHistoryStatus.REJECTED);
 
         // 본사에서 주문신청한 가맹점 회원들에게 알림
-        sendToOrderFranchiseMember(order.getFranchiseCode(), "OrderRejectionEvent"
-                , order.getOrderCode() + "번 요청이 반려되었습니다.");
-
-        return true;
+        sendToOrderFranchiseMember(order.getFranchiseCode(), "OrderRejectionEvent", order.getOrderCode() + "번 요청이 반려되었습니다.");
     }
 
 
@@ -487,7 +427,8 @@ public class OrderServiceImpl implements OrderService {
 
         String reason = drafterRejectOrderRequestDTO.getReason();
         int drafterMemberCode = memberService.getMemberByLoginId(loginId).getMemberCode();
-        Order targetOrder = orderRepository.findById(orderCode).orElseThrow(() -> new OrderNotFound("Order not found"));
+        Order targetOrder = orderRepository.findById(orderCode).
+                orElseThrow(OrderNotFound::new);
         List<OrderItem> orderItemList = orderItemRepository.findByOrderItemCode_OrderCode(orderCode);
 
         orderRepository.save(
@@ -520,7 +461,7 @@ public class OrderServiceImpl implements OrderService {
         if (!orderItemList.isEmpty()) {
             return orderItemList;
         } else {
-            throw new OrderItemNotFound("Order not found");
+            throw new OrderItemNotFound("Order Item not found");
         }
     }
 
@@ -551,6 +492,34 @@ public class OrderServiceImpl implements OrderService {
             );
         } else {
             throw new InvalidOrderItems("주문 아이템 최소 1개가 존재해야합니다. orderCode: " + orderedCode);
+        }
+    }
+
+    public OrderHistoryStatus getRecentOrderStatus(int orderCode) {
+        String value = orderQueryService.getOrderStatusHistoryByOrderCode(orderCode).getOrderHistoryStatus();
+        switch (value) {
+            case "REQUESTED" -> {
+                return OrderHistoryStatus.REQUESTED;
+            }
+            case "PENDING" -> {
+                return OrderHistoryStatus.PENDING;
+            }
+            case "CANCELED" -> {
+                return OrderHistoryStatus.CANCELED;
+            }
+            case "APPROVED" -> {
+                return OrderHistoryStatus.APPROVED;
+            }
+            case "REJECTED" -> {
+                return OrderHistoryStatus.REJECTED;
+            }
+            case "SHIPPING" -> {
+                return OrderHistoryStatus.SHIPPING;
+            }
+            case "SHIPPED" -> {
+                return OrderHistoryStatus.SHIPPED;
+            }
+            default -> throw new IllegalArgumentException();
         }
     }
 

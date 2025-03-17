@@ -3,7 +3,7 @@ package com.varc.brewnetapp.domain.member.query.service;
 import com.varc.brewnetapp.domain.member.query.dto.CompanyDTO;
 import com.varc.brewnetapp.domain.member.query.dto.SealDTO;
 import com.varc.brewnetapp.domain.member.query.mapper.MemberMapper;
-import com.varc.brewnetapp.exception.EmptyDataException;
+import com.varc.brewnetapp.shared.exception.EmptyDataException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

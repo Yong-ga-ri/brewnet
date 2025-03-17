@@ -1,10 +1,10 @@
 package com.varc.brewnetapp.domain.returning.query.service;
 
-import com.varc.brewnetapp.common.domain.returning.ReturningStatus;
+import com.varc.brewnetapp.shared.domain.returning.ReturningStatus;
 import com.varc.brewnetapp.domain.returning.query.aggregate.vo.*;
 import com.varc.brewnetapp.domain.returning.query.mapper.ReturningMapper;
-import com.varc.brewnetapp.exception.ReturningNotFoundException;
-import com.varc.brewnetapp.exception.UnauthorizedAccessException;
+import com.varc.brewnetapp.shared.exception.ReturningNotFoundException;
+import com.varc.brewnetapp.shared.exception.UnauthorizedAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

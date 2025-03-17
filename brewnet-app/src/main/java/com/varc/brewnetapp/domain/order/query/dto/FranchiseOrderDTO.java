@@ -18,6 +18,4 @@ public class FranchiseOrderDTO {
     private String recentOrderStatusCreatedAt;
 
     private List<OrderItem> orderItemList;
-
-//    private List<OrderStatusHistory> orderStatusHistoryList;
 }

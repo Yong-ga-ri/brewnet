@@ -1,6 +1,6 @@
 package com.varc.brewnetapp.domain.storage.command.application.controller;
 
-import com.varc.brewnetapp.common.ResponseMessage;
+import com.varc.brewnetapp.shared.ResponseMessage;
 import com.varc.brewnetapp.domain.storage.command.application.dto.ChangeStockRequestDTO;
 import com.varc.brewnetapp.domain.storage.command.application.dto.StorageDeleteRequestDTO;
 import com.varc.brewnetapp.domain.storage.command.application.dto.StorageRequestDTO;
@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController("StorageControllerCommand")
