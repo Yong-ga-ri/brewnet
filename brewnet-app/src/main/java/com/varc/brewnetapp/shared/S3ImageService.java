@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Component
 public class S3ImageService {
+    private static final String DIR_NAME = "brewnet";
+    private static final String SLASH = "/";
 
     private final AmazonS3 amazonS3;
     private final String bucketName;
@@ -65,7 +67,7 @@ public class S3ImageService {
     }
 
     private String uploadImageToS3(MultipartFile image) throws IOException {
-        String s3FileName = "brewnetapp" + "/" + UUID.randomUUID() + "_" + image.getOriginalFilename();
+        String s3FileName = DIR_NAME + SLASH + UUID.randomUUID() + "_" + image.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(image.getContentType());
         metadata.setContentLength(image.getSize());
