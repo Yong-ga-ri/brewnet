@@ -1,15 +1,19 @@
 package com.varc.brewnetapp.domain.franchise.command.application.service;
 
+import com.varc.brewnetapp.domain.auth.query.service.AuthService;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.CreateFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.DeleteFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.application.dto.UpdateFranchiseRequestDTO;
 import com.varc.brewnetapp.domain.franchise.command.domain.aggregate.entity.Franchise;
 import com.varc.brewnetapp.domain.franchise.command.domain.repository.FranchiseRepository;
+import com.varc.brewnetapp.security.service.RefreshTokenService;
 import com.varc.brewnetapp.shared.exception.EmptyDataException;
 import com.varc.brewnetapp.shared.exception.InvalidDataException;
 import com.varc.brewnetapp.shared.utility.TelNumberUtil;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +24,15 @@ public class FranchiseServiceImpl implements FranchiseService {
     private final FranchiseRepository franchiseRepository;
     private final ModelMapper modelMapper;
 
+    private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
+
     @Autowired
-    public FranchiseServiceImpl(FranchiseRepository franchiseRepository, ModelMapper modelMapper) {
+    public FranchiseServiceImpl(FranchiseRepository franchiseRepository, ModelMapper modelMapper, AuthService authService, RefreshTokenService refreshTokenService) {
         this.franchiseRepository = franchiseRepository;
         this.modelMapper = modelMapper;
+        this.authService = authService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -82,14 +91,16 @@ public class FranchiseServiceImpl implements FranchiseService {
     @Override
     @Transactional
     public void deleteFranchise(DeleteFranchiseRequestDTO deleteFranchiseRequestDTO) {
-        Franchise franchise = franchiseRepository.findById(deleteFranchiseRequestDTO.getFranchiseCode())
+        int franchiseCode = deleteFranchiseRequestDTO.getFranchiseCode();
+        Franchise franchise = franchiseRepository.findById(franchiseCode)
             .orElseThrow(() -> new EmptyDataException("가맹점 정보가 없습니다"));
 
         franchise.setActive(false);
-        try {
-            franchiseRepository.save(franchise);
-        } catch (Exception e) {
-            throw new InvalidDataException("가맹점 정보 삭제에 실패했습니다");
-        }
+
+        franchiseRepository.save(franchise);
+        authService.getFranchiseMemberLoginId(franchiseCode)
+                .forEach(refreshTokenService::deleteRefreshToken);
     }
 }
+
+

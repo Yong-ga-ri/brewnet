@@ -48,6 +48,17 @@
 
     </select>
 
+
+    <select id="selectFranchiseMemberLoginIdListBy" parameterType="string" resultType="java.lang.String">
+        SELECT
+               M.ID
+          FROM tbl_franchise_member FM
+          JOIN tbl_member M
+            ON FM.MEMBER_CODE = M.MEMBER_CODE
+         WHERE FM.FRANCHISE_CODE = #{ franchiseCode }
+
+    </select>
+
     <select id="selectAuths" resultType="java.lang.String">
       SELECT role
         FROM tbl_Role

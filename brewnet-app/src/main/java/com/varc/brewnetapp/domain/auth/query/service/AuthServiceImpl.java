@@ -5,9 +5,11 @@ import com.varc.brewnetapp.domain.auth.query.vo.MemberVO;
 import com.varc.brewnetapp.domain.auth.query.vo.RoleVO;
 import com.varc.brewnetapp.security.domain.CustomUser;
 import com.varc.brewnetapp.domain.auth.query.dto.MemberInfoDTO;
+import com.varc.brewnetapp.shared.exception.MemberNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -81,6 +83,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public MemberInfoDTO getMemberInfoDTOBy(String loginId) {
         return authenticationMapper.selectFranchiseMemberInfoBy(loginId);
+    }
+
+    @Override
+    public List<String> getFranchiseMemberLoginId(int franchiseCode) {
+        List<String> loginIdList = authenticationMapper.selectFranchiseMemberLoginIdListBy(franchiseCode);
+        if (loginIdList == null) {
+            throw new MemberNotFoundException("가맹점 회원이 존재하지 않습니다.");
+        } else {
+            return loginIdList;
+        }
     }
 
     @Override

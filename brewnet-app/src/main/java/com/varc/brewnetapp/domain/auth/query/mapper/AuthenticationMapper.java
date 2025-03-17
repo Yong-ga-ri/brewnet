@@ -13,6 +13,7 @@ public interface AuthenticationMapper {
     List<String> selectAuths();
 
     Integer selectFranchiseCodeByMemberCode(@Param("memberCode") int memberCode);
+    List<String> selectFranchiseMemberLoginIdListBy(@Param("franchiseCode") int franchiseCode);
 
     MemberInfoDTO selectFranchiseMemberInfoBy(@Param("loginId") String loginId);
 }
